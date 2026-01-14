@@ -153,14 +153,18 @@
         left: 0;
         top: 0;
         overflow: hidden;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9999;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9998;
+        -webkit-overflow-scrolling: touch;
+        backdrop-filter: blur(10px);
+        background: rgba(20, 20, 30, 0.98);
       }
 
       .header.active {
         max-height: 100vh;
         overflow-y: auto;
         padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       }
 
       .header.minimized {
@@ -218,19 +222,44 @@
       }
 
       .navmenu ul li {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
 
       .navmenu ul li a {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         width: 100%;
-        padding: 15px 20px;
+        padding: 18px 20px;
+        border-radius: 8px;
+        background: rgba(0, 102, 204, 0.05);
+        transition: all 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .navmenu ul li a:active {
+        transform: scale(0.98);
+        background: rgba(0, 102, 204, 0.15);
       }
 
       .navmenu a span {
         display: inline !important;
         opacity: 1 !important;
         visibility: visible !important;
+      }
+
+      .nav-section {
+        margin-bottom: 25px;
+      }
+
+      .nav-section-title {
+        font-size: 0.85rem;
+        padding: 10px 20px 5px 20px;
+      }
+
+      /* Make profile image larger on mobile when menu is open */
+      .header.active .profile-img img {
+        width: 120px;
+        height: 120px;
       }
     }
 
@@ -1030,6 +1059,8 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
       pointer-events: auto !important;
       opacity: 1 !important;
+      -webkit-tap-highlight-color: transparent !important;
+      touch-action: manipulation !important;
     }
 
     .custom-close-btn:hover {
@@ -1041,6 +1072,34 @@
 
     .custom-close-btn:active {
       transform: scale(0.95) !important;
+    }
+
+    /* Mobile-optimized close button */
+    @media (max-width: 768px) {
+      .custom-close-btn {
+        top: 15px !important;
+        right: 15px !important;
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 36px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7) !important;
+      }
+
+      .custom-close-btn::after {
+        content: 'Close';
+        position: absolute;
+        bottom: -35px;
+        right: 0;
+        background: rgba(220, 53, 69, 0.95);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
     }
 
     /* Ensure lightbox container allows button clicks */
@@ -1055,6 +1114,31 @@
     .glightbox-container .gslide-image,
     .glightbox-container .gslide-description {
       pointer-events: auto !important;
+    }
+
+    /* Mobile menu backdrop overlay */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9997;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    @media (min-width: 769px) {
+      .mobile-overlay {
+        display: none !important;
+      }
     }
 
     /* Notification Styles */
@@ -1305,6 +1389,9 @@
 </head>
 
 <body class="index-page">
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
   <header id="header" class="header dark-background d-flex flex-column">
     <div class="profile-img">
@@ -1836,6 +1923,7 @@
       const headerToggle = document.getElementById('headerToggle');
       const header = document.getElementById('header');
       const mainContent = document.getElementById('mainContent');
+      const mobileOverlay = document.getElementById('mobileOverlay');
 
       if (headerToggle && header && mainContent) {
         // Menu trigger click event
@@ -1847,6 +1935,11 @@
           header.classList.toggle('minimized');
           header.classList.toggle('active');
           mainContent.classList.toggle('sidebar-minimized');
+          
+          // Toggle mobile overlay on small screens
+          if (window.innerWidth <= 768 && mobileOverlay) {
+            mobileOverlay.classList.toggle('active');
+          }
           
           // Toggle icon between list and arrows
           if (header.classList.contains('minimized')) {
@@ -1877,9 +1970,23 @@
               header.classList.add('minimized');
               headerToggle.classList.remove('bi-list');
               headerToggle.classList.add('bi-chevron-right');
+              if (mobileOverlay) {
+                mobileOverlay.classList.remove('active');
+              }
             }
           });
         });
+
+        // Close sidebar when clicking overlay on mobile
+        if (mobileOverlay) {
+          mobileOverlay.addEventListener('click', () => {
+            header.classList.remove('active');
+            header.classList.add('minimized');
+            headerToggle.classList.remove('bi-list');
+            headerToggle.classList.add('bi-chevron-right');
+            mobileOverlay.classList.remove('active');
+          });
+        }
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', (e) => {
@@ -1889,6 +1996,9 @@
               header.classList.add('minimized');
               headerToggle.classList.remove('bi-list');
               headerToggle.classList.add('bi-chevron-right');
+              if (mobileOverlay) {
+                mobileOverlay.classList.remove('active');
+              }
             }
           }
         });
@@ -1940,7 +2050,7 @@
       }, 5000);
     }
 
-    // Contact Form
+    // Contact Form - Using FormSubmit.co for reliable email delivery
     const contactForm = document.getElementById('contactForm');
     
     if (contactForm) {
@@ -1962,33 +2072,37 @@
         showNotification('Sending your message...', 'info');
         
         try {
-          // Send form data via AJAX
+          // Send using FormSubmit.co - FREE email service
           const formData = new FormData();
           formData.append('name', name);
           formData.append('email', email);
           formData.append('subject', subject);
           formData.append('message', message);
-
-          const response = await fetch('forms/contact-simple.php', {
+          formData.append('_captcha', 'false'); // Disable captcha
+          formData.append('_template', 'table'); // Use table template
+          
+          const response = await fetch('https://formsubmit.co/reynren11@gmail.com', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
           });
 
-          const data = await response.json();
-
-          if (data.success) {
+          if (response.ok) {
             // Show success notification
-            showNotification('Message Sent!', 'success');
+            showNotification('✓ Message Sent Successfully!', 'success');
             
             // Reset form
             contactForm.reset();
             
-            // Scroll to top immediately
+            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
           } else {
-            showNotification('✗ Error: ' + (data.message || 'Failed to send message'), 'error');
+            showNotification('✗ Failed to send message. Please try again.', 'error');
           }
         } catch (error) {
+          console.error('Error:', error);
           showNotification('✗ Failed to send message. Please try again.', 'error');
         }
       });
