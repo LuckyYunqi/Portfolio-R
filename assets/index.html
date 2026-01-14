@@ -252,10 +252,26 @@
       font-size: 28px;
       font-weight: 700;
       margin: 20px 0 10px 0;
+      padding-left: 15px;
       background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+    }
+
+    .user-role {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(224, 224, 224, 0.75);
+      margin: 0 0 20px 0;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .header.minimized .user-role {
+      opacity: 0;
+      visibility: hidden;
+      display: none;
     }
 
     .social-links {
@@ -286,10 +302,36 @@
     /* Navigation Menu */
     .navmenu {
       margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: rgba(224, 224, 224, 0.5);
+      margin: 0 0 8px 20px;
+      text-transform: uppercase;
+    }
+
+    .header.minimized .nav-section-title {
+      opacity: 0;
+      visibility: hidden;
+      display: none;
     }
 
     .navmenu ul {
       list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
     .navmenu ul li {
@@ -963,32 +1005,50 @@
       position: fixed !important;
       top: 20px !important;
       right: 20px !important;
-      width: 45px !important;
-      height: 45px !important;
+      width: 50px !important;
+      height: 50px !important;
       background: #dc3545 !important;
       border: 2px solid #c82333 !important;
-      border-radius: 4px !important;
+      border-radius: 6px !important;
       color: white !important;
-      font-size: 28px !important;
+      font-size: 30px !important;
       font-weight: bold !important;
       cursor: pointer !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      z-index: 99999 !important;
-      transition: all 0.3s ease !important;
+      z-index: 999999 !important;
+      transition: all 0.2s ease !important;
       padding: 0 !important;
       line-height: 1 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+      pointer-events: auto !important;
+      opacity: 1 !important;
     }
 
     .custom-close-btn:hover {
       background: #bb2d3b !important;
       border-color: #a02530 !important;
-      transform: scale(1.05) !important;
+      transform: scale(1.1) !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6) !important;
     }
 
     .custom-close-btn:active {
       transform: scale(0.95) !important;
+    }
+
+    /* Ensure lightbox container allows button clicks */
+    .glightbox-container {
+      pointer-events: auto !important;
+    }
+
+    .glightbox-container .ginner-container {
+      pointer-events: none !important;
+    }
+
+    .glightbox-container .gslide-image,
+    .glightbox-container .gslide-description {
+      pointer-events: auto !important;
     }
 
     /* Notification Styles */
@@ -1003,10 +1063,11 @@
       align-items: center;
       justify-content: space-between;
       gap: 15px;
-      z-index: 99999;
+      z-index: 999999 !important;
       animation: slideInNotif 0.4s ease-out;
       font-weight: 500;
       max-width: 400px;
+      font-size: 1rem;
     }
 
     .notification-content {
@@ -1248,26 +1309,29 @@
       <h1 class="sitename">Reyniel Polancos</h1>
     </a>
 
-    <div class="social-links text-center">
-      <a href="https://twitter.com" target="_blank" class="twitter" title="Twitter"><i class="bi bi-twitter-x"></i></a>
-      <a href="https://facebook.com" target="_blank" class="facebook" title="Facebook"><i class="bi bi-facebook"></i></a>
-      <a href="https://instagram.com" target="_blank" class="instagram" title="Instagram"><i class="bi bi-instagram"></i></a>
-      <a href="https://linkedin.com" target="_blank" class="linkedin" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-      <a href="https://github.com" target="_blank" class="github" title="GitHub"><i class="bi bi-github"></i></a>
-    </div>
+    <p class="user-role">UI Designer & Video Editor</p>
 
     <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
-        <li><a href="#about"><i class="bi bi-person navicon"></i><span>About</span></a></li>
-        <li><a href="#skills"><i class="bi bi-bar-chart navicon"></i><span>Skills</span></a></li>
-        <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i><span>Resume</span></a></li>
-        <li><a href="#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
-        <li><a href="#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
-        <li>
-          <a href="#" id="downloadResume" class="download-link"><i class="bi bi-download navicon"></i><span>Resume</span></a>
-        </li>
-      </ul>
+      <div class="nav-section">
+        <h6 class="nav-section-title">NAVIGATION</h6>
+        <ul>
+          <li><a href="#about" class="active"><i class="bi bi-person navicon"></i><span>About</span></a></li>
+          <li><a href="#skills"><i class="bi bi-bar-chart navicon"></i><span>Skills</span></a></li>
+          <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i><span>Resume</span></a></li>
+          <li><a href="#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
+          <li><a href="#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="nav-section">
+        <h6 class="nav-section-title">ACTIONS</h6>
+        <ul>
+          <li>
+            <a href="#" id="downloadResume" class="download-link"><i class="bi bi-download navicon"></i><span>Resume</span></a>
+          </li>
+          <li><a href="https://www.facebook.com/reyniel.polancos.94" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook navicon"></i><span>Facebook</span></a></li>
+        </ul>
+      </div>
     </nav>
 
   </header>
@@ -1282,20 +1346,17 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <h2>Reyniel Polancos</h2>
-        <p>
-          <span class="typed" data-typed-items="Photo Editor, Video Editor, Photoshop Expert, Creative Designer, Visual Artist">Photo Editor</span>
-          <span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span>
-        </p>
+        <p>Video Editor & Graphic Designer</p>
         <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-          <div style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--primary-color); backdrop-filter: blur(10px);">
+          <div class="skill-badge" data-aos="fade-up" data-aos-delay="200" style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--primary-color); backdrop-filter: blur(10px);">
             <i class="bi bi-palette-fill" style="color: var(--accent-color); font-size: 1.5rem; margin-right: 10px;"></i>
             <span>Adobe Photoshop</span>
           </div>
-          <div style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--accent-color); backdrop-filter: blur(10px);">
+          <div class="skill-badge" data-aos="fade-up" data-aos-delay="400" style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--accent-color); backdrop-filter: blur(10px);">
             <i class="bi bi-film" style="color: var(--secondary-color); font-size: 1.5rem; margin-right: 10px;"></i>
             <span>Video Editing</span>
           </div>
-          <div style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--secondary-color); backdrop-filter: blur(10px);">
+          <div class="skill-badge" data-aos="fade-up" data-aos-delay="600" style="background: rgba(0, 102, 204, 0.1); padding: 15px 25px; border-radius: 8px; border-left: 4px solid var(--secondary-color); backdrop-filter: blur(10px);">
             <i class="bi bi-brightness-high" style="color: var(--primary-color); font-size: 1.5rem; margin-right: 10px;"></i>
             <span>Photo Retouching</span>
           </div>
@@ -1475,7 +1536,7 @@
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio section">
       <div class="container section-title" data-aos="fade-up">
-        <h2 class="typed-title" data-typed-items="My Portfolio,Featured Work,Creative Projects">My Portfolio</h2>
+        <h2>Creative Projects</h2>
         <p>A showcase of creative and technical work—certificates, projects, and design implementations</p>
       </div>
 
@@ -1633,21 +1694,21 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" autocomplete="name" required>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
                   </div>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" required>
+                <input type="text" id="subject" name="subject" autocomplete="off" required>
               </div>
 
               <div class="form-group">
@@ -1684,149 +1745,168 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
   <script>
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Scroll Top Button
-    const scrollTopBtn = document.getElementById('scroll-top');
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.add('active');
-      } else {
-        scrollTopBtn.classList.remove('active');
-      }
-    });
-
-    scrollTopBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Active navigation link
-    window.addEventListener('scroll', () => {
-      let current = '';
-      const sections = document.querySelectorAll('section');
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        if (pageYOffset >= sectionTop - 200) {
-          current = section.getAttribute('id');
-        }
-      });
-
-      document.querySelectorAll('.navmenu a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-          link.classList.add('active');
-        }
-      });
-    });
-
-    // Download Resume functionality
-    document.getElementById('downloadResume').addEventListener('click', function (e) {
-      e.preventDefault();
-      downloadResume();
-    });
-
-    document.getElementById('aboutDownloadResume').addEventListener('click', function (e) {
-      e.preventDefault();
-      downloadResume();
-    });
-
-    function downloadResume() {
-      const confirmDownload = confirm('Download Reyniel Polancos\' Resume?');
-      if (confirmDownload) {
-        const link = document.createElement('a');
-        link.href = 'assets/OJT.pdf';
-        link.download = 'Reyniel_Polancos_Resume.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
-
-    // Sidebar Minimize/Maximize Toggle
-    const headerToggle = document.getElementById('headerToggle');
-    const header = document.getElementById('header');
-    const mainContent = document.getElementById('mainContent');
-
-    // Menu trigger click event
-    headerToggle.addEventListener('click', () => {
-      // Add animation class
-      headerToggle.classList.add('animating');
-      
-      // Toggle sidebar and menu active state
-      header.classList.toggle('minimized');
-      header.classList.toggle('active');
-      mainContent.classList.toggle('sidebar-minimized');
-      
-      // Toggle icon between list and arrows
-      if (header.classList.contains('minimized')) {
-        setTimeout(() => {
-          headerToggle.classList.remove('bi-list');
-          headerToggle.classList.add('bi-chevron-right');
-          headerToggle.setAttribute('title', 'Expand Menu');
-        }, 200);
-      } else {
-        setTimeout(() => {
-          headerToggle.classList.remove('bi-chevron-right');
-          headerToggle.classList.add('bi-list');
-          headerToggle.setAttribute('title', 'Collapse Menu');
-        }, 200);
-      }
-      
-      // Remove animation class after animation completes
-      setTimeout(() => {
-        headerToggle.classList.remove('animating');
-      }, 400);
-    });
-
-    // On mobile, close/minimize sidebar when clicking a nav link
-    if (window.innerWidth <= 768) {
-      document.querySelectorAll('.navmenu a').forEach(link => {
-        link.addEventListener('click', () => {
-          header.classList.add('minimized');
-          mainContent.classList.add('sidebar-minimized');
-          headerToggle.classList.remove('bi-list');
-          headerToggle.classList.add('bi-chevron-right');
-        });
-      });
-    }
-
-    // Portfolio filter
-    document.querySelectorAll('.portfolio-filters li').forEach(filter => {
-      filter.addEventListener('click', function () {
-        document.querySelectorAll('.portfolio-filters li').forEach(f => f.classList.remove('filter-active'));
-        this.classList.add('filter-active');
-        
-        const filterValue = this.getAttribute('data-filter');
-        document.querySelectorAll('.portfolio-item').forEach(item => {
-          if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
-            item.style.display = '';
-          } else {
-            item.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function() {
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
           }
         });
       });
-    });
+
+      // Scroll Top Button
+      const scrollTopBtn = document.getElementById('scroll-top');
+      if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+          if (window.pageYOffset > 300) {
+            scrollTopBtn.classList.add('active');
+          } else {
+            scrollTopBtn.classList.remove('active');
+          }
+        });
+
+        scrollTopBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Active navigation link
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        document.querySelectorAll('.navmenu a').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').slice(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Download Resume functionality
+      const downloadResumeBtn = document.getElementById('downloadResume');
+      const aboutDownloadResumeBtn = document.getElementById('aboutDownloadResume');
+      
+      if (downloadResumeBtn) {
+        downloadResumeBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          downloadResume();
+        });
+      }
+
+      if (aboutDownloadResumeBtn) {
+        aboutDownloadResumeBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          downloadResume();
+        });
+      }
+
+      function downloadResume() {
+        const confirmDownload = confirm('Download Reyniel Polancos\' Resume?');
+        if (confirmDownload) {
+          const link = document.createElement('a');
+          link.href = 'assets/OJT.pdf';
+          link.download = 'Reyniel_Polancos_Resume.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+
+      // Sidebar Minimize/Maximize Toggle
+      const headerToggle = document.getElementById('headerToggle');
+      const header = document.getElementById('header');
+      const mainContent = document.getElementById('mainContent');
+
+      if (headerToggle && header && mainContent) {
+        // Menu trigger click event
+        headerToggle.addEventListener('click', () => {
+          // Add animation class
+          headerToggle.classList.add('animating');
+          
+          // Toggle sidebar and menu active state
+          header.classList.toggle('minimized');
+          header.classList.toggle('active');
+          mainContent.classList.toggle('sidebar-minimized');
+          
+          // Toggle icon between list and arrows
+          if (header.classList.contains('minimized')) {
+            setTimeout(() => {
+              headerToggle.classList.remove('bi-list');
+              headerToggle.classList.add('bi-chevron-right');
+              headerToggle.setAttribute('title', 'Expand Menu');
+            }, 200);
+          } else {
+            setTimeout(() => {
+              headerToggle.classList.remove('bi-chevron-right');
+              headerToggle.classList.add('bi-list');
+              headerToggle.setAttribute('title', 'Collapse Menu');
+            }, 200);
+          }
+          
+          // Remove animation class after animation completes
+          setTimeout(() => {
+            headerToggle.classList.remove('animating');
+          }, 400);
+        });
+
+        // On mobile, close/minimize sidebar when clicking a nav link
+        if (window.innerWidth <= 768) {
+          document.querySelectorAll('.navmenu a').forEach(link => {
+            link.addEventListener('click', () => {
+              header.classList.add('minimized');
+              mainContent.classList.add('sidebar-minimized');
+              headerToggle.classList.remove('bi-list');
+              headerToggle.classList.add('bi-chevron-right');
+            });
+          });
+        }
+      }
+
+    // Portfolio filter
+    const portfolioFilters = document.querySelectorAll('.portfolio-filters li');
+    if (portfolioFilters.length > 0) {
+      portfolioFilters.forEach(filter => {
+        filter.addEventListener('click', function () {
+          document.querySelectorAll('.portfolio-filters li').forEach(f => f.classList.remove('filter-active'));
+          this.classList.add('filter-active');
+          
+          const filterValue = this.getAttribute('data-filter');
+          document.querySelectorAll('.portfolio-item').forEach(item => {
+            if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
 
     // Notification System
     function showNotification(message, type = 'success') {
+      // Remove any existing notifications first
+      const existingNotifications = document.querySelectorAll('.notification');
+      existingNotifications.forEach(n => n.remove());
+      
       const notification = document.createElement('div');
       notification.className = `notification notification-${type}`;
       notification.innerHTML = `
         <div class="notification-content">
-          <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+          <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
           <span>${message}</span>
         </div>
         <button class="notification-close" onclick="this.parentElement.remove();">&times;</button>
@@ -1836,61 +1916,77 @@
       // Auto remove after 5 seconds
       setTimeout(() => {
         if (notification.parentElement) {
-          notification.remove();
+          notification.style.animation = 'slideOutNotif 0.4s ease-out';
+          setTimeout(() => notification.remove(), 400);
         }
       }, 5000);
     }
 
     // Contact Form
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const subject = document.getElementById('subject').value;
-      const message = document.getElementById('message').value;
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
 
-      if (name && email && subject && message) {
+        if (!name || !email || !subject || !message) {
+          showNotification('⚠ Please fill in all fields', 'warning');
+          return;
+        }
+
         // Show loading notification
         showNotification('Sending your message...', 'info');
         
-        // Send form data via AJAX
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('subject', subject);
-        formData.append('message', message);
+        try {
+          // Send form data via AJAX
+          const formData = new FormData();
+          formData.append('name', name);
+          formData.append('email', email);
+          formData.append('subject', subject);
+          formData.append('message', message);
 
-        fetch('forms/contact.php', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
+          const response = await fetch('forms/contact-simple.php', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+
           if (data.success) {
-            showNotification('✓ Message sent successfully! Thank you for reaching out.', 'success');
-            document.getElementById('contactForm').reset();
+            // Show success notification
+            showNotification('Message Sent!', 'success');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Scroll to top immediately
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           } else {
-            showNotification('✗ Error: ' + data.message, 'error');
+            showNotification('✗ Error: ' + (data.message || 'Failed to send message'), 'error');
           }
-        })
-        .catch(error => {
+        } catch (error) {
           showNotification('✗ Failed to send message. Please try again.', 'error');
-          console.error('Error:', error);
-        });
-      } else {
-        showNotification('⚠ Please fill in all fields', 'warning');
-      }
-    });
+        }
+      });
+    }
 
     // Typed.js initialization
     const typed = document.querySelector('.typed');
     if (typed) {
       new Typed('.typed', {
         strings: typed.getAttribute('data-typed-items').split(','),
-        typeSpeed: 100,
-        backSpeed: 100,
-        backDelay: 2000,
-        loop: true
+        typeSpeed: 150,
+        backSpeed: 40,
+        backDelay: 3500,
+        startDelay: 500,
+        loop: true,
+        showCursor: false
       });
     }
 
@@ -1902,45 +1998,25 @@
         typeSpeed: 80,
         backSpeed: 80,
         backDelay: 2500,
-        loop: true
+        loop: true,
+        showCursor: false
       });
     }
 
-    // Portfolio item typing animations on scroll
+    // Portfolio item typing animations on scroll - DISABLED
+    // Just show static text instead of typing animation
     const portfolioItems = document.querySelectorAll('.portfolio-typed');
-    let typedInstances = {};
-
-    const portfolioObserverOptions = {
-      threshold: 0.3,
-      rootMargin: '0px'
-    };
-
-    const portfolioObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !typedInstances[entry.target.className]) {
-          const element = entry.target;
-          const uniqueClass = 'typed-' + Math.random().toString(36).substr(2, 9);
-          element.classList.add(uniqueClass);
-          
-          new Typed('.' + uniqueClass, {
-            strings: element.getAttribute('data-typed-items').split(','),
-            typeSpeed: 60,
-            backSpeed: 0,
-            loop: false,
-            startDelay: 100,
-            onComplete: function() {
-              portfolioObserver.unobserve(element);
-            }
-          });
-          
-          typedInstances[entry.target.className] = true;
+    
+    if (portfolioItems.length > 0) {
+      portfolioItems.forEach(item => {
+        // Just set the text directly without animation
+        const text = item.getAttribute('data-typed-items');
+        if (text) {
+          item.textContent = text;
         }
       });
-    }, portfolioObserverOptions);
-
-    portfolioItems.forEach(item => {
-      portfolioObserver.observe(item);
-    });
+    }
+    }); // End DOMContentLoaded
   </script>
 </body>
 
