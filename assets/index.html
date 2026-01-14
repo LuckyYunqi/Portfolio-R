@@ -886,6 +886,21 @@
       color: rgba(224, 224, 224, 0.7);
     }
 
+    /* Remove dark backgrounds on mobile */
+    @media (max-width: 768px) {
+      .dark-background {
+        background: transparent !important;
+      }
+
+      footer {
+        background: rgba(20, 20, 30, 0.8) !important;
+      }
+
+      .portfolio-item {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+    }
+
     /* Scroll Top Button */
     .scroll-top {
       position: fixed;
@@ -1090,59 +1105,89 @@
       transform: scale(0.95) !important;
     }
 
-    /* Mobile-optimized close button */
+    /* Mobile-optimized close button - MAXIMUM PRIORITY */
     @media (max-width: 768px) {
-      body .glightbox-container .custom-close-btn,
-      .glightbox-container .custom-close-btn {
+      /* Force show custom close button */
+      .custom-close-btn {
+        position: fixed !important;
         top: 10px !important;
         right: 10px !important;
         width: 70px !important;
         height: 70px !important;
         font-size: 42px !important;
         border-radius: 12px !important;
-        border: 4px solid #fff !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9) !important;
-        z-index: 999999999 !important;
+        border: 4px solid #ffffff !important;
+        background: #dc3545 !important;
+        color: #ffffff !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95) !important;
+        z-index: 2147483647 !important;
         display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         visibility: visible !important;
+        opacity: 1 !important;
+        cursor: pointer !important;
+        font-weight: bold !important;
+        line-height: 1 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
       }
 
-      body .glightbox-container .custom-close-btn::before,
-      .glightbox-container .custom-close-btn::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: transparent;
-        z-index: -1;
+      html .glightbox-container .custom-close-btn,
+      body .glightbox-container .custom-close-btn,
+      .glightbox-container .custom-close-btn {
+        position: fixed !important;
+        top: 10px !important;
+        right: 10px !important;
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 42px !important;
+        border-radius: 12px !important;
+        border: 4px solid #ffffff !important;
+        background: #dc3545 !important;
+        color: #ffffff !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95) !important;
+        z-index: 2147483647 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
 
-      body .glightbox-container .custom-close-btn::after,
-      .glightbox-container .custom-close-btn::after {
-        content: 'TAP TO CLOSE';
-        position: absolute;
-        bottom: -45px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #dc3545;
-        color: white;
-        padding: 10px 18px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-        letter-spacing: 1.5px;
+      .custom-close-btn::before {
+        content: '' !important;
+        display: none !important;
+      }
+
+      .custom-close-btn::after {
+        content: 'TAP TO CLOSE' !important;
+        position: absolute !important;
+        bottom: -50px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background: #dc3545 !important;
+        color: white !important;
+        padding: 12px 20px !important;
+        border-radius: 8px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7) !important;
+        letter-spacing: 2px !important;
         display: block !important;
         visibility: visible !important;
+        opacity: 1 !important;
       }
 
-      /* Hide default GLightbox close button on mobile */
-      .glightbox-container .gclose {
+      /* Hide ALL default GLightbox close buttons */
+      .glightbox-container .gclose,
+      .gclose {
         display: none !important;
         visibility: hidden !important;
+        opacity: 0 !important;
       }
     }
 
