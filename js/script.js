@@ -297,20 +297,75 @@ document.addEventListener('keydown', (e) => {
         navMenu.classList.remove('active');
         hamburger.classList.remove('active');
         closeCertificate();
+        return;
+    }
+
+    const modal = document.getElementById('certificateModal');
+    const isModalOpen = modal && modal.style.display === 'block';
+    if (!isModalOpen) return;
+
+    if (e.key === 'ArrowLeft') {
+        navigateCertificate(-1);
+    }
+
+    if (e.key === 'ArrowRight') {
+        navigateCertificate(1);
     }
 });
 
 // ====================================
 // CERTIFICATE MODAL FUNCTIONS
 // ====================================
-function openCertificate(cardElement) {
-    const modal = document.getElementById('certificateModal');
+let certCards = [];
+let currentCertIndex = -1;
+
+function initializeCertificateNavigation() {
+    certCards = Array.from(document.querySelectorAll('#certifications .cert-card'));
+
+    const prevBtn = document.getElementById('certModalPrev');
+    const nextBtn = document.getElementById('certModalNext');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            navigateCertificate(-1);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            navigateCertificate(1);
+        });
+    }
+}
+
+function updateModalNavButtons() {
+    const prevBtn = document.getElementById('certModalPrev');
+    const nextBtn = document.getElementById('certModalNext');
+    if (!prevBtn || !nextBtn) return;
+
+    const hasMultiple = certCards.length > 1;
+    prevBtn.hidden = !hasMultiple;
+    nextBtn.hidden = !hasMultiple;
+
+    if (!hasMultiple) return;
+
+    prevBtn.disabled = currentCertIndex <= 0;
+    nextBtn.disabled = currentCertIndex >= certCards.length - 1;
+}
+
+function setCertificateModalContent(cardElement) {
+    if (!cardElement) return;
+
     const title = cardElement.getAttribute('data-cert-title');
     const issuer = cardElement.getAttribute('data-cert-issuer');
     const certSrc = cardElement.getAttribute('data-cert-src');
-    
-    document.getElementById('certModalTitle').textContent = title;
-    document.getElementById('certModalIssuer').textContent = issuer;
+
+    document.getElementById('certModalTitle').textContent = title || 'Certificate';
+    document.getElementById('certModalIssuer').textContent = issuer || '';
 
     const modalImage = document.getElementById('certModalImage');
     const modalPlaceholder = document.getElementById('certModalPlaceholder');
@@ -326,10 +381,9 @@ function openCertificate(cardElement) {
             modalImage.style.display = 'block';
         };
 
-        modalImage.alt = `${title} certificate`;
+        modalImage.alt = title ? `${title} certificate` : 'Certificate';
         modalImage.src = certSrc;
 
-        // In case the image is cached and already complete
         if (modalImage.complete && modalImage.naturalWidth > 0) {
             modalPlaceholder.style.display = 'none';
             modalImage.style.display = 'block';
@@ -340,9 +394,35 @@ function openCertificate(cardElement) {
         modalImage.removeAttribute('src');
         modalImage.alt = '';
     }
+}
+
+function navigateCertificate(direction) {
+    if (!Array.isArray(certCards) || certCards.length === 0) return;
+    if (currentCertIndex < 0) return;
+
+    const nextIndex = currentCertIndex + direction;
+    if (nextIndex < 0 || nextIndex >= certCards.length) return;
+
+    currentCertIndex = nextIndex;
+    setCertificateModalContent(certCards[currentCertIndex]);
+    updateModalNavButtons();
+}
+
+function openCertificate(cardElement) {
+    const modal = document.getElementById('certificateModal');
+
+    if (!certCards.length) {
+        certCards = Array.from(document.querySelectorAll('#certifications .cert-card'));
+    }
+    currentCertIndex = certCards.indexOf(cardElement);
+    if (currentCertIndex < 0) currentCertIndex = 0;
+
+    setCertificateModalContent(cardElement);
     
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+
+    updateModalNavButtons();
 }
 
 function closeCertificate() {
@@ -351,6 +431,9 @@ function closeCertificate() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
+    currentCertIndex = -1;
+    updateModalNavButtons();
 
     const modalImage = document.getElementById('certModalImage');
     const modalPlaceholder = document.getElementById('certModalPlaceholder');
@@ -389,6 +472,8 @@ document.querySelectorAll('.cert-image-container').forEach((container) => {
         markLoaded();
     }
 });
+
+initializeCertificateNavigation();
 
 // ====================================
 // CERTIFICATIONS SIDE SCROLL BUTTONS

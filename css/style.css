@@ -838,6 +838,47 @@ section {
     color: var(--primary);
 }
 
+.cert-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5deff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 10002;
+}
+
+.cert-modal-nav:hover {
+    border-color: #bb72e8;
+    box-shadow: var(--shadow-2);
+}
+
+.cert-modal-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.cert-modal-nav--left {
+    left: 14px;
+}
+
+.cert-modal-nav--right {
+    right: 14px;
+}
+
+.cert-modal-nav svg {
+    width: 18px;
+    height: 18px;
+}
+
 .cert-modal-content {
     position: relative;
     background: linear-gradient(180deg, rgba(27, 5, 40, 0.98) 0%, rgba(41, 8, 57, 0.95) 100%);
@@ -880,13 +921,22 @@ section {
 }
 
 .cert-modal-body {
-    padding: 3rem 2rem;
+    padding: 2.4rem 2rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .cert-modal-image {
+    display: block;
+    margin: 0 auto;
     max-width: 100%;
+    width: auto;
+    max-height: 68vh;
     height: auto;
+    object-fit: contain;
     border-radius: var(--radius-sm);
     border: 1px solid var(--line);
     box-shadow: var(--shadow-1);
@@ -1080,6 +1130,14 @@ section {
 
     .cert-card {
         flex-basis: 82vw;
+    }
+
+    .cert-modal-body {
+        padding: 1.6rem 1rem;
+    }
+
+    .cert-modal-image {
+        max-height: 62vh;
     }
 
     section {
