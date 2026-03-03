@@ -599,12 +599,65 @@ section {
     border-bottom: 1px solid var(--line);
 }
 
-.certifications-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+.certifications-carousel {
+    position: relative;
     max-width: 1000px;
     margin-inline: auto;
+}
+
+.certifications-grid {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.2rem 3.1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.certifications-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.cert-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5deff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.cert-scroll-btn:hover {
+    border-color: #bb72e8;
+    box-shadow: var(--shadow-2);
+}
+
+.cert-scroll-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.cert-scroll-btn--left {
+    left: 10px;
+}
+
+.cert-scroll-btn--right {
+    right: 10px;
+}
+
+.cert-scroll-btn svg {
+    width: 18px;
+    height: 18px;
 }
 
 .cert-card {
@@ -618,6 +671,8 @@ section {
     flex-direction: column;
     overflow: hidden;
     cursor: pointer;
+    flex: 0 0 320px;
+    scroll-snap-align: start;
 }
 
 .cert-card:hover {
@@ -1017,6 +1072,14 @@ section {
     .projects-grid,
     .info-grid {
         grid-template-columns: 1fr;
+    }
+
+    .certifications-grid {
+        padding-inline: 2.75rem;
+    }
+
+    .cert-card {
+        flex-basis: 82vw;
     }
 
     section {

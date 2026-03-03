@@ -389,3 +389,75 @@ document.querySelectorAll('.cert-image-container').forEach((container) => {
         markLoaded();
     }
 });
+
+// ====================================
+// CERTIFICATIONS SIDE SCROLL BUTTONS
+// ====================================
+(() => {
+    const carousel = document.querySelector('.certifications-carousel');
+    if (!carousel) return;
+
+    const scroller = carousel.querySelector('.certifications-grid');
+    const prevBtn = carousel.querySelector('.cert-scroll-btn--left');
+    const nextBtn = carousel.querySelector('.cert-scroll-btn--right');
+
+    if (!scroller || !prevBtn || !nextBtn) return;
+
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+
+    const getScrollStep = () => {
+        const firstCard = scroller.querySelector('.cert-card');
+        if (!firstCard) return Math.max(240, Math.floor(scroller.clientWidth * 0.8));
+
+        const gapValue = getComputedStyle(scroller).gap || '0px';
+        const gap = Number.parseFloat(gapValue) || 0;
+        const cardWidth = firstCard.getBoundingClientRect().width;
+        return Math.max(200, Math.round(cardWidth + gap));
+    };
+
+    const updateButtons = () => {
+        const isOverflowing = scroller.scrollWidth > scroller.clientWidth + 2;
+        prevBtn.hidden = !isOverflowing;
+        nextBtn.hidden = !isOverflowing;
+
+        if (!isOverflowing) return;
+
+        const atStart = scroller.scrollLeft <= 1;
+        const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+
+        prevBtn.disabled = atStart;
+        nextBtn.disabled = atEnd;
+    };
+
+    const scrollByStep = (direction) => {
+        const step = getScrollStep();
+        scroller.scrollBy({ left: direction * step, behavior: scrollBehavior });
+    };
+
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        scrollByStep(-1);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        scrollByStep(1);
+    });
+
+    scroller.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+
+    scroller.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            scrollByStep(-1);
+        }
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            scrollByStep(1);
+        }
+    });
+
+    updateButtons();
+})();
