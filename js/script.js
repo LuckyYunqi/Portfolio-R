@@ -19,6 +19,82 @@ navLinks.forEach(link => {
 });
 
 // ====================================
+// EMAIL COMPOSE MODAL
+// ====================================
+const composeModal = document.getElementById('composeModal');
+const composeTriggers = document.querySelectorAll('.email-compose-trigger');
+const composeCloseTargets = document.querySelectorAll('[data-compose-close]');
+
+function openComposeModal() {
+    if (!composeModal) return;
+
+    composeModal.classList.add('active');
+    composeModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('compose-open');
+    clearComposeNote();
+
+    const firstField = composeModal.querySelector('#name');
+    setTimeout(() => firstField?.focus(), 180);
+}
+
+function closeComposeModal() {
+    if (!composeModal) return;
+
+    composeModal.classList.remove('active');
+    composeModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('compose-open');
+    clearComposeNote();
+    closeComposePanels();
+}
+
+function clearComposeNote() {
+    const note = document.getElementById('formNote');
+    if (!note) return;
+
+    note.textContent = '';
+    note.className = 'form-note';
+}
+
+composeTriggers.forEach(trigger => {
+    trigger.addEventListener('click', openComposeModal);
+});
+
+composeCloseTargets.forEach(target => {
+    target.addEventListener('click', closeComposeModal);
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && composeModal?.classList.contains('active')) {
+        closeComposeModal();
+    }
+});
+
+// ====================================
+// AVATAR HOVER TILT
+// ====================================
+(() => {
+    const profileFrame = document.querySelector('.profile-frame');
+    const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!profileFrame || !canHover || reduceMotion) return;
+
+    profileFrame.addEventListener('mousemove', (e) => {
+        const rect = profileFrame.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        profileFrame.style.setProperty('--avatar-tilt-x', `${(-y * 9).toFixed(2)}deg`);
+        profileFrame.style.setProperty('--avatar-tilt-y', `${(x * 11).toFixed(2)}deg`);
+    });
+
+    profileFrame.addEventListener('mouseleave', () => {
+        profileFrame.style.setProperty('--avatar-tilt-x', '0deg');
+        profileFrame.style.setProperty('--avatar-tilt-y', '0deg');
+    });
+})();
+
+// ====================================
 // CONTACT FORM HANDLING
 // ====================================
 const contactForm = document.getElementById('contactForm');
@@ -26,6 +102,159 @@ const formNote = document.getElementById('formNote');
 const CONTACT_EMAIL = 'reynren11@gmail.com';
 const CONTACT_PHONE = '+639276060676';
 const CONTACT_WHATSAPP = '639276060676';
+const messageField = document.getElementById('message');
+const composeToolbar = document.querySelector('.compose-toolbar');
+const composeTrash = document.querySelector('.compose-trash');
+const composeFormatPanel = document.getElementById('composeFormatPanel');
+const composeEmojiPanel = document.getElementById('composeEmojiPanel');
+const composeAttachment = document.getElementById('composeAttachment');
+const composeImage = document.getElementById('composeImage');
+
+function insertIntoMessage(text, selectOffset = 0) {
+    if (!messageField) return;
+
+    const start = messageField.selectionStart ?? messageField.value.length;
+    const end = messageField.selectionEnd ?? messageField.value.length;
+    messageField.setRangeText(text, start, end, 'end');
+    messageField.focus();
+
+    if (selectOffset > 0) {
+        const cursor = start + selectOffset;
+        messageField.setSelectionRange(cursor, cursor);
+    }
+}
+
+function wrapMessageSelection(before, after = before) {
+    if (!messageField) return;
+
+    const start = messageField.selectionStart ?? 0;
+    const end = messageField.selectionEnd ?? 0;
+    const selected = messageField.value.slice(start, end) || 'text';
+    const nextText = `${before}${selected}${after}`;
+
+    messageField.setRangeText(nextText, start, end, 'select');
+    messageField.focus();
+    messageField.setSelectionRange(start + before.length, start + before.length + selected.length);
+}
+
+function toggleComposePanel(panel, action) {
+    if (!panel) return;
+
+    const isActive = panel.classList.toggle('active');
+    panel.setAttribute('aria-hidden', String(!isActive));
+    document.querySelector(`[data-compose-action="${action}"]`)?.classList.toggle('active', isActive);
+}
+
+function closeComposePanels() {
+    [composeFormatPanel, composeEmojiPanel].forEach(panel => {
+        panel?.classList.remove('active');
+        panel?.setAttribute('aria-hidden', 'true');
+    });
+    document.querySelectorAll('.compose-toolbar button.active').forEach(button => button.classList.remove('active'));
+}
+
+composeToolbar?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-compose-action]');
+    if (!button) return;
+
+    const action = button.dataset.composeAction;
+
+    if (action !== 'format') {
+        composeFormatPanel?.classList.remove('active');
+        document.querySelector('[data-compose-action="format"]')?.classList.remove('active');
+    }
+    if (action !== 'emoji') {
+        composeEmojiPanel?.classList.remove('active');
+        document.querySelector('[data-compose-action="emoji"]')?.classList.remove('active');
+    }
+
+    switch (action) {
+        case 'format':
+            toggleComposePanel(composeFormatPanel, 'format');
+            break;
+        case 'attach':
+            composeAttachment?.click();
+            break;
+        case 'link': {
+            const url = window.prompt('Paste the link URL:');
+            if (url) {
+                const start = messageField?.selectionStart ?? 0;
+                const end = messageField?.selectionEnd ?? 0;
+                const selected = messageField?.value.slice(start, end) || 'link';
+                messageField?.setRangeText(`[${selected}](${url})`, start, end, 'end');
+                messageField?.focus();
+            }
+            break;
+        }
+        case 'emoji':
+            toggleComposePanel(composeEmojiPanel, 'emoji');
+            break;
+        case 'drive':
+            insertIntoMessage('\n\nGoogle Drive link: ');
+            break;
+        case 'image':
+            composeImage?.click();
+            break;
+        case 'confidential':
+            insertIntoMessage('\n\nNote: Please treat this message as confidential.');
+            showFormNote('Confidential note added', '', 'success');
+            break;
+        case 'signature':
+            insertIntoMessage('\n\nBest regards,\nReyniel Polancos');
+            break;
+        case 'more':
+            showFormNote('More options', 'Use attach, image, link, emoji, signature, or confidential note.', 'success');
+            break;
+        case 'discard':
+            contactForm?.reset();
+            clearComposeNote();
+            closeComposePanels();
+            closeComposeModal();
+            break;
+        default:
+            break;
+    }
+});
+
+composeTrash?.addEventListener('click', () => {
+    contactForm?.reset();
+    clearComposeNote();
+    closeComposePanels();
+    closeComposeModal();
+});
+
+composeFormatPanel?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-compose-action]');
+    if (!button) return;
+
+    const action = button.dataset.composeAction;
+    if (action === 'bold') wrapMessageSelection('**');
+    if (action === 'italic') wrapMessageSelection('*');
+    if (action === 'underline') wrapMessageSelection('<u>', '</u>');
+});
+
+composeEmojiPanel?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-emoji]');
+    if (!button) return;
+
+    insertIntoMessage(button.dataset.emoji);
+});
+
+composeAttachment?.addEventListener('change', () => {
+    const fileName = composeAttachment.files?.[0]?.name;
+    if (fileName) showFormNote('File attached', fileName, 'success');
+});
+
+composeImage?.addEventListener('change', () => {
+    const fileName = composeImage.files?.[0]?.name;
+    if (fileName) showFormNote('Image selected', fileName, 'success');
+});
+
+messageField?.addEventListener('input', () => {
+    if (formNote?.classList.contains('success')) {
+        clearComposeNote();
+    }
+});
 
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -38,18 +267,18 @@ contactForm.addEventListener('submit', (e) => {
 
     // Validate form
     if (!name || !email || !subject || !message) {
-        showFormNote('Please fill in all fields', 'error');
+        showFormNote('Missing details', 'Please fill in all fields before sending.', 'error');
         return;
     }
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        showFormNote('Please enter a valid email address', 'error');
+        showFormNote('Invalid email', 'Please enter a valid email address.', 'error');
         return;
     }
 
-    showFormNote('Sending message...', 'success');
+    showFormNote('Sending message...', 'Your email is being delivered to my inbox.', 'sending');
 
     // Ensure the email subject includes the visitor's subject
     const subjectInput = document.getElementById('formEmailSubject');
@@ -76,7 +305,7 @@ contactForm.addEventListener('submit', (e) => {
         })
         .catch((err) => {
             console.error(err);
-            showFormNote('Email sending failed. Please try again, or use WhatsApp/SMS buttons.', 'error');
+            showFormNote('Email delivery failed', 'Please try again, or use WhatsApp/SMS as a backup option.', 'error');
             showPhoneOnlyOptions(whatsappLink, smsLink);
 
             // Fallback: try normal form submit (hidden iframe) in case fetch/CORS blocks.
@@ -88,24 +317,49 @@ contactForm.addEventListener('submit', (e) => {
         });
 });
 
-function showFormNote(message, type) {
+function showFormNote(message, detail = '', type = 'success') {
     formNote.textContent = '';
-    formNote.className = `form-note ${type}`;
+    formNote.className = `form-note form-note--card ${type}`;
 
-    const text = document.createElement('div');
-    text.textContent = message;
-    formNote.append(text);
+    const icon = document.createElement('span');
+    icon.className = 'form-note-icon';
+    icon.textContent = type === 'error' ? '!' : type === 'sending' ? '...' : '✓';
+
+    const content = document.createElement('span');
+    content.className = 'form-note-content';
+
+    const title = document.createElement('strong');
+    title.textContent = message;
+    content.append(title);
+
+    if (detail) {
+        const text = document.createElement('span');
+        text.textContent = detail;
+        content.append(text);
+    }
+
+    formNote.append(icon, content);
 }
 
 function showDeliveredAndPhoneOptions(whatsappLink, smsLink) {
-    formNote.className = 'form-note success';
+    formNote.className = 'form-note form-note--card success';
     formNote.textContent = '';
 
-    const delivered = document.createElement('div');
-    delivered.textContent = `Request sent to ${CONTACT_EMAIL}. If this is the first time using FormSubmit, check your inbox/spam for a confirmation email and activate it.`;
+    const icon = document.createElement('span');
+    icon.className = 'form-note-icon';
+    icon.textContent = '✓';
 
-    const label = document.createElement('div');
-    label.textContent = 'Also send to my phone via:';
+    const content = document.createElement('span');
+    content.className = 'form-note-content';
+
+    const delivered = document.createElement('strong');
+    delivered.textContent = 'Message sent to email';
+
+    const detail = document.createElement('span');
+    detail.textContent = `Sent to ${CONTACT_EMAIL}. If this is the first message, confirm FormSubmit in your inbox or spam folder.`;
+
+    const label = document.createElement('span');
+    label.textContent = 'Backup options:';
 
     const links = document.createElement('div');
     links.className = 'send-links';
@@ -123,17 +377,28 @@ function showDeliveredAndPhoneOptions(whatsappLink, smsLink) {
     smsAnchor.className = 'send-link';
 
     links.append(whatsappAnchor, smsAnchor);
-    formNote.append(delivered, label, links);
+    content.append(delivered, detail, label, links);
+    formNote.append(icon, content);
 }
 
 function showPhoneOnlyOptions(whatsappLink, smsLink) {
-    formNote.className = 'form-note error';
+    formNote.className = 'form-note form-note--card error';
     formNote.textContent = '';
 
-    const hint = document.createElement('div');
-    hint.textContent = 'Tip: Check your inbox/spam for a FormSubmit confirmation email (first-time setup), then try again.';
+    const icon = document.createElement('span');
+    icon.className = 'form-note-icon';
+    icon.textContent = '!';
 
-    const label = document.createElement('div');
+    const content = document.createElement('span');
+    content.className = 'form-note-content';
+
+    const title = document.createElement('strong');
+    title.textContent = 'Email backup available';
+
+    const hint = document.createElement('span');
+    hint.textContent = 'Check your inbox/spam for the first-time FormSubmit confirmation email, then try again.';
+
+    const label = document.createElement('span');
     label.textContent = 'Send to my phone via:';
 
     const links = document.createElement('div');
@@ -152,7 +417,8 @@ function showPhoneOnlyOptions(whatsappLink, smsLink) {
     smsAnchor.className = 'send-link';
 
     links.append(whatsappAnchor, smsAnchor);
-    formNote.append(hint, label, links);
+    content.append(title, hint, label, links);
+    formNote.append(icon, content);
 }
 
 async function sendViaFormSubmit(formElement) {
@@ -213,6 +479,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ====================================
 // SCROLL ANIMATION ON PAGE LOAD
 // ====================================
+const revealSelectors = [
+    '.section-title',
+    '.section-subtitle',
+    '.objective-content',
+    '.about-text > p',
+    '.info-item',
+    '.education-item',
+    '.cert-card',
+    '.project-card',
+    '.skill-category-card',
+    '.contact-form'
+].join(', ');
+
+document.querySelectorAll(revealSelectors).forEach((item, index) => {
+    item.classList.add('reveal-item');
+    item.style.setProperty('--reveal-delay', `${Math.min(index % 8, 7) * 70}ms`);
+});
+
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -223,6 +507,13 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            entry.target.querySelectorAll('.reveal-item').forEach((item, index) => {
+                item.style.setProperty('--reveal-delay', `${index * 80}ms`);
+                item.classList.add('revealed');
+            });
+            if (entry.target.classList.contains('reveal-item')) {
+                entry.target.classList.add('revealed');
+            }
             observer.unobserve(entry.target);
         }
     });
@@ -239,7 +530,13 @@ document.querySelectorAll('section').forEach(section => {
 // ====================================
 // ACTIVE NAVIGATION LINK HIGHLIGHT
 // ====================================
+const navbar = document.querySelector('.navbar');
+
 window.addEventListener('scroll', () => {
+    if (navbar) {
+        navbar.classList.toggle('navbar-scrolled', window.scrollY > 24);
+    }
+
     let current = '';
     const sections = document.querySelectorAll('section');
 
@@ -258,6 +555,8 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
+window.dispatchEvent(new Event('scroll'));
 
 // ====================================
 // PAGE LOAD ANIMATIONS
@@ -476,73 +775,110 @@ document.querySelectorAll('.cert-image-container').forEach((container) => {
 initializeCertificateNavigation();
 
 // ====================================
-// CERTIFICATIONS SIDE SCROLL BUTTONS
+// SIDE SCROLL BUTTONS
 // ====================================
 (() => {
-    const carousel = document.querySelector('.certifications-carousel');
-    if (!carousel) return;
+    const carousels = document.querySelectorAll('.certifications-carousel, .projects-carousel, .skills-carousel');
 
-    const scroller = carousel.querySelector('.certifications-grid');
-    const prevBtn = carousel.querySelector('.cert-scroll-btn--left');
-    const nextBtn = carousel.querySelector('.cert-scroll-btn--right');
+    carousels.forEach((carousel) => {
+        const scroller = carousel.querySelector('.certifications-grid, .projects-grid, .skills-grid');
+        const prevBtn = carousel.querySelector('.cert-scroll-btn--left');
+        const nextBtn = carousel.querySelector('.cert-scroll-btn--right');
 
-    if (!scroller || !prevBtn || !nextBtn) return;
+        if (!scroller || !prevBtn || !nextBtn) return;
 
-    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
 
-    const getScrollStep = () => {
-        const firstCard = scroller.querySelector('.cert-card');
-        if (!firstCard) return Math.max(240, Math.floor(scroller.clientWidth * 0.8));
+        const getCarouselMetrics = () => {
+            const cards = Array.from(scroller.children);
+            const firstCard = cards[0];
+            if (!firstCard) {
+                return {
+                    positions: [0],
+                    currentIndex: 0,
+                    maxIndex: 0
+                };
+            }
 
-        const gapValue = getComputedStyle(scroller).gap || '0px';
-        const gap = Number.parseFloat(gapValue) || 0;
-        const cardWidth = firstCard.getBoundingClientRect().width;
-        return Math.max(200, Math.round(cardWidth + gap));
-    };
+            const styles = getComputedStyle(scroller);
+            const gapValue = getComputedStyle(scroller).gap || '0px';
+            const gap = Number.parseFloat(gapValue) || 0;
+            const paddingLeft = Number.parseFloat(styles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(styles.paddingRight) || 0;
+            const cardWidth = firstCard.getBoundingClientRect().width;
+            const visibleWidth = scroller.clientWidth - paddingLeft - paddingRight;
+            const visibleCards = Math.max(1, Math.floor((visibleWidth + gap) / (cardWidth + gap)));
+            const maxIndex = Math.max(0, cards.length - visibleCards);
+            const positions = cards
+                .slice(0, maxIndex + 1)
+                .map((card) => Math.max(0, Math.round(card.offsetLeft - paddingLeft)));
+            const currentIndex = positions.reduce((closestIndex, position, index) => {
+                const closestDistance = Math.abs(positions[closestIndex] - scroller.scrollLeft);
+                const currentDistance = Math.abs(position - scroller.scrollLeft);
+                return currentDistance < closestDistance ? index : closestIndex;
+            }, 0);
 
-    const updateButtons = () => {
-        const isOverflowing = scroller.scrollWidth > scroller.clientWidth + 2;
-        prevBtn.hidden = !isOverflowing;
-        nextBtn.hidden = !isOverflowing;
+            return { positions, currentIndex, maxIndex };
+        };
 
-        if (!isOverflowing) return;
+        const updateButtons = () => {
+            const isOverflowing = scroller.scrollWidth > scroller.clientWidth + 2;
+            prevBtn.hidden = !isOverflowing;
+            nextBtn.hidden = !isOverflowing;
 
-        const atStart = scroller.scrollLeft <= 1;
-        const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+            if (!isOverflowing) return;
 
-        prevBtn.disabled = atStart;
-        nextBtn.disabled = atEnd;
-    };
+            const { currentIndex, maxIndex } = getCarouselMetrics();
+            const firstCard = scroller.firstElementChild;
+            const lastCard = scroller.lastElementChild;
+            const scrollerRect = scroller.getBoundingClientRect();
+            const firstRect = firstCard ? firstCard.getBoundingClientRect() : null;
+            const lastRect = lastCard ? lastCard.getBoundingClientRect() : null;
+            const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
+            const atStart = currentIndex <= 0 || scroller.scrollLeft <= 4 || (firstRect && firstRect.left >= scrollerRect.left - 4);
+            const atEnd = currentIndex >= maxIndex || scroller.scrollLeft >= maxScrollLeft - 4 || (lastRect && lastRect.right <= scrollerRect.right + 4);
 
-    const scrollByStep = (direction) => {
-        const step = getScrollStep();
-        scroller.scrollBy({ left: direction * step, behavior: scrollBehavior });
-    };
+            prevBtn.disabled = atStart;
+            nextBtn.disabled = atEnd;
+        };
 
-    prevBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        scrollByStep(-1);
-    });
+        const scrollByStep = (direction) => {
+            const { positions, currentIndex, maxIndex } = getCarouselMetrics();
+            const nextIndex = Math.max(0, Math.min(maxIndex, currentIndex + direction));
+            if (nextIndex === currentIndex) {
+                updateButtons();
+                return;
+            }
 
-    nextBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        scrollByStep(1);
-    });
+            const nextScrollLeft = positions[nextIndex] || 0;
+            scroller.scrollTo({ left: nextScrollLeft, behavior: scrollBehavior });
+        };
 
-    scroller.addEventListener('scroll', updateButtons, { passive: true });
-    window.addEventListener('resize', updateButtons);
-
-    scroller.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
+        prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
             scrollByStep(-1);
-        }
-        if (e.key === 'ArrowRight') {
+        });
+
+        nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
             scrollByStep(1);
-        }
-    });
+        });
 
-    updateButtons();
+        scroller.addEventListener('scroll', updateButtons, { passive: true });
+        window.addEventListener('resize', updateButtons);
+
+        scroller.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                scrollByStep(-1);
+            }
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                scrollByStep(1);
+            }
+        });
+
+        updateButtons();
+    });
 })();
