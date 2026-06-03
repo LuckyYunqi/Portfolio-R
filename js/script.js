@@ -100,8 +100,6 @@ document.addEventListener('keydown', (event) => {
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');
 const CONTACT_EMAIL = 'reynren11@gmail.com';
-const CONTACT_PHONE = '+639276060676';
-const CONTACT_WHATSAPP = '639276060676';
 const messageField = document.getElementById('message');
 const composeToolbar = document.querySelector('.compose-toolbar');
 const composeTrash = document.querySelector('.compose-trash');
@@ -260,13 +258,28 @@ contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // Get form data
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject').value.trim();
-    const message = document.getElementById('message').value.trim();
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInputField = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const subject = subjectInputField.value.trim();
+    const message = messageInput.value.trim();
 
     // Validate form
-    if (!name || !email || !subject || !message) {
+    if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+    }
+
+    if (!subject) {
+        showFormNote('Subject required', 'Please add a subject before sending.', 'error');
+        subjectInputField.focus();
+        return;
+    }
+
+    if (!name || !email || !message) {
         showFormNote('Missing details', 'Please fill in all fields before sending.', 'error');
         return;
     }
@@ -286,27 +299,22 @@ contactForm.addEventListener('submit', (e) => {
         subjectInput.value = `Portfolio message: ${subject}`;
     }
 
-
-    const whatsappText = `From: ${name} (${email})\nSubject: ${subject}\n\n${message}`;
-    const whatsappLink = `https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent(whatsappText)}`;
-
-    const smsText = `From: ${name} (${email})\nSubject: ${subject}\nMessage: ${message}`;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const smsSeparator = isIOS ? '&' : '?';
-    const smsLink = `sms:${CONTACT_PHONE}${smsSeparator}body=${encodeURIComponent(smsText)}`;
+    const replyToInput = document.getElementById('formReplyTo');
+    if (replyToInput) {
+        replyToInput.value = email;
+    }
 
     // Send via FormSubmit AJAX so we can detect failures on-page.
     sendViaFormSubmit(contactForm)
         .then(() => {
-            showDeliveredAndPhoneOptions(whatsappLink, smsLink);
+            showDeliveredMessage();
             setTimeout(() => {
                 contactForm.reset();
             }, 600);
         })
         .catch((err) => {
             console.error(err);
-            showFormNote('Email delivery failed', 'Please try again, or use WhatsApp/SMS as a backup option.', 'error');
-            showPhoneOnlyOptions(whatsappLink, smsLink);
+            showGmailConfirmationMessage();
 
             // Fallback: try normal form submit (hidden iframe) in case fetch/CORS blocks.
             try {
@@ -341,7 +349,7 @@ function showFormNote(message, detail = '', type = 'success') {
     formNote.append(icon, content);
 }
 
-function showDeliveredAndPhoneOptions(whatsappLink, smsLink) {
+function showDeliveredMessage() {
     formNote.className = 'form-note form-note--card success';
     formNote.textContent = '';
 
@@ -358,30 +366,11 @@ function showDeliveredAndPhoneOptions(whatsappLink, smsLink) {
     const detail = document.createElement('span');
     detail.textContent = `Sent to ${CONTACT_EMAIL}. If this is the first message, confirm FormSubmit in your inbox or spam folder.`;
 
-    const label = document.createElement('span');
-    label.textContent = 'Backup options:';
-
-    const links = document.createElement('div');
-    links.className = 'send-links';
-
-    const whatsappAnchor = document.createElement('a');
-    whatsappAnchor.href = whatsappLink;
-    whatsappAnchor.textContent = 'WhatsApp';
-    whatsappAnchor.className = 'send-link';
-    whatsappAnchor.target = '_blank';
-    whatsappAnchor.rel = 'noopener noreferrer';
-
-    const smsAnchor = document.createElement('a');
-    smsAnchor.href = smsLink;
-    smsAnchor.textContent = 'SMS';
-    smsAnchor.className = 'send-link';
-
-    links.append(whatsappAnchor, smsAnchor);
-    content.append(delivered, detail, label, links);
+    content.append(delivered, detail);
     formNote.append(icon, content);
 }
 
-function showPhoneOnlyOptions(whatsappLink, smsLink) {
+function showGmailConfirmationMessage() {
     formNote.className = 'form-note form-note--card error';
     formNote.textContent = '';
 
@@ -393,31 +382,12 @@ function showPhoneOnlyOptions(whatsappLink, smsLink) {
     content.className = 'form-note-content';
 
     const title = document.createElement('strong');
-    title.textContent = 'Email backup available';
+    title.textContent = 'Gmail confirmation needed';
 
     const hint = document.createElement('span');
-    hint.textContent = 'Check your inbox/spam for the first-time FormSubmit confirmation email, then try again.';
+    hint.textContent = `This form sends only to ${CONTACT_EMAIL}. Please confirm the first FormSubmit email in my Gmail inbox or spam folder, then try sending again.`;
 
-    const label = document.createElement('span');
-    label.textContent = 'Send to my phone via:';
-
-    const links = document.createElement('div');
-    links.className = 'send-links';
-
-    const whatsappAnchor = document.createElement('a');
-    whatsappAnchor.href = whatsappLink;
-    whatsappAnchor.textContent = 'WhatsApp';
-    whatsappAnchor.className = 'send-link';
-    whatsappAnchor.target = '_blank';
-    whatsappAnchor.rel = 'noopener noreferrer';
-
-    const smsAnchor = document.createElement('a');
-    smsAnchor.href = smsLink;
-    smsAnchor.textContent = 'SMS';
-    smsAnchor.className = 'send-link';
-
-    links.append(whatsappAnchor, smsAnchor);
-    content.append(title, hint, label, links);
+    content.append(title, hint);
     formNote.append(icon, content);
 }
 

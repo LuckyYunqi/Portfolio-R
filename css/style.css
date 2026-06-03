@@ -1309,36 +1309,6 @@ section {
     color: #d6b9ea;
 }
 
-.send-links {
-    margin-top: 0.6rem;
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-}
-
-.send-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border-radius: 10px;
-    padding: 0.6rem 0.9rem;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    border: 1px solid var(--line);
-    color: #f5deff;
-    background: rgba(255, 255, 255, 0.06);
-    transition: var(--transition);
-}
-
-.send-link:hover {
-    border-color: #bb72e8;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-2);
-}
-
 .form-note.success {
     border-color: rgba(20, 184, 116, 0.34);
     background: rgba(20, 184, 116, 0.08);

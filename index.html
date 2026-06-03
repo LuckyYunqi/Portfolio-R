@@ -537,25 +537,26 @@
             <input type="text" name="_honey" class="hidden-field" tabindex="-1" autocomplete="off">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_subject" id="formEmailSubject" value="New message from your portfolio">
-            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_template" value="box">
+            <input type="hidden" name="_replyto" id="formReplyTo">
             <div class="compose-recipient">
                 <span>To</span>
                 <strong>reynren11@gmail.com</strong>
             </div>
             <div class="form-group">
-                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="text" id="name" name="Name" placeholder="Your Name" required>
             </div>
 
             <div class="form-group">
-                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <input type="email" id="email" name="Email" placeholder="Your Email" required>
             </div>
 
             <div class="form-group">
-                <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                <input type="text" id="subject" name="Subject" placeholder="Subject" required minlength="1">
             </div>
 
             <div class="form-group">
-                <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                <textarea id="message" name="Message" placeholder="Your Message" rows="5" required></textarea>
             </div>
 
             <input type="file" id="composeAttachment" name="attachment" class="compose-file-input">
@@ -573,7 +574,7 @@
                 <button type="button" data-emoji="🙏">🙏</button>
             </div>
             <div class="compose-footer">
-                <button type="submit" class="submit-btn">Send Application Message</button>
+                <button type="submit" class="submit-btn">Send Message</button>
                 <div class="compose-toolbar" aria-label="Compose tools">
                     <button type="button" title="Formatting" data-compose-action="format">Aa</button>
                     <button type="button" title="Attach file" data-compose-action="attach">📎</button>
@@ -628,6 +629,6 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=20260603-contact-validation"></script>
 </body>
 </html>
