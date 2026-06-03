@@ -273,12 +273,6 @@ contactForm.addEventListener('submit', (e) => {
         return;
     }
 
-    if (!subject) {
-        showFormNote('Subject required', 'Please add a subject before sending.', 'error');
-        subjectInputField.focus();
-        return;
-    }
-
     if (!name || !email || !message) {
         showFormNote('Missing details', 'Please fill in all fields before sending.', 'error');
         return;
@@ -296,7 +290,7 @@ contactForm.addEventListener('submit', (e) => {
     // Ensure the email subject includes the visitor's subject
     const subjectInput = document.getElementById('formEmailSubject');
     if (subjectInput) {
-        subjectInput.value = `Portfolio message: ${subject}`;
+        subjectInput.value = subject ? `Portfolio message: ${subject}` : 'New message from your portfolio';
     }
 
     const replyToInput = document.getElementById('formReplyTo');
