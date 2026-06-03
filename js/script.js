@@ -293,6 +293,12 @@ contactForm.addEventListener('submit', (e) => {
         subjectInput.value = subject ? `Portfolio message: ${subject}` : 'New message from your portfolio';
     }
 
+    const submittedSubjectInput = document.getElementById('formSubmittedSubject');
+    if (submittedSubjectInput) {
+        submittedSubjectInput.value = subject;
+        submittedSubjectInput.disabled = !subject;
+    }
+
     const replyToInput = document.getElementById('formReplyTo');
     if (replyToInput) {
         replyToInput.value = email;
@@ -304,6 +310,9 @@ contactForm.addEventListener('submit', (e) => {
             showDeliveredMessage();
             setTimeout(() => {
                 contactForm.reset();
+                if (submittedSubjectInput) {
+                    submittedSubjectInput.disabled = true;
+                }
             }, 600);
         })
         .catch((err) => {

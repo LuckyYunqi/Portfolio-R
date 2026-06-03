@@ -36,6 +36,19 @@
             <div class="hero-content">
                 <p class="hero-kicker">Fresh IT Graduate Portfolio</p>
                 <h1>Reyniel Polancos</h1>
+                <div class="mobile-profile-summary" aria-label="Mobile profile summary">
+                    <img src="images/profile/reyniel-polancos.png" alt="" aria-hidden="true">
+                    <div>
+                        <span>Fresh IT Graduate</span>
+                        <strong>Open to Junior Developer Roles</strong>
+                    </div>
+                </div>
+                <div class="mobile-availability" aria-label="Availability highlights">
+                    <span>Available for Junior Roles</span>
+                    <span>Frontend</span>
+                    <span>Mobile UI</span>
+                    <span>Digos City</span>
+                </div>
                 <p class="hero-lead">Fresh IT graduate focused on frontend development, mobile app foundations, and practical React-based projects for entry-level opportunities.</p>
                 <div class="hero-actions">
                     <button type="button" class="cta-button cta-cinematic email-compose-trigger">Email Me</button>
@@ -323,6 +336,36 @@
                 <div class="projects-grid" id="projectsScroller" tabindex="0" role="region" aria-label="Projects">
                 <div class="project-card">
                     <div class="project-image project-image--screenshot">
+                        <img src="images/projects/taskmate-in-progress.png" alt="TaskMate unfinished web and mobile task manager UI draft screens" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="project-image-placeholder">TaskMate</span>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tag">In Progress</div>
+                        <h3>TaskMate Web & Mobile UI Draft</h3>
+                        <p>An unfinished task manager concept I am building to practice responsive dashboard layouts, mobile screens, task lists, and progress tracking UI.</p>
+                        <p class="project-meta"><strong>Role:</strong> Frontend & Mobile UI Practice</p>
+                        <p class="project-stack">HTML • CSS • JavaScript • Mobile UI</p>
+                        <p class="project-note">Current status: UI draft and layout exploration. Features and code are still being improved.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image project-image--screenshot">
+                        <img src="images/projects/digos-hospital-inventory.png" alt="Digos City National Hospital inventory management dashboard expense report screen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="project-image-placeholder">Hospital Inventory</span>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tag">Web App</div>
+                        <h3>Digos City National Hospital Inventory System</h3>
+                        <p>A hospital inventory and expense management system for tracking equipment purchases, expenses, approval status, and report records for a public hospital workflow.</p>
+                        <p class="project-meta"><strong>Role:</strong> Developer / System Contributor</p>
+                        <p class="project-stack">Web App • Inventory Management • Expense Reports</p>
+                        <p class="project-note">Built for a public hospital inventory use case in Digos City, with reporting screens for purchase and expense monitoring.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image project-image--screenshot">
                         <img src="images/projects/mobilelex-dashboard.jpg" alt="MobileLex lawyer consultation app dashboard screen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <span class="project-image-placeholder">MobileLex Dashboard</span>
                     </div>
@@ -537,8 +580,9 @@
             <input type="text" name="_honey" class="hidden-field" tabindex="-1" autocomplete="off">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_subject" id="formEmailSubject" value="New message from your portfolio">
-            <input type="hidden" name="_template" value="box">
+            <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_replyto" id="formReplyTo">
+            <input type="hidden" name="Subject" id="formSubmittedSubject" disabled>
             <div class="compose-recipient">
                 <span>To</span>
                 <strong>reynren11@gmail.com</strong>
@@ -552,7 +596,7 @@
             </div>
 
             <div class="form-group">
-                <input type="text" id="subject" name="Subject" placeholder="Subject">
+                <input type="text" id="subject" placeholder="Subject">
             </div>
 
             <div class="form-group">
@@ -593,6 +637,33 @@
         <iframe name="hidden_iframe" class="hidden-iframe" title="contact form submission"></iframe>
     </div>
 
+    <nav class="mobile-bottom-nav" aria-label="Mobile quick navigation">
+        <a href="#home" aria-label="Go to home">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 10.8 12 3l9 7.8v9.7a1 1 0 0 1-1 1h-5.2v-6.2H9.2v6.2H4a1 1 0 0 1-1-1v-9.7Z"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="#projects" aria-label="Go to projects">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Zm3 2v3h10v-3H7Zm0 5v5h4v-5H7Zm6 0v5h4v-5h-4Z"/>
+            </svg>
+            <span>Projects</span>
+        </a>
+        <a href="#skills" aria-label="Go to skills">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 4 7.2v9.2L12 21l8-4.6V7.2L12 3Zm0 2.3 5.7 3-5.7 3-5.7-3 5.7-3Zm-6 5.1 5 2.6v5.2l-5-2.9v-4.9Zm7 7.8V13l5-2.6v4.9l-5 2.9Z"/>
+            </svg>
+            <span>Skills</span>
+        </a>
+        <a href="#footer-contact" aria-label="Go to contact">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.7 2 6.3 5.2L18.3 7H5.7Zm13.3 2.1-6.4 5.2a1 1 0 0 1-1.2 0L5 9.1V17h14V9.1Z"/>
+            </svg>
+            <span>Contact</span>
+        </a>
+    </nav>
+
     <!-- Certificate Modal -->
     <div id="certificateModal" class="cert-modal" onclick="closeCertificate()">
         <span class="cert-close">&times;</span>
@@ -629,6 +700,6 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=20260604-optional-subject"></script>
+    <script src="js/script.js?v=20260604-clean-email"></script>
 </body>
 </html>
