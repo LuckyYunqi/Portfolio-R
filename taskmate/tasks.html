@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Tasks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="TaskMate navigation">
+            <a class="brand" href="../index.html#projects"><span class="brand-mark">T</span><span>TaskMate</span></a>
+            <nav class="side-nav">
+                <a href="index.html"><span>H</span>Dashboard</a>
+                <a class="active" href="tasks.html"><span>T</span>Tasks</a>
+                <a href="calendar.html"><span>C</span>Calendar</a>
+                <a href="projects.html"><span>P</span>Projects</a>
+                <a href="notes.html"><span>N</span>Notes</a>
+                <a href="settings.html"><span>S</span>Settings</a>
+                <a href="source-code.html"><span>&lt;/&gt;</span>Source Code</a>
+            </nav>
+            <div class="status-card"><span class="status-dot"></span><p>Task Queue</p><strong>28 Active</strong><div class="mini-progress"><span></span></div><small>7 due today</small></div>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <button class="icon-button menu-button" type="button">=</button>
+                <label class="search-box"><span>Search</span><input type="search" placeholder="Search tasks..."></label>
+                <div class="topbar-actions"><button class="icon-button" type="button">!</button><button class="avatar-button" type="button">R</button></div>
+            </header>
+
+            <section class="page-header">
+                <div><p class="eyebrow">Task Management</p><h1>Tasks</h1><p>Create, assign, prioritize, and monitor team tasks from one list.</p></div>
+                <div class="responsive-actions"><button class="ghost-button" type="button">Import</button><button class="primary-button" type="button" data-open-modal>+ Add Task</button></div>
+            </section>
+
+            <section class="page-grid">
+                <div class="page-card">
+                    <div class="section-heading"><div><h2>Active Task List</h2><p>Responsive rows with status and quick actions.</p></div><div class="filter-tabs"><button class="active" type="button">All</button><button type="button">High</button><button type="button">Mobile</button></div></div>
+                    <div class="task-table">
+                        <div class="data-row"><div><strong>Validate medicine stock count</strong><p>Assigned to Maria • Due today at 2:00 PM</p></div><span class="status-pill warning">In Progress</span><span>High</span><button class="mini-button" type="button">Open</button></div>
+                        <div class="data-row"><div><strong>Approve purchase request</strong><p>Assigned to Ken • Waiting for manager approval</p></div><span class="status-pill warning">In Progress</span><span>Medium</span><button class="mini-button" type="button">Open</button></div>
+                        <div class="data-row"><div><strong>Send daily completion report</strong><p>Assigned to Reyniel • Sent to operations</p></div><span class="status-pill done">Done</span><span>Normal</span><button class="mini-button" type="button">View</button></div>
+                        <div class="data-row"><div><strong>Follow up overdue delivery</strong><p>Assigned to Admin • Reminder scheduled</p></div><span class="status-pill">Pending</span><span>High</span><button class="mini-button" type="button">Start</button></div>
+                    </div>
+                </div>
+
+                <aside class="page-card">
+                    <h2>Priority Breakdown</h2>
+                    <div class="summary-grid">
+                        <article class="summary-card purple"><span>High</span><strong>4</strong><small>Needs focus</small></article>
+                        <article class="summary-card cyan"><span>Medium</span><strong>8</strong><small>In queue</small></article>
+                    </div>
+                    <p>Next focus: finish overdue tasks before new assignments are accepted.</p>
+                </aside>
+            </section>
+        </main>
+    </div>
+    <nav class="mobile-nav"><a href="index.html"><span>H</span>Home</a><a class="active" href="tasks.html"><span>T</span>Tasks</a><button type="button" data-open-modal>+</button><a href="calendar.html"><span>C</span>Calendar</a><a href="../index.html#projects"><span>B</span>Back</a></nav>
+    <dialog class="task-modal" id="taskModal"><form method="dialog"><header><h2>Add Task</h2><button class="icon-button" value="cancel">x</button></header><label>Task title<input type="text" value="Assign stock verification task"></label><button class="primary-button">Save Task</button></form></dialog>
+    <script src="script.js"></script>
+</body>
+</html>

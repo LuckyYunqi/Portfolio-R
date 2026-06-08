@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Mobile UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="phone-shell">
+        <section class="phone-screen">
+            <header class="mobile-header">
+                <button type="button" aria-label="Open menu">=</button>
+                <div>
+                    <span>TaskMate</span>
+                    <strong>Today</strong>
+                </div>
+                <button type="button" aria-label="Notifications">!</button>
+            </header>
+
+            <section class="greeting-card">
+                <p>Good morning, Reyniel</p>
+                <h1>5 tasks need attention</h1>
+                <div class="progress-summary">
+                    <div class="progress-ring"><span>68%</span></div>
+                    <div>
+                        <strong>Daily progress</strong>
+                        <small>11 done, 5 active, 3 overdue</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="quick-actions" aria-label="Quick actions">
+                <button type="button">New Task</button>
+                <button type="button">Calendar</button>
+                <button type="button">Reports</button>
+            </section>
+
+            <section class="task-section">
+                <div class="section-title">
+                    <h2>Today Tasks</h2>
+                    <button type="button">View All</button>
+                </div>
+
+                <article class="task-card high">
+                    <div>
+                        <strong>Update medicine stock count</strong>
+                        <span>Inventory Report</span>
+                    </div>
+                    <p>Responsible: Reyniel</p>
+                    <div class="task-footer">
+                        <span>Due 2:00 PM</span>
+                        <button type="button">Submit</button>
+                    </div>
+                </article>
+
+                <article class="task-card medium">
+                    <div>
+                        <strong>Review purchase request</strong>
+                        <span>Purchase Request #104</span>
+                    </div>
+                    <p>Responsible: Ken</p>
+                    <div class="task-footer">
+                        <span>Tomorrow</span>
+                        <button type="button">Assign</button>
+                    </div>
+                </article>
+
+                <article class="task-card low">
+                    <div>
+                        <strong>Send department reminder</strong>
+                        <span>Admin follow-up</span>
+                    </div>
+                    <p>Followers: Maria, Admin</p>
+                    <div class="task-footer">
+                        <span>Today</span>
+                        <button type="button">Comment</button>
+                    </div>
+                </article>
+            </section>
+        </section>
+
+        <nav class="bottom-nav" aria-label="Mobile navigation">
+            <a class="active" href="#">Home</a>
+            <a href="#">Tasks</a>
+            <button type="button">+</button>
+            <a href="#">Calendar</a>
+            <a href="#">Profile</a>
+        </nav>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar"><a class="brand" href="../index.html#projects"><span class="brand-mark">T</span><span>TaskMate</span></a><nav class="side-nav"><a href="index.html"><span>H</span>Dashboard</a><a href="tasks.html"><span>T</span>Tasks</a><a href="calendar.html"><span>C</span>Calendar</a><a class="active" href="projects.html"><span>P</span>Projects</a><a href="notes.html"><span>N</span>Notes</a><a href="settings.html"><span>S</span>Settings</a><a href="source-code.html"><span>&lt;/&gt;</span>Source Code</a></nav><div class="status-card"><span class="status-dot"></span><p>Project Workload</p><strong>3 Active</strong><div class="mini-progress"><span></span></div><small>18 linked tasks</small></div></aside>
+        <main class="workspace">
+            <header class="topbar"><button class="icon-button menu-button" type="button">=</button><label class="search-box"><span>Search</span><input type="search" placeholder="Search projects..."></label><div class="topbar-actions"><button class="icon-button" type="button">!</button><button class="avatar-button" type="button">R</button></div></header>
+            <section class="page-header"><div><p class="eyebrow">Task Groups</p><h1>Projects</h1><p>Group related tasks by department, workflow, or team objective.</p></div><div class="responsive-actions"><button class="ghost-button" type="button">Archive</button><button class="primary-button" type="button">+ Project</button></div></section>
+            <section class="page-grid">
+                <div class="page-card"><h2>Active Projects</h2><div class="project-list"><div class="project-row"><div><strong>Hospital Inventory Follow-ups</strong><p>8 tasks • stock count, purchase requests, and approvals.</p></div><span class="status-pill warning">Active</span></div><div class="project-row"><div><strong>Department Reports</strong><p>5 tasks • daily summaries and weekly completion reports.</p></div><span class="status-pill warning">Active</span></div><div class="project-row"><div><strong>Equipment Delivery Checks</strong><p>5 tasks • delivery validation and archive actions.</p></div><span class="status-pill done">On Track</span></div></div></div>
+                <aside class="page-card"><h2>Project Health</h2><div class="summary-grid"><article class="summary-card purple"><span>Projects</span><strong>3</strong><small>Active</small></article><article class="summary-card cyan"><span>Tasks</span><strong>18</strong><small>Assigned</small></article></div><p>Next milestone: finish high-priority inventory follow-ups before accepting new tasks.</p></aside>
+            </section>
+        </main>
+    </div>
+    <nav class="mobile-nav"><a href="index.html"><span>H</span>Home</a><a href="tasks.html"><span>T</span>Tasks</a><button type="button">+</button><a href="calendar.html"><span>C</span>Calendar</a><a href="../index.html#projects"><span>B</span>Back</a></nav>
+</body>
+</html>

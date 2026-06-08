@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar"><a class="brand" href="../index.html#projects"><span class="brand-mark">T</span><span>TaskMate</span></a><nav class="side-nav"><a href="index.html"><span>H</span>Dashboard</a><a href="tasks.html"><span>T</span>Tasks</a><a href="calendar.html"><span>C</span>Calendar</a><a href="projects.html"><span>P</span>Projects</a><a class="active" href="notes.html"><span>N</span>Notes</a><a href="settings.html"><span>S</span>Settings</a><a href="source-code.html"><span>&lt;/&gt;</span>Source Code</a></nav><div class="status-card"><span class="status-dot"></span><p>Task Notes</p><strong>12 Comments</strong><div class="mini-progress"><span></span></div><small>4 need review</small></div></aside>
+        <main class="workspace">
+            <header class="topbar"><button class="icon-button menu-button" type="button">=</button><label class="search-box"><span>Search</span><input type="search" placeholder="Search notes..."></label><div class="topbar-actions"><button class="icon-button" type="button">!</button><button class="avatar-button" type="button">R</button></div></header>
+            <section class="page-header"><div><p class="eyebrow">Task Collaboration</p><h1>Notes</h1><p>Add comments, blockers, and updates to keep assigned tasks clear.</p></div><div class="responsive-actions"><button class="ghost-button" type="button">Templates</button><button class="primary-button" type="button">+ Note</button></div></section>
+            <section class="page-grid">
+                <div class="page-card"><h2>Add Task Note</h2><div class="note-editor"><input type="text" value="Stock count follow-up"><textarea rows="8">Maria finished the first stock validation. Waiting for department head confirmation before marking the task complete.</textarea><button class="primary-button" type="button">Save Note</button></div></div>
+                <aside class="page-card"><h2>Recent Notes</h2><div class="notes-list"><div class="note-row"><div><strong>Purchase request #104</strong><p>Manager asked for supplier receipt before approval.</p></div><button class="mini-button" type="button">Edit</button></div><div class="note-row"><div><strong>Overdue delivery</strong><p>Reminder sent to procurement team.</p></div><button class="mini-button" type="button">Edit</button></div><div class="note-row"><div><strong>Daily summary</strong><p>Report submitted and archived.</p></div><button class="mini-button" type="button">Edit</button></div></div></aside>
+            </section>
+        </main>
+    </div>
+    <nav class="mobile-nav"><a href="index.html"><span>H</span>Home</a><a href="tasks.html"><span>T</span>Tasks</a><button type="button">+</button><a href="calendar.html"><span>C</span>Calendar</a><a href="../index.html#projects"><span>B</span>Back</a></nav>
+</body>
+</html>

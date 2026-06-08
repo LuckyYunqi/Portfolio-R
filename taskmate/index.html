@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Task Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="TaskMate navigation">
+            <a class="brand" href="../index.html#projects" aria-label="Back to portfolio projects">
+                <span class="brand-mark">✓</span>
+                <span>TaskMate</span>
+            </a>
+
+            <nav class="side-nav">
+                <a class="active" href="index.html">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+                <a href="tasks.html">
+                    <span>☑</span>
+                    Tasks
+                </a>
+                <a href="calendar.html">
+                    <span>◷</span>
+                    Calendar
+                </a>
+                <a href="projects.html">
+                    <span>◇</span>
+                    Projects
+                </a>
+                <a href="notes.html">
+                    <span>◌</span>
+                    Notes
+                </a>
+                <a href="settings.html">
+                    <span>⚙</span>
+                    Settings
+                </a>
+                <a href="source-code.html">
+                    <span>&lt;/&gt;</span>
+                    Source Code
+                </a>
+                <a href="architecture.html">
+                    <span>API</span>
+                    Architecture
+                </a>
+            </nav>
+
+            <div class="status-card">
+                <span class="status-dot"></span>
+                <p>Workspace Health</p>
+                <strong>Team Tasks</strong>
+                <div class="mini-progress">
+                    <span></span>
+                </div>
+                <small>60% completed this week</small>
+            </div>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <button class="icon-button menu-button" type="button" aria-label="Open menu">☰</button>
+                <label class="search-box">
+                    <span>⌕</span>
+                    <input type="search" placeholder="Search tasks...">
+                </label>
+                <div class="topbar-actions">
+                    <button class="icon-button" type="button" aria-label="Notifications">⌾</button>
+                    <button class="avatar-button" type="button" aria-label="Profile">R</button>
+                </div>
+            </header>
+
+            <section class="hero-panel">
+                <div>
+                    <p class="eyebrow">Team Task Dashboard</p>
+                    <h1>Good morning, Reyniel!</h1>
+                    <p>Create tasks, assign teammates, track deadlines, and monitor team progress from one dashboard.</p>
+                </div>
+                <div class="hero-actions">
+                    <a class="ghost-button" href="architecture.html">System Plan</a>
+                    <a class="ghost-button" href="source-code.html">View Source</a>
+                    <button class="primary-button" type="button" data-open-modal>+ New Task</button>
+                </div>
+            </section>
+
+            <section class="summary-grid" aria-label="Task summary">
+                <article class="summary-card purple">
+                    <span>Total Tasks</span>
+                    <strong>28</strong>
+                    <small>All planned items</small>
+                </article>
+                <article class="summary-card cyan">
+                    <span>Completed</span>
+                    <strong>12</strong>
+                    <small>This month</small>
+                </article>
+                <article class="summary-card magenta">
+                    <span>In Progress</span>
+                    <strong>7</strong>
+                    <small>Keep building</small>
+                </article>
+                <article class="summary-card blue">
+                    <span>Pending</span>
+                    <strong>9</strong>
+                    <small>Needs review</small>
+                </article>
+            </section>
+
+            <section class="task-creation-panel" aria-label="Create task workflow">
+                <div>
+                    <p class="eyebrow">Create Task</p>
+                    <h2>New task workflow</h2>
+                    <p>Create a task from the task list, connect it to an item, assign a responsible person, add followers, set a due date, and attach files.</p>
+                </div>
+                <div class="task-flow">
+                    <span>Task list</span>
+                    <span>Linked item</span>
+                    <span>Responsible person</span>
+                    <span>Followers</span>
+                    <span>Due date</span>
+                    <span>Attachments</span>
+                </div>
+            </section>
+
+            <section class="content-grid">
+                <div class="left-workspace-stack">
+                <div class="task-board">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Task Board</h2>
+                            <p>Tasks grouped by status, owner, and deadline.</p>
+                        </div>
+                        <div class="filter-tabs" aria-label="Task filters">
+                            <button class="active" type="button" data-filter="all">All</button>
+                            <button type="button" data-filter="web">Web</button>
+                            <button type="button" data-filter="mobile">Mobile</button>
+                        </div>
+                    </div>
+
+                    <div class="columns">
+                        <article class="task-column">
+                            <header>
+                                <span class="column-dot todo"></span>
+                                <h3>To Do</h3>
+                                <small>3</small>
+                            </header>
+                            <div class="task-list">
+                                <div class="task-card" data-type="mobile">
+                                    <strong>Prepare inventory report</strong>
+                                    <p>Assigned to Maria • Due today • High priority</p>
+                                    <span>Operations</span>
+                                    <button class="task-card-action" type="button">Start Task</button>
+                                </div>
+                                <div class="task-card" data-type="web">
+                                    <strong>Review purchase request</strong>
+                                    <p>Assigned to Ken • Due tomorrow • Medium priority</p>
+                                    <span>Approval</span>
+                                    <button class="task-card-action" type="button">Assign</button>
+                                </div>
+                                <div class="task-card skeleton" data-type="web">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="task-column">
+                            <header>
+                                <span class="column-dot progress"></span>
+                                <h3>In Progress</h3>
+                                <small>4</small>
+                            </header>
+                            <div class="task-list">
+                                <div class="task-card" data-type="mobile">
+                                    <strong>Update medicine stock count</strong>
+                                    <p>Assigned to Reyniel • Due 2:00 PM • High priority</p>
+                                    <span>Inventory</span>
+                                    <button class="task-card-action primary" type="button">Submit Task</button>
+                                </div>
+                                <div class="task-card" data-type="web">
+                                    <strong>Send reminder to department head</strong>
+                                    <p>Assigned to Admin • Due today • Reminder sent</p>
+                                    <span>Reminder</span>
+                                    <button class="task-card-action" type="button">Add Comment</button>
+                                </div>
+                                <div class="task-card" data-type="web">
+                                    <strong>Verify equipment delivery</strong>
+                                    <p>Assigned to Liza • Due Friday • Waiting for update</p>
+                                    <span>Procurement</span>
+                                    <button class="task-card-action" type="button">Update Status</button>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="task-column">
+                            <header>
+                                <span class="column-dot done"></span>
+                                <h3>Done</h3>
+                                <small>5</small>
+                            </header>
+                            <div class="task-list">
+                                <div class="task-card complete" data-type="web">
+                                    <strong>Archive completed requests</strong>
+                                    <p>Assigned to Admin • Completed today</p>
+                                    <span>Done</span>
+                                    <button class="task-card-action" type="button">Archive</button>
+                                </div>
+                                <div class="task-card complete" data-type="mobile">
+                                    <strong>Submit daily task summary</strong>
+                                    <p>Assigned to Reyniel • Completed yesterday</p>
+                                    <span>Done</span>
+                                    <button class="task-card-action" type="button">View Summary</button>
+                                </div>
+                                <div class="task-card skeleton" data-type="mobile">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                    <section class="timeline-card" aria-label="Weekly task timeline">
+                        <div class="section-heading">
+                            <div>
+                                <h2>Weekly Workload</h2>
+                                <p>Track task duration, progress, and deadline pressure across the week.</p>
+                            </div>
+                            <button class="mini-button" type="button">View Timeline</button>
+                        </div>
+                        <div class="timeline-days" aria-hidden="true">
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                            <span>Sun</span>
+                        </div>
+                        <div class="timeline-list">
+                            <article class="timeline-row inventory">
+                                <div>
+                                    <strong>Medicine stock count</strong>
+                                    <span>Inventory • Reyniel</span>
+                                </div>
+                                <div class="timeline-track">
+                                    <span style="--start: 4%; --width: 56%; --progress: 72%;">72%</span>
+                                </div>
+                            </article>
+                            <article class="timeline-row approval">
+                                <div>
+                                    <strong>Purchase request review</strong>
+                                    <span>Approval • Ken</span>
+                                </div>
+                                <div class="timeline-track">
+                                    <span style="--start: 22%; --width: 45%; --progress: 48%;">48%</span>
+                                </div>
+                            </article>
+                            <article class="timeline-row reminder">
+                                <div>
+                                    <strong>Department reminder</strong>
+                                    <span>Reminder • Admin</span>
+                                </div>
+                                <div class="timeline-track">
+                                    <span style="--start: 38%; --width: 36%; --progress: 80%;">80%</span>
+                                </div>
+                            </article>
+                            <article class="timeline-row procurement">
+                                <div>
+                                    <strong>Equipment delivery check</strong>
+                                    <span>Procurement • Liza</span>
+                                </div>
+                                <div class="timeline-track">
+                                    <span style="--start: 54%; --width: 40%; --progress: 35%;">35%</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="right-panel">
+                    <section class="progress-card">
+                        <div class="ring" aria-label="60 percent progress">
+                            <span>60%</span>
+                        </div>
+                        <div>
+                            <h2>Today’s Progress</h2>
+                            <p>12 completed • 7 active • 9 pending</p>
+                        </div>
+                    </section>
+
+                    <section class="calendar-card">
+                        <div class="section-heading compact">
+                            <h2>Calendar</h2>
+                            <span>June 2026</span>
+                        </div>
+                        <div class="calendar-grid" aria-label="June calendar preview">
+                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                            <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button>
+                            <button class="active">8</button><button>9</button><button>10</button><button>11</button><button>12</button><button>13</button><button>14</button>
+                            <button>15</button><button>16</button><button>17</button><button>18</button><button>19</button><button>20</button><button>21</button>
+                        </div>
+                    </section>
+
+                    <section class="activity-card">
+                        <h2>Recent Activity</h2>
+                        <div class="activity-item">
+                            <span></span>
+                            <p>Maria completed stock validation</p>
+                        </div>
+                        <div class="activity-item">
+                            <span></span>
+                            <p>Ken commented on purchase request</p>
+                        </div>
+                        <div class="activity-item muted">
+                            <span></span>
+                            <p>New deadline reminder scheduled</p>
+                        </div>
+                    </section>
+
+                    <section class="task-detail-card">
+                        <div class="section-heading compact">
+                            <h2>Selected Task</h2>
+                            <span class="status-pill warning">In Progress</span>
+                        </div>
+                        <p class="helper-copy">Followers are people who receive updates when this task changes. Attachments are supporting files for the assigned work.</p>
+                        <div class="detail-list">
+                            <div><span>Task</span><strong>Update medicine stock count</strong></div>
+                            <div><span>Linked item</span><strong>Inventory Report</strong></div>
+                            <div><span>Responsible</span><strong>Reyniel</strong></div>
+                            <div><span>Followers</span><strong>Maria, Admin</strong></div>
+                            <div><span>Due date</span><strong>Today, 2:00 PM</strong></div>
+                            <div><span>Attachments</span><strong>2 files</strong></div>
+                        </div>
+                        <div class="task-action-grid" aria-label="Task actions">
+                            <button class="mini-button" type="button">Add Follower</button>
+                            <button class="mini-button" type="button">Add Comment</button>
+                            <button class="mini-button" type="button">Attach File</button>
+                            <button class="primary-button" type="button">Submit Task</button>
+                        </div>
+                    </section>
+                </aside>
+            </section>
+
+            <section class="source-strip" aria-label="Source code locations">
+                <div>
+                    <p class="eyebrow">System Files</p>
+                    <h2>TaskMate implementation references</h2>
+                    <p>Review the planned Laravel web app and mobile app code locations for this task management system.</p>
+                </div>
+                <div class="responsive-actions">
+                    <a class="ghost-button" href="architecture.html">System Plan</a>
+                    <a class="ghost-button" href="source-code.html">Open Code Info</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Mobile app navigation">
+        <a class="active" href="index.html">
+            <span>⌂</span>
+            Home
+        </a>
+        <a href="tasks.html">
+            <span>☑</span>
+            Tasks
+        </a>
+        <button type="button" data-open-modal aria-label="Add task">+</button>
+        <a href="calendar.html">
+            <span>◷</span>
+            Calendar
+        </a>
+        <a href="../index.html#projects">
+            <span>↩</span>
+            Back
+        </a>
+    </nav>
+
+    <dialog class="task-modal" id="taskModal">
+        <form method="dialog">
+            <header>
+                <div>
+                    <p class="eyebrow">Task Action</p>
+                    <h2>Add Task</h2>
+                </div>
+                <button class="icon-button" value="cancel" aria-label="Close">×</button>
+            </header>
+            <label>
+                Task title
+                <input type="text" value="Follow up overdue purchase request">
+            </label>
+            <label>
+                Linked item
+                <input type="text" value="Purchase Request #104">
+            </label>
+            <label>
+                Responsible person
+                <select>
+                    <option>Reyniel Polancos</option>
+                    <option>Maria Santos</option>
+                    <option>Ken Dela Cruz</option>
+                    <option>Admin User</option>
+                </select>
+            </label>
+            <label>
+                Followers
+                <div class="follower-picker">
+                    <div class="selected-followers" aria-label="Selected followers">
+                        <span>Maria Santos</span>
+                        <span>Admin User</span>
+                    </div>
+                    <select aria-label="Add follower">
+                        <option>Add another follower</option>
+                        <option>Ken Dela Cruz</option>
+                        <option>Liza Ramos</option>
+                        <option>Department Manager</option>
+                        <option>Inventory Clerk</option>
+                    </select>
+                </div>
+            </label>
+            <label>
+                Category
+                <select>
+                    <option>Inventory</option>
+                    <option>Approval</option>
+                    <option>Procurement</option>
+                    <option>Reporting</option>
+                </select>
+            </label>
+            <label>
+                Due date
+                <input type="datetime-local" value="2026-06-08T14:00">
+            </label>
+            <label>
+                Priority
+                <select>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+            </label>
+            <label>
+                Notes
+                <textarea rows="4">Assign this task to the department manager and set a reminder before the due date.</textarea>
+            </label>
+            <label>
+                Attachment
+                <input type="file">
+            </label>
+            <div class="modal-actions">
+                <button class="ghost-button" value="cancel">Cancel</button>
+                <button class="primary-button" value="default">Submit Task</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>

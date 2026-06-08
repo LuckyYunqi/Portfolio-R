@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMate Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="code-page">
+    <main class="code-shell">
+        <a class="back-link" href="index.html">Back to TaskMate UI</a>
+
+        <section class="code-hero">
+            <p class="eyebrow">System Architecture</p>
+            <h1>TaskMate Web and Mobile Plan</h1>
+            <p>A planned task management system using Laravel for the backend, MySQL for the database, and JavaScript or TypeScript for the mobile interface.</p>
+        </section>
+
+        <section class="architecture-map" aria-label="TaskMate architecture overview">
+            <article class="architecture-card">
+                <span class="code-badge">Web</span>
+                <h2>Web Dashboard</h2>
+                <p>Responsive dashboard for Admin, Manager, and Member views with task lists, Kanban workflow, calendar planning, and reports.</p>
+                <ul>
+                    <li>Responsive dashboard UI</li>
+                    <li>Kanban board and task table</li>
+                    <li>Calendar deadline view</li>
+                    <li>Reports and analytics cards</li>
+                </ul>
+            </article>
+
+            <article class="architecture-card">
+                <span class="code-badge">Backend</span>
+                <h2>Laravel API</h2>
+                <p>Laravel REST API serving both web and mobile clients with authentication, role permissions, and task CRUD operations.</p>
+                <ul>
+                    <li>Laravel controllers and API routes</li>
+                    <li>JWT or Laravel Sanctum authentication</li>
+                    <li>Role-based access control</li>
+                    <li>Task, project, comment, and attachment APIs</li>
+                </ul>
+            </article>
+
+            <article class="architecture-card">
+                <span class="code-badge">Database</span>
+                <h2>MySQL Storage</h2>
+                <p>Centralized relational database for users, roles, projects, tasks, tags, comments, attachments, and notification records.</p>
+                <ul>
+                    <li>users, roles, projects</li>
+                    <li>tasks, tags, task_assignments</li>
+                    <li>comments and attachments</li>
+                    <li>notifications and activity logs</li>
+                </ul>
+            </article>
+
+            <article class="architecture-card">
+                <span class="code-badge">Mobile</span>
+                <h2>Mobile App</h2>
+                <p>JavaScript or TypeScript mobile app connected to the same Laravel API, optimized for quick updates, reminders, and offline-friendly task views.</p>
+                <ul>
+                    <li>React Native with TypeScript or JavaScript</li>
+                    <li>Task list, swipe actions, and reminders</li>
+                    <li>Local storage for draft/offline tasks</li>
+                    <li>Push notifications for deadlines</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="workflow-section">
+            <div class="page-card">
+                <p class="eyebrow">Core Features</p>
+                <h2>Essential Modules</h2>
+                <div class="feature-grid">
+                    <span>Task Creation & Editing</span>
+                    <span>Responsible Person</span>
+                    <span>Followers</span>
+                    <span>Linked Items</span>
+                    <span>Projects and Tags</span>
+                    <span>User Assignment</span>
+                    <span>Deadlines & Reminders</span>
+                    <span>Attachments</span>
+                    <span>Progress Tracking</span>
+                    <span>Comments & Attachments</span>
+                    <span>Reports & Analytics</span>
+                    <span>Role Permissions</span>
+                </div>
+            </div>
+
+            <div class="page-card">
+                <p class="eyebrow">Workflow</p>
+                <h2>Task Lifecycle</h2>
+                <div class="lifecycle">
+                    <span>Created</span>
+                    <span>Assigned</span>
+                    <span>In Progress</span>
+                    <span>Completed</span>
+                    <span>Archived</span>
+                </div>
+                <p>Managers create projects and assign tasks from the web dashboard. Members receive mobile reminders, update task progress, upload files, and sync changes back to the Laravel API.</p>
+            </div>
+        </section>
+
+        <section class="code-note">
+            <h2>Planned Stack</h2>
+            <p><strong>Backend:</strong> Laravel REST API</p>
+            <p><strong>Database:</strong> MySQL</p>
+            <p><strong>Web:</strong> Laravel Blade or JavaScript dashboard UI</p>
+            <p><strong>Mobile:</strong> React Native using JavaScript or TypeScript</p>
+        </section>
+    </main>
+</body>
+</html>
