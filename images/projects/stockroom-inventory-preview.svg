@@ -1,0 +1,63 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#102327"/>
+      <stop offset="1" stop-color="#f4f8f6"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#117c72"/>
+      <stop offset="1" stop-color="#47b7a8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#0b1d20" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" fill="#eef4f2"/>
+  <rect width="235" height="720" fill="#14252a"/>
+  <rect x="28" y="42" width="54" height="54" rx="14" fill="#15897e"/>
+  <text x="99" y="67" fill="#fff" font-family="Segoe UI, Arial" font-size="24" font-weight="800">Stockroom</text>
+  <text x="99" y="94" fill="#b7c9cb" font-family="Segoe UI, Arial" font-size="15">Inventory System</text>
+  <g fill="#d7e5e4" font-family="Segoe UI, Arial" font-size="17" font-weight="700">
+    <rect x="24" y="145" width="185" height="48" rx="10" fill="#26383d"/>
+    <text x="64" y="176">Dashboard</text>
+    <text x="64" y="238">Inventory</text>
+    <text x="64" y="300">Availability</text>
+    <text x="64" y="362">Requests</text>
+    <text x="64" y="424">Receiving</text>
+  </g>
+  <text x="290" y="70" fill="#117c72" font-family="Segoe UI, Arial" font-size="16" font-weight="900">INVENTORY CONTROL</text>
+  <text x="290" y="118" fill="#13252a" font-family="Segoe UI, Arial" font-size="40" font-weight="900">Dashboard</text>
+  <rect x="760" y="52" width="310" height="48" rx="12" fill="#fff" stroke="#d7e5e1"/>
+  <text x="800" y="83" fill="#69797d" font-family="Segoe UI, Arial" font-size="16" font-weight="700">Search items, SKU, supplier</text>
+  <g filter="url(#shadow)">
+    <rect x="290" y="160" width="205" height="112" rx="12" fill="#fff" stroke="#d8e3e0"/>
+    <rect x="290" y="160" width="205" height="5" rx="3" fill="#117c72"/>
+    <text x="318" y="202" fill="#647174" font-family="Segoe UI, Arial" font-size="17" font-weight="800">Total SKUs</text>
+    <text x="318" y="248" fill="#13252a" font-family="Segoe UI, Arial" font-size="38" font-weight="900">6</text>
+    <rect x="520" y="160" width="205" height="112" rx="12" fill="#fff" stroke="#d8e3e0"/>
+    <rect x="520" y="160" width="205" height="5" rx="3" fill="#117c72"/>
+    <text x="548" y="202" fill="#647174" font-family="Segoe UI, Arial" font-size="17" font-weight="800">Stock Value</text>
+    <text x="548" y="248" fill="#13252a" font-family="Segoe UI, Arial" font-size="34" font-weight="900">PHP 17,775</text>
+    <rect x="750" y="160" width="205" height="112" rx="12" fill="#fff" stroke="#d8e3e0"/>
+    <rect x="750" y="160" width="205" height="5" rx="3" fill="#c9861a"/>
+    <text x="778" y="202" fill="#647174" font-family="Segoe UI, Arial" font-size="17" font-weight="800">Low Stock</text>
+    <text x="778" y="248" fill="#13252a" font-family="Segoe UI, Arial" font-size="38" font-weight="900">2</text>
+    <rect x="980" y="160" width="170" height="112" rx="12" fill="#fff" stroke="#d8e3e0"/>
+    <rect x="980" y="160" width="170" height="5" rx="3" fill="#c94f4f"/>
+    <text x="1008" y="202" fill="#647174" font-family="Segoe UI, Arial" font-size="17" font-weight="800">Out</text>
+    <text x="1008" y="248" fill="#13252a" font-family="Segoe UI, Arial" font-size="38" font-weight="900">1</text>
+  </g>
+  <rect x="290" y="310" width="410" height="270" rx="14" fill="#fff" stroke="#d8e3e0"/>
+  <text x="318" y="355" fill="#13252a" font-family="Segoe UI, Arial" font-size="23" font-weight="900">Priority Restock</text>
+  <rect x="318" y="388" width="350" height="62" rx="10" fill="#fbfcfb" stroke="#d8e3e0"/>
+  <text x="342" y="423" fill="#13252a" font-family="Segoe UI, Arial" font-size="18" font-weight="900">Thermal Receipt Roll</text>
+  <rect x="318" y="468" width="350" height="62" rx="10" fill="#fbfcfb" stroke="#d8e3e0"/>
+  <text x="342" y="503" fill="#13252a" font-family="Segoe UI, Arial" font-size="18" font-weight="900">Nitrile Gloves</text>
+  <rect x="730" y="310" width="420" height="270" rx="14" fill="#fff" stroke="#d8e3e0"/>
+  <text x="758" y="355" fill="#13252a" font-family="Segoe UI, Arial" font-size="23" font-weight="900">Stock Mix</text>
+  <g transform="translate(758 392)">
+    <text y="0" fill="#13252a" font-family="Segoe UI, Arial" font-size="16" font-weight="800">Office</text><rect x="118" y="-13" width="230" height="14" rx="7" fill="#e8eeee"/><rect x="118" y="-13" width="92" height="14" rx="7" fill="url(#teal)"/><text x="362" y="0" fill="#117c72" font-family="Segoe UI, Arial" font-size="15" font-weight="900">40%</text>
+    <text y="46" fill="#13252a" font-family="Segoe UI, Arial" font-size="16" font-weight="800">Electronics</text><rect x="118" y="33" width="230" height="14" rx="7" fill="#e8eeee"/><rect x="118" y="33" width="69" height="14" rx="7" fill="url(#teal)"/><text x="362" y="46" fill="#117c72" font-family="Segoe UI, Arial" font-size="15" font-weight="900">30%</text>
+    <text y="92" fill="#13252a" font-family="Segoe UI, Arial" font-size="16" font-weight="800">Warehouse</text><rect x="118" y="79" width="230" height="14" rx="7" fill="#e8eeee"/><rect x="118" y="79" width="55" height="14" rx="7" fill="url(#teal)"/><text x="362" y="92" fill="#117c72" font-family="Segoe UI, Arial" font-size="15" font-weight="900">24%</text>
+  </g>
+</svg>

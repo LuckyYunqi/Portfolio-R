@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --bg: #1a052a;
     --surface: #2a0b3e;
     --surface-soft: #220635;
@@ -1921,6 +1921,12 @@ section {
     font-style: italic;
 }
 
+.project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
 .project-link {
     position: relative;
     width: fit-content;
@@ -2386,3 +2392,4 @@ section {
         scroll-behavior: auto !important;
     }
 }
+
