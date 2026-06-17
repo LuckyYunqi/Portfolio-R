@@ -1,8 +1,46 @@
 param(
-    [int]$Port = 5500
+    [int]$Port = 0,
+    [string]$HostName = ''
 )
 
 $ErrorActionPreference = 'Stop'
+
+function Import-DotEnv([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return
+    }
+
+    Get-Content -LiteralPath $Path | ForEach-Object {
+        $line = $_.Trim()
+        if (-not $line -or $line.StartsWith('#') -or -not $line.Contains('=')) {
+            return
+        }
+
+        $name, $value = $line.Split('=', 2)
+        $name = $name.Trim()
+        $value = $value.Trim().Trim('"').Trim("'")
+
+        if ($name) {
+            [Environment]::SetEnvironmentVariable($name, $value, 'Process')
+        }
+    }
+}
+
+function Get-LocalIPv4 {
+    $addresses = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+        Where-Object {
+            $_.IPAddress -notlike '127.*' -and
+            $_.PrefixOrigin -ne 'WellKnown' -and
+            $_.IPAddress -notlike '169.254.*'
+        } |
+        Select-Object -ExpandProperty IPAddress -First 1
+
+    if ($addresses) {
+        return $addresses
+    }
+
+    return 'localhost'
+}
 
 function Get-ContentType([string]$Path) {
     switch ([IO.Path]::GetExtension($Path).ToLowerInvariant()) {
@@ -23,15 +61,42 @@ function Get-ContentType([string]$Path) {
 }
 
 $root = (Resolve-Path '.').Path
-$prefix = "http://localhost:$Port/"
+Import-DotEnv (Join-Path $root '.env')
+
+if ($Port -le 0) {
+    $Port = if ($env:PORT) { [int]$env:PORT } else { 5500 }
+}
+
+if ([string]::IsNullOrWhiteSpace($HostName)) {
+    $HostName = if ($env:HOST) { $env:HOST } else { '0.0.0.0' }
+}
+
+$publicHost = if ($env:PUBLIC_HOST) { $env:PUBLIC_HOST } else { Get-LocalIPv4 }
+$localUrl = "http://localhost:$Port/"
+$phoneUrl = "http://${publicHost}:$Port/"
+
+$php = Get-Command php -ErrorAction SilentlyContinue
+if ($php) {
+    Write-Host "Serving '$root'" -ForegroundColor Green
+    Write-Host "Local: $localUrl" -ForegroundColor Green
+    Write-Host "Phone/tablet: $phoneUrl" -ForegroundColor Cyan
+    Write-Host 'Make sure your phone and PC are on the same Wi-Fi. Press Ctrl+C to stop.' -ForegroundColor DarkGray
+    & $php.Source -S "${HostName}:$Port" -t $root
+    exit
+}
+
+$listenerHost = if ($HostName -eq '0.0.0.0') { '*' } else { $HostName }
+$prefix = "http://${listenerHost}:$Port/"
 
 $listener = [System.Net.HttpListener]::new()
 $listener.Prefixes.Add($prefix)
 
 try {
     $listener.Start()
-    Write-Host "Serving '$root' at $prefix" -ForegroundColor Green
-    Write-Host 'Press Ctrl+C to stop.' -ForegroundColor DarkGray
+    Write-Host "Serving '$root'" -ForegroundColor Green
+    Write-Host "Local: $localUrl" -ForegroundColor Green
+    Write-Host "Phone/tablet: $phoneUrl" -ForegroundColor Cyan
+    Write-Host 'Make sure your phone and PC are on the same Wi-Fi. Press Ctrl+C to stop.' -ForegroundColor DarkGray
 
     while ($listener.IsListening) {
         $context = $listener.GetContext()
