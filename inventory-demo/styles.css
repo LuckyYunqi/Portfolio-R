@@ -1879,3 +1879,152 @@ select:focus {
     padding: 12px;
   }
 }
+
+@media (max-width: 720px) {
+  body {
+    padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  }
+
+  .sidebar {
+    min-height: 0;
+    gap: 0;
+    padding: 10px 14px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand strong {
+    font-size: 15px;
+  }
+
+  .brand div span {
+    font-size: 11px;
+  }
+
+  .nav-list {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 140;
+    display: flex;
+    gap: 6px;
+    height: auto;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    overflow-x: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(23, 35, 40, 0.98);
+    box-shadow: 0 -10px 28px rgba(21, 33, 38, 0.22);
+  }
+
+  .nav-item {
+    flex: 0 0 72px;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 72px;
+    min-height: 54px;
+    padding: 7px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .nav-item .icon {
+    display: inline-grid;
+  }
+
+  .nav-item .icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .workspace {
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  .topbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 44px) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-field {
+    grid-column: 1 / -1;
+    min-height: 42px;
+  }
+
+  #reset-demo {
+    grid-column: 1;
+  }
+
+  .quick-menu {
+    grid-column: 2;
+    width: 44px;
+  }
+
+  .profile-menu {
+    grid-column: 3;
+    width: 44px;
+  }
+
+  .quick-button,
+  .user-chip {
+    justify-content: center;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 8px;
+  }
+
+  .quick-button {
+    gap: 0;
+    font-size: 0;
+  }
+
+  .quick-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .quick-button svg:last-child {
+    display: none;
+  }
+
+  .user-chip {
+    gap: 0;
+  }
+
+  .user-chip > span {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .user-chip div,
+  .user-chip svg {
+    display: none;
+  }
+
+  .quick-dropdown,
+  .profile-dropdown {
+    left: 0;
+    right: auto;
+    width: min(calc(100vw - 28px), 340px);
+  }
+
+  .profile-dropdown {
+    left: -104px;
+  }
+}
