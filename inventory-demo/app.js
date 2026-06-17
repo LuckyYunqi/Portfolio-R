@@ -2,38 +2,43 @@ const API_BASE_URL = window.STOCKROOM_CONFIG?.apiBaseUrl || "/api";
 const CURRENT_USER = window.STOCKROOM_CONFIG?.user || { name: "Demo User", role: "admin" };
 const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content || "";
 
+function makeId() {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+  return `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 const demoProducts = [
-  { id: crypto.randomUUID(), name: "Wireless Mouse", sku: "IT-MSE-001", category: "Electronics", supplier: "Northline Supply", quantity: 14, cost: 250, reorder: 8 },
-  { id: crypto.randomUUID(), name: "A4 Bond Paper", sku: "OFF-PAP-014", category: "Office", supplier: "Manila Paper Co.", quantity: 42, cost: 185, reorder: 30 },
-  { id: crypto.randomUUID(), name: "Nitrile Gloves", sku: "SAF-GLV-010", category: "Safety", supplier: "PrimeMed Depot", quantity: 6, cost: 420, reorder: 12 },
-  { id: crypto.randomUUID(), name: "Thermal Receipt Roll", sku: "POS-ROL-058", category: "POS", supplier: "RetailWorks", quantity: 0, cost: 68, reorder: 20 },
-  { id: crypto.randomUUID(), name: "Packing Tape", sku: "WH-TAP-032", category: "Warehouse", supplier: "PackRight", quantity: 25, cost: 55, reorder: 10 },
-  { id: crypto.randomUUID(), name: "USB-C Cable", sku: "IT-CBL-009", category: "Electronics", supplier: "Northline Supply", quantity: 18, cost: 145, reorder: 15 }
+  { id: makeId(), name: "Wireless Mouse", sku: "IT-MSE-001", category: "Electronics", supplier: "Northline Supply", quantity: 14, cost: 250, reorder: 8 },
+  { id: makeId(), name: "A4 Bond Paper", sku: "OFF-PAP-014", category: "Office", supplier: "Manila Paper Co.", quantity: 42, cost: 185, reorder: 30 },
+  { id: makeId(), name: "Nitrile Gloves", sku: "SAF-GLV-010", category: "Safety", supplier: "PrimeMed Depot", quantity: 6, cost: 420, reorder: 12 },
+  { id: makeId(), name: "Thermal Receipt Roll", sku: "POS-ROL-058", category: "POS", supplier: "RetailWorks", quantity: 0, cost: 68, reorder: 20 },
+  { id: makeId(), name: "Packing Tape", sku: "WH-TAP-032", category: "Warehouse", supplier: "PackRight", quantity: 25, cost: 55, reorder: 10 },
+  { id: makeId(), name: "USB-C Cable", sku: "IT-CBL-009", category: "Electronics", supplier: "Northline Supply", quantity: 18, cost: 145, reorder: 15 }
 ];
 
 const demoMovements = [
-  { id: crypto.randomUUID(), productName: "Wireless Mouse", type: "in", quantity: 10, user: "Admin", notes: "Opening balance", date: daysAgo(5) },
-  { id: crypto.randomUUID(), productName: "Nitrile Gloves", type: "out", quantity: 4, user: "Admin", notes: "Issued to cleaning team", date: daysAgo(3) },
-  { id: crypto.randomUUID(), productName: "Thermal Receipt Roll", type: "out", quantity: 8, user: "Cashier Lead", notes: "POS counter restock", date: daysAgo(2) },
-  { id: crypto.randomUUID(), productName: "Packing Tape", type: "in", quantity: 20, user: "Warehouse", notes: "Supplier delivery", date: daysAgo(1) }
+  { id: makeId(), productName: "Wireless Mouse", type: "in", quantity: 10, user: "Admin", notes: "Opening balance", date: daysAgo(5) },
+  { id: makeId(), productName: "Nitrile Gloves", type: "out", quantity: 4, user: "Admin", notes: "Issued to cleaning team", date: daysAgo(3) },
+  { id: makeId(), productName: "Thermal Receipt Roll", type: "out", quantity: 8, user: "Cashier Lead", notes: "POS counter restock", date: daysAgo(2) },
+  { id: makeId(), productName: "Packing Tape", type: "in", quantity: 20, user: "Warehouse", notes: "Supplier delivery", date: daysAgo(1) }
 ];
 
 const demoSuppliers = [
-  { id: crypto.randomUUID(), name: "Northline Supply", contact: "Ana Reyes", email: "sales@northline.example", phone: "+63 917 410 2110", leadTime: 5, category: "Electronics", status: "Active" },
-  { id: crypto.randomUUID(), name: "Manila Paper Co.", contact: "Paolo Santos", email: "orders@manilapaper.example", phone: "+63 928 611 9920", leadTime: 3, category: "Office", status: "Active" },
-  { id: crypto.randomUUID(), name: "PrimeMed Depot", contact: "Lara Cruz", email: "support@primemed.example", phone: "+63 915 220 8831", leadTime: 7, category: "Safety", status: "Active" },
-  { id: crypto.randomUUID(), name: "RetailWorks", contact: "Miguel Lim", email: "po@retailworks.example", phone: "+63 922 711 4552", leadTime: 4, category: "POS", status: "Active" },
-  { id: crypto.randomUUID(), name: "PackRight", contact: "Nina Dela Paz", email: "warehouse@packright.example", phone: "+63 919 330 7719", leadTime: 6, category: "Warehouse", status: "Active" }
+  { id: makeId(), name: "Northline Supply", contact: "Ana Reyes", email: "sales@northline.example", phone: "+63 917 410 2110", leadTime: 5, category: "Electronics", status: "Active" },
+  { id: makeId(), name: "Manila Paper Co.", contact: "Paolo Santos", email: "orders@manilapaper.example", phone: "+63 928 611 9920", leadTime: 3, category: "Office", status: "Active" },
+  { id: makeId(), name: "PrimeMed Depot", contact: "Lara Cruz", email: "support@primemed.example", phone: "+63 915 220 8831", leadTime: 7, category: "Safety", status: "Active" },
+  { id: makeId(), name: "RetailWorks", contact: "Miguel Lim", email: "po@retailworks.example", phone: "+63 922 711 4552", leadTime: 4, category: "POS", status: "Active" },
+  { id: makeId(), name: "PackRight", contact: "Nina Dela Paz", email: "warehouse@packright.example", phone: "+63 919 330 7719", leadTime: 6, category: "Warehouse", status: "Active" }
 ];
 
 const demoPurchaseOrders = [
-  { id: crypto.randomUUID(), number: "PO-1001", supplier: "PrimeMed Depot", productName: "Nitrile Gloves", productId: null, quantity: 24, expectedDate: daysFromNow(3), status: "Pending", notes: "Reorder for low safety stock", createdAt: daysAgo(1) },
-  { id: crypto.randomUUID(), number: "PO-1002", supplier: "RetailWorks", productName: "Thermal Receipt Roll", productId: null, quantity: 40, expectedDate: daysFromNow(5), status: "Pending", notes: "POS supplies replenishment", createdAt: daysAgo(1) }
+  { id: makeId(), number: "PO-1001", supplier: "PrimeMed Depot", productName: "Nitrile Gloves", productId: null, quantity: 24, expectedDate: daysFromNow(3), status: "Pending", notes: "Reorder for low safety stock", paymentResponsibility: "Store/business pays supplier for restocking", paymentMethod: "Bank Transfer", paymentStatus: "Unpaid", createdAt: daysAgo(1) },
+  { id: makeId(), number: "PO-1002", supplier: "RetailWorks", productName: "Thermal Receipt Roll", productId: null, quantity: 40, expectedDate: daysFromNow(5), status: "Pending", notes: "POS supplies replenishment", paymentResponsibility: "Store/business pays supplier for restocking", paymentMethod: "GCash", paymentStatus: "Partially Paid", createdAt: daysAgo(1) }
 ];
 
 const demoProductRequests = [
-  { id: crypto.randomUUID(), requester: "Staff User", productId: null, productName: "A4 Bond Paper", supplier: "Manila Paper Co.", quantity: 20, neededBy: daysFromNow(4), reason: "Front office paper stock is dropping before payroll week.", status: "Pending", createdAt: daysAgo(1) },
-  { id: crypto.randomUUID(), requester: "Staff User", productId: null, productName: "USB-C Cable", supplier: "Northline Supply", quantity: 12, neededBy: daysFromNow(7), reason: "Replacement cables requested by IT.", status: "Approved", managerNote: "Approved for next purchasing batch.", createdAt: daysAgo(2) }
+  { id: makeId(), requester: "Staff User", productId: null, productName: "A4 Bond Paper", supplier: "Manila Paper Co.", quantity: 20, neededBy: daysFromNow(4), reason: "Front office paper stock is dropping before payroll week.", status: "Pending", createdAt: daysAgo(1) },
+  { id: makeId(), requester: "Staff User", productId: null, productName: "USB-C Cable", supplier: "Northline Supply", quantity: 12, neededBy: daysFromNow(7), reason: "Replacement cables requested by IT.", status: "Approved", managerNote: "Approved for next purchasing batch.", createdAt: daysAgo(2) }
 ];
 
 const state = loadState();
@@ -123,6 +128,8 @@ const els = {
   expectedYear: document.querySelector("#expected-year"),
   poSupplier: document.querySelector("#po-supplier"),
   poProduct: document.querySelector("#po-product"),
+  poPaymentMethod: document.querySelector("#po-payment-method"),
+  poPaymentStatus: document.querySelector("#po-payment-status"),
   poStatusFilter: document.querySelector("#po-status-filter"),
   poSupplierFilter: document.querySelector("#po-supplier-filter"),
   poLimit: document.querySelector("#po-limit"),
@@ -140,6 +147,11 @@ const els = {
   reportTable: document.querySelector("#report-table"),
   reportNotes: document.querySelector("#report-notes")
 };
+
+function bind(element, eventName, handler, options) {
+  if (!element) return;
+  element.addEventListener(eventName, handler, options);
+}
 
 document.addEventListener("click", (event) => {
   const jump = event.target.closest("[data-view-jump]");
@@ -224,7 +236,7 @@ document.addEventListener("click", (event) => {
         state.products = state.products.filter((item) => item.id !== product.id);
         sendToApi(`products/${encodeURIComponent(product.id)}`, {}, "DELETE");
         state.movements.unshift({
-          id: crypto.randomUUID(),
+          id: makeId(),
           productName: product.name,
           type: "out",
           quantity: product.quantity,
@@ -242,38 +254,70 @@ document.addEventListener("click", (event) => {
     handleRequestAction(requestAction.dataset.requestAction, requestAction.dataset.requestId);
   }
 
+  const payButton = event.target.closest("[data-pay-po]");
+  if (payButton) {
+    markPurchaseOrderPaid(payButton.dataset.payPo);
+  }
+
   const quickAction = event.target.closest("[data-quick-action]");
   if (quickAction) {
     handleQuickAction(quickAction.dataset.quickAction);
   }
 });
 
-els.quickToggle.addEventListener("click", () => {
+bind(els.quickToggle, "click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
   const open = els.quickDropdown.classList.toggle("open");
   els.quickToggle.setAttribute("aria-expanded", String(open));
-  els.profileDropdown.classList.remove("open");
-  els.profileToggle.setAttribute("aria-expanded", "false");
+  els.profileDropdown?.classList.remove("open");
+  els.profileToggle?.setAttribute("aria-expanded", "false");
 });
 
-els.profileToggle.addEventListener("click", () => {
-  const open = els.profileDropdown.classList.toggle("open");
+function toggleProfileMenu(forceOpen = null, closeQuick = true) {
+  if (!els.profileDropdown || !els.profileToggle) return;
+  const open = forceOpen ?? !els.profileDropdown.classList.contains("open");
+  els.profileDropdown.classList.toggle("open", open);
+  els.profileToggle.classList.toggle("active", open);
   els.profileToggle.setAttribute("aria-expanded", String(open));
-  els.quickDropdown.classList.remove("open");
-  els.quickToggle.setAttribute("aria-expanded", "false");
+  if (closeQuick) closeQuickActions();
+}
+
+bind(els.profileToggle, "click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  toggleProfileMenu();
 });
 
-els.openSettings.addEventListener("click", () => {
-  els.profileDropdown.classList.remove("open");
+document.addEventListener("click", (event) => {
+  if (event.target.closest("#profile-toggle")) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleProfileMenu();
+    return;
+  }
+
+  if (!event.target.closest(".profile-menu")) {
+    toggleProfileMenu(false, false);
+  }
+
+  if (!event.target.closest(".quick-menu")) {
+    closeQuickActions();
+  }
+});
+
+bind(els.openSettings, "click", () => {
+  els.profileDropdown?.classList.remove("open");
   els.settingsModal.classList.add("open");
   els.settingsModal.setAttribute("aria-hidden", "false");
 });
 
-els.closeSettings.addEventListener("click", closeSettings);
-els.settingsModal.addEventListener("click", (event) => {
+bind(els.closeSettings, "click", closeSettings);
+bind(els.settingsModal, "click", (event) => {
   if (event.target === els.settingsModal) closeSettings();
 });
 
-els.openPoProductModal.addEventListener("click", () => {
+bind(els.openPoProductModal, "click", () => {
   if (!can("admin")) {
     els.purchaseOrderMessage.textContent = "Only Admin can add new products.";
     return;
@@ -282,12 +326,12 @@ els.openPoProductModal.addEventListener("click", () => {
   openPoProductModal();
 });
 
-els.closePoProductModal.addEventListener("click", closePoProductModal);
-els.poProductModal.addEventListener("click", (event) => {
+bind(els.closePoProductModal, "click", closePoProductModal);
+bind(els.poProductModal, "click", (event) => {
   if (event.target === els.poProductModal) closePoProductModal();
 });
-els.confirmCancel.addEventListener("click", closeConfirmation);
-els.confirmModal.addEventListener("click", (event) => {
+bind(els.confirmCancel, "click", closeConfirmation);
+bind(els.confirmModal, "click", (event) => {
   if (event.target === els.confirmModal) closeConfirmation();
 });
 
@@ -296,8 +340,8 @@ document.addEventListener("keydown", (event) => {
     closeSettings();
     closePoProductModal();
     closeConfirmation();
-    els.quickDropdown.classList.remove("open");
-    els.profileDropdown.classList.remove("open");
+    els.quickDropdown?.classList.remove("open");
+    toggleProfileMenu(false);
   }
 });
 
@@ -308,10 +352,10 @@ els.navItems.forEach((item) => {
   });
 });
 
-els.search.addEventListener("input", render);
-els.expectedMonth.addEventListener("change", syncExpectedDate);
-els.expectedDay.addEventListener("change", syncExpectedDate);
-els.expectedYear.addEventListener("change", syncExpectedDate);
+bind(els.search, "input", render);
+bind(els.expectedMonth, "change", syncExpectedDate);
+bind(els.expectedDay, "change", syncExpectedDate);
+bind(els.expectedYear, "change", syncExpectedDate);
 [
   [els.categoryFilter, "inventory"],
   [els.inventoryStatusFilter, "inventory"],
@@ -332,21 +376,21 @@ els.expectedYear.addEventListener("change", syncExpectedDate);
   [els.receivingLimit, "receiving"],
   [els.receivedLimit, "received"]
 ].forEach(([control, page]) => {
-  control.addEventListener("change", () => {
+  bind(control, "change", () => {
     pages[page] = 1;
     render();
   });
 });
 
-els.poSupplier.addEventListener("change", () => {
+bind(els.poSupplier, "change", () => {
   renderPurchaseOrderControls();
 });
 
-els.reset.addEventListener("click", () => {
+bind(els.reset, "click", () => {
   loadFromApi();
 });
 
-els.productForm.addEventListener("submit", (event) => {
+bind(els.productForm, "submit", (event) => {
   event.preventDefault();
   if (!can("admin")) {
     flashMessage("Only Admin can add products.");
@@ -365,7 +409,7 @@ els.productForm.addEventListener("submit", (event) => {
 
   const form = new FormData(els.productForm);
   const product = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     name: clean(form.get("name")),
     sku: clean(form.get("sku")).toUpperCase(),
     category: clean(form.get("category")),
@@ -378,7 +422,7 @@ els.productForm.addEventListener("submit", (event) => {
   state.products.unshift(product);
   sendToApi("products", product);
   state.movements.unshift({
-    id: crypto.randomUUID(),
+    id: makeId(),
     productName: product.name,
     type: "in",
     quantity: product.quantity,
@@ -394,7 +438,7 @@ els.productForm.addEventListener("submit", (event) => {
   persistAndRender();
 });
 
-els.movementForm.addEventListener("submit", (event) => {
+bind(els.movementForm, "submit", (event) => {
   event.preventDefault();
   if (!can("admin", "staff")) {
     els.movementMessage.textContent = "Only Admin and Staff can record stock movements.";
@@ -424,7 +468,7 @@ els.movementForm.addEventListener("submit", (event) => {
 
   product.quantity += type === "in" ? quantity : -quantity;
   const movement = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     productName: product.name,
     productId: product.id,
     type,
@@ -442,7 +486,7 @@ els.movementForm.addEventListener("submit", (event) => {
   persistAndRender();
 });
 
-els.supplierForm.addEventListener("submit", (event) => {
+bind(els.supplierForm, "submit", (event) => {
   event.preventDefault();
   if (!can("admin")) {
     flashMessage("Only Admin can add suppliers.");
@@ -461,7 +505,7 @@ els.supplierForm.addEventListener("submit", (event) => {
 
   const form = new FormData(els.supplierForm);
   const supplier = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     name: clean(form.get("name")),
     contact: clean(form.get("contact")),
     email: clean(form.get("email")),
@@ -477,7 +521,7 @@ els.supplierForm.addEventListener("submit", (event) => {
   persistAndRender();
 });
 
-els.requestForm.addEventListener("submit", (event) => {
+bind(els.requestForm, "submit", (event) => {
   event.preventDefault();
   if (!can("admin", "staff")) {
     els.requestMessage.textContent = "Only Staff and Admin can submit product requests.";
@@ -493,7 +537,7 @@ els.requestForm.addEventListener("submit", (event) => {
   if (!consumeConfirmed(els.requestForm)) {
     askConfirmation({
       title: "Send Product Request?",
-      message: `Ask the manager to review ${quantity} ${product.name} for ordering?`,
+      message: `Ask the manager to review ${quantity} ${product.name} for restocking? If approved, the store pays the supplier.`,
       confirmText: "Send Request",
       onConfirm: () => confirmAndSubmit(els.requestForm)
     });
@@ -501,7 +545,7 @@ els.requestForm.addEventListener("submit", (event) => {
   }
 
   const productRequest = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     requester: CURRENT_USER.name,
     productId: product.id,
     productName: product.name,
@@ -521,7 +565,7 @@ els.requestForm.addEventListener("submit", (event) => {
   persistAndRender();
 });
 
-els.purchaseOrderForm.addEventListener("submit", (event) => {
+bind(els.purchaseOrderForm, "submit", (event) => {
   event.preventDefault();
   if (!can("admin", "manager")) {
     els.purchaseOrderMessage.textContent = "Only Admin and Manager can create purchase orders.";
@@ -540,7 +584,7 @@ els.purchaseOrderForm.addEventListener("submit", (event) => {
   if (!consumeConfirmed(els.purchaseOrderForm)) {
     askConfirmation({
       title: "Create Purchase Order?",
-      message: `Order ${form.get("quantity")} ${product.name} from ${form.get("supplier")}?`,
+      message: `Order ${form.get("quantity")} ${product.name} from ${form.get("supplier")}? The store/business pays the supplier for this restock.`,
       confirmText: "Create PO",
       onConfirm: () => confirmAndSubmit(els.purchaseOrderForm)
     });
@@ -548,7 +592,7 @@ els.purchaseOrderForm.addEventListener("submit", (event) => {
   }
 
   const order = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     number: nextPurchaseOrderNumber(),
     supplier: clean(form.get("supplier")),
     productId: product.id,
@@ -557,6 +601,10 @@ els.purchaseOrderForm.addEventListener("submit", (event) => {
     expectedDate: form.get("expectedDate"),
     status: "Pending",
     notes: clean(form.get("notes")) || "Inventory replenishment",
+    paymentResponsibility: "Store/business pays supplier for restocking",
+    paymentMethod: clean(form.get("paymentMethod")) || "Cash",
+    paymentStatus: clean(form.get("paymentStatus")) || "Unpaid",
+    paidAt: form.get("paymentStatus") === "Paid" ? new Date().toISOString() : null,
     createdAt: new Date().toISOString()
   };
   state.purchaseOrders.unshift(order);
@@ -564,12 +612,14 @@ els.purchaseOrderForm.addEventListener("submit", (event) => {
 
   els.purchaseOrderForm.reset();
   setDefaultPurchaseOrderDate();
+  if (els.poPaymentMethod) els.poPaymentMethod.value = "Cash";
+  if (els.poPaymentStatus) els.poPaymentStatus.value = "Unpaid";
   renderPurchaseOrderControls();
-  els.purchaseOrderMessage.textContent = "Purchase order created.";
+  els.purchaseOrderMessage.textContent = "Purchase order created. Store/business is responsible for paying the supplier.";
   persistAndRender();
 });
 
-els.poProductForm.addEventListener("submit", async (event) => {
+bind(els.poProductForm, "submit", async (event) => {
   event.preventDefault();
   if (!can("admin")) {
     els.poProductMessage.textContent = "Only Admin can add new products.";
@@ -587,7 +637,7 @@ els.poProductForm.addEventListener("submit", async (event) => {
 
   const form = new FormData(els.poProductForm);
   const product = {
-    id: crypto.randomUUID(),
+    id: makeId(),
     name: clean(form.get("name")),
     sku: clean(form.get("sku")).toUpperCase(),
     category: clean(form.get("category")),
@@ -949,20 +999,28 @@ function renderPurchaseOrders() {
     <tr>
       <td>${escapeHtml(order.number)}</td>
       <td>${escapeHtml(order.supplier)}</td>
-      <td>${escapeHtml(order.productName)}</td>
+      <td class="product-cell">
+        <strong>${escapeHtml(order.productName)}</strong>
+        <span>${escapeHtml(restockingPaymentText(order))}</span>
+      </td>
       <td>${order.quantity}</td>
       <td>${dateFormat.format(new Date(order.expectedDate))}</td>
+      <td>
+        ${paymentBadge(order.paymentStatus)}
+        <span class="payment-method">${escapeHtml(order.paymentMethod || "Cash")}</span>
+      </td>
       <td>${purchaseOrderBadge(order.status)}</td>
       <td>
         ${order.status === "Pending" ? `
           <div class="inline-actions">
             <button class="text-button small" type="button" data-inspect-po="${escapeHtml(order.number)}">Review</button>
+            ${can("admin", "manager") && order.paymentStatus !== "Paid" ? `<button class="text-button small" type="button" data-pay-po="${order.id}">Mark Paid</button>` : ""}
             <button class="text-button small success" type="button" data-receive-po="${order.id}">Receive</button>
           </div>
         ` : ""}
       </td>
     </tr>
-  `).join("") : `<tr><td colspan="7" class="empty-state">No purchase orders match the current filters.</td></tr>`;
+  `).join("") : `<tr><td colspan="8" class="empty-state">No purchase orders match the current filters.</td></tr>`;
   renderPagination(els.poPagination, "purchaseOrders", page, "purchase orders");
 }
 
@@ -985,11 +1043,14 @@ function renderReceiving() {
           <div>
             <strong>${escapeHtml(order.productName)}</strong>
             <span>${escapeHtml(order.supplier)}</span>
+            <em>${escapeHtml(restockingPaymentText(order))}</em>
           </div>
         </div>
         <div class="receiving-meta">
           <span><small>Expected</small>${dateFormat.format(expected)}</span>
           <span><small>Ordered</small>${order.quantity}</span>
+          <span><small>Restock Cost</small>${money.format(orderTotal(order))}</span>
+          <span><small>Payment</small>${escapeHtml(order.paymentStatus || "Unpaid")}</span>
           <span>${isDueSoon ? `<b class="badge low">Due Soon</b>` : `<b class="badge ok">Scheduled</b>`}</span>
         </div>
         <button class="primary-button table-button" type="button" data-receive-po="${order.id}">Receive Stock</button>
@@ -1038,11 +1099,15 @@ function renderReports() {
   const out = state.products.filter((item) => item.quantity === 0).length;
   const low = state.products.filter(isLowStock).length;
   const pendingOrders = state.purchaseOrders.filter((order) => order.status === "Pending").length;
+  const pendingRestockCost = state.purchaseOrders
+    .filter((order) => order.status === "Pending")
+    .reduce((total, order) => total + orderTotal(order), 0);
   const highestValue = [...state.products].sort((a, b) => b.quantity * b.cost - a.quantity * a.cost)[0];
   els.reportNotes.innerHTML = [
     ["Reorder watch", `${low} product${low === 1 ? "" : "s"} at or below reorder level.`],
     ["Unavailable stock", `${out} product${out === 1 ? "" : "s"} currently out of stock.`],
-    ["Open purchase orders", `${pendingOrders} supplier order${pendingOrders === 1 ? "" : "s"} awaiting receipt.`],
+    ["Open purchase orders", `${pendingOrders} supplier order${pendingOrders === 1 ? "" : "s"} awaiting receipt. Store/business pays suppliers for restocking.`],
+    ["Restocking budget", `${money.format(pendingRestockCost)} estimated for pending supplier payments.`],
     ["Highest value item", highestValue ? `${highestValue.name} holds ${money.format(highestValue.quantity * highestValue.cost)} in stock value.` : "No inventory value recorded."]
   ].map(([title, body]) => `
     <article class="note-item">
@@ -1108,6 +1173,26 @@ function purchaseOrderBadge(status) {
   return status === "Received" ? `<span class="badge ok">Received</span>` : `<span class="badge low">Pending</span>`;
 }
 
+function paymentBadge(status = "Unpaid") {
+  const classes = {
+    Paid: "ok",
+    "Partially Paid": "low",
+    Unpaid: "out"
+  };
+
+  return `<span class="badge ${classes[status] || "out"}">${escapeHtml(status)}</span>`;
+}
+
+function restockingPaymentText(order) {
+  const method = order.paymentMethod ? ` via ${order.paymentMethod}` : "";
+  return `${order.paymentResponsibility || "Store/business pays supplier for restocking"}${method}`;
+}
+
+function orderTotal(order) {
+  const product = state.products.find((item) => item.id === order.productId || item.name === order.productName);
+  return Number(order.quantity || 0) * Number(product?.cost || 0);
+}
+
 function handleQuickAction(action) {
   closeQuickActions();
 
@@ -1147,7 +1232,7 @@ function handleQuickAction(action) {
   if (action === "create-po") {
     askConfirmation({
       title: "Create Purchase Order?",
-      message: "Open the purchase order form for supplier ordering?",
+      message: "Open the purchase order form for supplier ordering? The store/business pays the supplier for restocking.",
       confirmText: "Open PO",
       onConfirm: () => {
         setView("purchase-orders");
@@ -1185,8 +1270,8 @@ function handleQuickAction(action) {
 }
 
 function closeQuickActions() {
-  els.quickDropdown.classList.remove("open");
-  els.quickToggle.setAttribute("aria-expanded", "false");
+  els.quickDropdown?.classList.remove("open");
+  els.quickToggle?.setAttribute("aria-expanded", "false");
 }
 
 function focusFirstField(container) {
@@ -1197,7 +1282,7 @@ function prepareProductRequest(product) {
   setView("requests");
   els.requestProduct.value = product.id;
   els.requestForm.quantity.value = Math.max(product.reorder * 2 - product.quantity, product.reorder, 1);
-  els.requestMessage.textContent = `Request prepared for ${product.name}.`;
+  els.requestMessage.textContent = `Request prepared for ${product.name}. If approved, the store pays the supplier for restocking.`;
 }
 
 function preparePurchaseOrder(product) {
@@ -1205,7 +1290,7 @@ function preparePurchaseOrder(product) {
   els.poSupplier.value = product.supplier;
   renderPurchaseOrderControls(product.id);
   els.purchaseOrderForm.quantity.value = Math.max(product.reorder * 2 - product.quantity, product.reorder, 1);
-  els.purchaseOrderMessage.textContent = `Purchase order prepared for ${product.name}.`;
+  els.purchaseOrderMessage.textContent = `Purchase order prepared for ${product.name}. Store/business pays the supplier.`;
 }
 
 function requestBadge(status) {
@@ -1230,9 +1315,9 @@ function handleRequestAction(action, id) {
 
   const product = state.products.find((item) => item.id === productRequest.productId);
   const labels = {
-    approve: ["Approve Request?", `Approve ${productRequest.quantity} ${productRequest.productName} for purchasing?`, "Approve"],
+    approve: ["Approve Request?", `Approve ${productRequest.quantity} ${productRequest.productName} for purchasing? The store/business will pay the supplier if this becomes a PO.`, "Approve"],
     reject: ["Reject Request?", `Reject the request for ${productRequest.productName}?`, "Reject"],
-    order: ["Create Purchase Order?", `Create a purchase order for ${productRequest.quantity} ${productRequest.productName} from ${productRequest.supplier}?`, "Create PO"]
+    order: ["Create Purchase Order?", `Create a purchase order for ${productRequest.quantity} ${productRequest.productName} from ${productRequest.supplier}? Store/business pays the supplier for restocking.`, "Create PO"]
   };
   const [title, message, confirmText] = labels[action] || labels.approve;
 
@@ -1256,7 +1341,7 @@ function handleRequestAction(action, id) {
         productRequest.status = "Ordered";
         productRequest.managerNote = "Approved and converted to purchase order.";
         const order = {
-          id: crypto.randomUUID(),
+          id: makeId(),
           number: nextPurchaseOrderNumber(),
           supplier: productRequest.supplier,
           productId: productRequest.productId,
@@ -1265,6 +1350,10 @@ function handleRequestAction(action, id) {
           expectedDate: productRequest.neededBy || daysFromNow(product?.leadTime || 7),
           status: "Pending",
           notes: `Created from request: ${productRequest.reason || "Product replenishment"}`,
+          paymentResponsibility: "Store/business pays supplier for restocking",
+          paymentMethod: "Cash",
+          paymentStatus: "Unpaid",
+          paidAt: null,
           createdAt: new Date().toISOString()
         };
         state.purchaseOrders.unshift(order);
@@ -1279,7 +1368,7 @@ function handleRequestAction(action, id) {
         state.productRequests[index] = normalizeProductRequest(updated);
       }
 
-      flashMessage(action === "order" ? "Request converted to a purchase order." : `Request ${productRequest.status.toLowerCase()}.`);
+      flashMessage(action === "order" ? "Request converted to a purchase order. Store/business pays the supplier." : `Request ${productRequest.status.toLowerCase()}.`);
       persistAndRender();
     }
   });
@@ -1300,7 +1389,7 @@ function receivePurchaseOrder(id) {
   order.status = "Received";
   order.receivedAt = new Date().toISOString();
   state.movements.unshift({
-    id: crypto.randomUUID(),
+    id: makeId(),
     productName: product.name,
     type: "in",
     quantity: Number(order.quantity),
@@ -1311,6 +1400,38 @@ function receivePurchaseOrder(id) {
   sendToApi(`purchase-orders/${encodeURIComponent(order.id)}/receive`, order, "PATCH");
   flashMessage(`${order.number} received. ${order.quantity} ${product.name} added to inventory.`);
   persistAndRender();
+}
+
+function markPurchaseOrderPaid(id) {
+  if (!can("admin", "manager")) {
+    flashMessage("Only Admin and Manager can record supplier payment.");
+    return;
+  }
+
+  const order = state.purchaseOrders.find((item) => item.id === id);
+  if (!order) return;
+
+  askConfirmation({
+    title: "Mark Supplier Payment Paid?",
+    message: `Record ${order.number} as paid by the store/business to ${order.supplier}? Stock receiving is still handled separately.`,
+    confirmText: "Mark Paid",
+    onConfirm: async () => {
+      order.paymentStatus = "Paid";
+      order.paidAt = new Date().toISOString();
+      const updated = await sendToApi(`purchase-orders/${encodeURIComponent(order.id)}/payment`, {
+        paymentMethod: order.paymentMethod || "Cash",
+        paymentStatus: "Paid"
+      }, "PATCH");
+
+      if (updated?.id) {
+        const index = state.purchaseOrders.findIndex((item) => item.id === id);
+        state.purchaseOrders[index] = normalizePurchaseOrders([updated])[0];
+      }
+
+      flashMessage(`${order.number} payment recorded as paid. Store/business paid the supplier.`);
+      persistAndRender();
+    }
+  });
 }
 
 function flashMessage(message) {
@@ -1464,7 +1585,7 @@ function renderPagination(container, key, page, label) {
 
 function normalizeProducts(products) {
   return products.map((item) => ({
-    id: String(item.id ?? crypto.randomUUID()),
+    id: String(item.id ?? makeId()),
     name: item.name ?? item.product_name ?? "Unnamed Product",
     sku: item.sku ?? item.code ?? "NO-SKU",
     category: item.category ?? item.category_name ?? "Uncategorized",
@@ -1477,7 +1598,7 @@ function normalizeProducts(products) {
 
 function normalizeMovements(movements) {
   return movements.map((item) => ({
-    id: String(item.id ?? crypto.randomUUID()),
+    id: String(item.id ?? makeId()),
     productId: item.productId ?? item.product_id ?? null,
     productName: item.productName ?? item.product_name ?? item.product?.name ?? "Unknown Product",
     type: item.type === "stock_in" ? "in" : item.type === "stock_out" ? "out" : item.type ?? "in",
@@ -1490,7 +1611,7 @@ function normalizeMovements(movements) {
 
 function normalizeSuppliers(suppliers) {
   return suppliers.map((item) => ({
-    id: String(item.id ?? crypto.randomUUID()),
+    id: String(item.id ?? makeId()),
     name: item.name ?? item.supplier_name ?? "Unnamed Supplier",
     contact: item.contact ?? item.contact_person ?? "No contact",
     email: item.email ?? "No email",
@@ -1503,7 +1624,7 @@ function normalizeSuppliers(suppliers) {
 
 function normalizePurchaseOrders(orders) {
   return orders.map((item) => ({
-    id: String(item.id ?? crypto.randomUUID()),
+    id: String(item.id ?? makeId()),
     number: item.number ?? item.po_number ?? `PO-${item.id ?? "API"}`,
     supplier: item.supplier ?? item.supplier_name ?? item.supplier?.name ?? "Unknown Supplier",
     productId: String(item.productId ?? item.product_id ?? ""),
@@ -1512,13 +1633,17 @@ function normalizePurchaseOrders(orders) {
     expectedDate: item.expectedDate ?? item.expected_date ?? item.created_at ?? new Date().toISOString(),
     status: item.status ?? "Pending",
     notes: item.notes ?? "Imported from API",
+    paymentResponsibility: item.paymentResponsibility ?? item.payment_responsibility ?? "Store/business pays supplier for restocking",
+    paymentMethod: item.paymentMethod ?? item.payment_method ?? "Cash",
+    paymentStatus: item.paymentStatus ?? item.payment_status ?? "Unpaid",
+    paidAt: item.paidAt ?? item.paid_at ?? null,
     createdAt: item.createdAt ?? item.created_at ?? new Date().toISOString()
   }));
 }
 
 function normalizeProductRequest(item) {
   return {
-    id: String(item.id ?? crypto.randomUUID()),
+    id: String(item.id ?? makeId()),
     requester: item.requester ?? item.requester_name ?? item.requester?.name ?? "Staff User",
     productId: String(item.productId ?? item.product_id ?? ""),
     productName: item.productName ?? item.product_name ?? item.product?.name ?? "Unknown Product",

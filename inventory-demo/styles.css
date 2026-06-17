@@ -302,6 +302,7 @@ h2 {
 .quick-menu,
 .profile-menu {
   position: relative;
+  z-index: 40;
 }
 
 .quick-button {
@@ -334,6 +335,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   min-height: 42px;
   padding: 0 12px 0 8px;
   border: 1px solid var(--line);
@@ -341,7 +343,9 @@ h2 {
   background: var(--surface);
   color: var(--ink);
   cursor: pointer;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 140ms ease;
 }
 
 .user-chip > span {
@@ -378,9 +382,14 @@ h2 {
   color: var(--muted);
 }
 
-.user-chip:hover {
+.user-chip:hover,
+.user-chip.active {
   border-color: var(--teal);
   box-shadow: 0 8px 22px rgba(21, 33, 38, 0.1);
+}
+
+.user-chip:active {
+  transform: scale(0.98);
 }
 
 .quick-dropdown,
@@ -388,7 +397,7 @@ h2 {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  z-index: 20;
+  z-index: 120;
   display: none;
   width: 280px;
   padding: 10px;
@@ -397,6 +406,7 @@ h2 {
   background: var(--surface);
   box-shadow: 0 18px 44px rgba(21, 33, 38, 0.16);
   animation: viewIn 180ms ease both;
+  pointer-events: auto;
 }
 
 .quick-dropdown {
@@ -735,6 +745,17 @@ h2 {
   font-size: 12px;
 }
 
+.flow-note {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--teal-soft);
+  border-radius: 8px;
+  background: #f2faf8;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .priority-list,
 .note-list {
   display: grid;
@@ -1056,7 +1077,8 @@ tbody tr:hover {
 }
 
 .receiving-card-main strong,
-.receiving-card-main span {
+.receiving-card-main span,
+.receiving-card-main em {
   display: block;
 }
 
@@ -1070,6 +1092,14 @@ tbody tr:hover {
   margin-top: 3px;
   color: var(--muted);
   font-size: 13px;
+}
+
+.receiving-card-main em {
+  margin-top: 4px;
+  color: var(--teal);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .po-chip {
@@ -1087,7 +1117,7 @@ tbody tr:hover {
 
 .receiving-meta {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
   gap: 10px;
 }
@@ -1104,6 +1134,14 @@ tbody tr:hover {
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.payment-method {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .receiving-empty {

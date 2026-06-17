@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -528,8 +528,24 @@
                   </div>
                 </div>
               </label>
+              <label>Payment Method
+                <select name="paymentMethod" id="po-payment-method" required>
+                  <option value="Cash">Cash</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="GCash">GCash</option>
+                  <option value="Check">Check</option>
+                </select>
+              </label>
+              <label>Payment Status
+                <select name="paymentStatus" id="po-payment-status" required>
+                  <option value="Unpaid">Unpaid</option>
+                  <option value="Partially Paid">Partially Paid</option>
+                  <option value="Paid">Paid</option>
+                </select>
+              </label>
               <label class="span-2">Notes<input name="notes" placeholder="Reorder for low stock, urgent replenishment"></label>
             </div>
+            <p class="flow-note">Restocking flow: Staff request -&gt; Manager approval -&gt; Admin/Manager creates PO -&gt; Store pays supplier -&gt; Staff receives stock.</p>
             <button class="primary-button" type="submit">Create Purchase Order</button>
             <p class="form-message" id="purchase-order-message" role="status"></p>
           </form>
@@ -564,6 +580,7 @@
                     <th>Product</th>
                     <th>Qty</th>
                     <th>Expected</th>
+                    <th>Payment</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
