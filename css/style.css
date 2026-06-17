@@ -307,8 +307,7 @@ body::before {
 }
 
 .mobile-profile-summary,
-.mobile-availability,
-.mobile-bottom-nav {
+.mobile-availability {
     display: none;
 }
 
@@ -2214,7 +2213,7 @@ section {
         background:
             radial-gradient(circle at 82% 12%, rgba(223, 109, 255, 0.2), transparent 32%),
             linear-gradient(160deg, #14031f 0%, #230536 52%, #180421 100%);
-        padding-bottom: calc(124px + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
     body::before {
@@ -2532,71 +2531,6 @@ section {
         box-shadow: 0 0 26px rgba(223, 109, 255, 0.28);
     }
 
-    .mobile-bottom-nav {
-        position: fixed;
-        left: 0.75rem;
-        right: 0.75rem;
-        bottom: max(0.65rem, env(safe-area-inset-bottom));
-        z-index: 1100;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.25rem;
-        padding: 0.45rem;
-        border: 1px solid rgba(223, 109, 255, 0.25);
-        border-radius: 22px;
-        background: rgba(30, 8, 46, 0.88);
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
-        backdrop-filter: blur(18px);
-        animation: mobileDockIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.16s both;
-    }
-
-    .mobile-bottom-nav a {
-        display: grid;
-        place-items: center;
-        gap: 0.18rem;
-        min-height: 54px;
-        border-radius: 16px;
-        color: #d9bee9;
-        text-decoration: none;
-        font-size: 0.66rem;
-        font-weight: 800;
-        transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        animation: mobileNavItemIn 0.42s ease both;
-    }
-
-    .mobile-bottom-nav a:nth-child(1) { animation-delay: 0.22s; }
-    .mobile-bottom-nav a:nth-child(2) { animation-delay: 0.28s; }
-    .mobile-bottom-nav a:nth-child(3) { animation-delay: 0.34s; }
-    .mobile-bottom-nav a:nth-child(4) { animation-delay: 0.4s; }
-
-    .mobile-bottom-nav a:active {
-        transform: translateY(-2px) scale(0.94);
-        color: #ffffff;
-        background: rgba(223, 109, 255, 0.2);
-        box-shadow: inset 0 0 0 1px rgba(223, 109, 255, 0.28);
-    }
-
-    .mobile-bottom-nav a:hover,
-    .mobile-bottom-nav a:focus-visible {
-        color: #ffffff;
-        background: rgba(223, 109, 255, 0.16);
-        transform: translateY(-1px);
-        outline: none;
-    }
-
-    .mobile-bottom-nav svg {
-        width: 21px;
-        height: 21px;
-        fill: currentColor;
-        transition: transform 0.2s ease;
-    }
-
-    .mobile-bottom-nav a:active svg,
-    .mobile-bottom-nav a:hover svg,
-    .mobile-bottom-nav a:focus-visible svg {
-        transform: translateY(-1px) scale(1.06);
-    }
-
     .cert-modal-body {
         padding: 1.6rem 1rem;
     }
@@ -2605,35 +2539,38 @@ section {
         max-height: 62vh;
     }
 
+    .compose-footer {
+        grid-template-columns: 1fr auto;
+        gap: 0.75rem;
+        padding: 0.9rem;
+    }
+
+    .compose-footer .submit-btn {
+        min-height: 52px;
+        width: 100%;
+    }
+
+    .compose-toolbar {
+        grid-column: 1 / -1;
+        order: 3;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        overflow-x: visible;
+    }
+
+    .compose-toolbar button,
+    .compose-trash {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.045);
+    }
+
     section {
         padding: 58px 0;
     }
 
-    .footer {
-        padding-bottom: calc(7.5rem + env(safe-area-inset-bottom));
-    }
-}
-
-@keyframes mobileDockIn {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.97);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes mobileNavItemIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 @media (max-width: 360px) {
