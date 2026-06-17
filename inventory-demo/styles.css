@@ -2310,24 +2310,39 @@ select:focus {
     scroll-snap-type: none;
   }
 
-  .nav-item.mobile-more-item {
-    display: none;
+  .nav-list > .nav-item.mobile-more-item {
+    display: none !important;
   }
 
   .nav-item,
   .mobile-more-toggle {
+    display: flex;
     flex: 1 1 0;
     min-width: 0;
-    max-width: 78px;
-    min-height: 58px;
-    padding: 7px 3px;
+    max-width: 74px;
+    min-height: 64px;
+    padding: 8px 4px;
     border: 0;
     background: transparent;
     color: #c8d6d4;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
     letter-spacing: 0;
     white-space: normal;
+    touch-action: manipulation;
+  }
+
+  .nav-item .icon,
+  .mobile-more-toggle .icon {
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 10px;
+  }
+
+  .nav-item .icon svg,
+  .mobile-more-toggle .icon svg {
+    width: 22px;
+    height: 22px;
   }
 
   .nav-item.active,
@@ -2339,6 +2354,130 @@ select:focus {
 
   .mobile-more-toggle {
     display: flex;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .metric {
+    min-height: 132px;
+    padding: 14px;
+    border-top-width: 5px;
+    border-radius: 14px;
+  }
+
+  .metric span {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .metric strong {
+    margin: 8px 0 5px;
+    font-size: clamp(30px, 9vw, 42px);
+    line-height: 1;
+  }
+
+  .metric small {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  #dashboard-view .dashboard-layout {
+    gap: 12px;
+  }
+
+  #dashboard-view .panel {
+    border-radius: 14px;
+  }
+
+  #dashboard-view .panel-header {
+    gap: 10px;
+  }
+
+  #dashboard-view .panel-header .inline-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  #dashboard-view .panel-header .inline-actions .text-button {
+    min-height: 46px;
+    border-radius: 12px;
+  }
+
+  #dashboard-view .priority-item {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  #dashboard-view .priority-item .inline-actions {
+    justify-content: space-between;
+  }
+
+  #dashboard-view .priority-item .text-button {
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+  }
+
+  #dashboard-view .table-wrap {
+    overflow-x: visible;
+  }
+
+  #dashboard-view table {
+    min-width: 0;
+  }
+
+  #dashboard-view thead {
+    display: none;
+  }
+
+  #dashboard-view tr {
+    display: grid;
+    gap: 7px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  #dashboard-view td {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0;
+    border-bottom: 0;
+    color: var(--ink);
+  }
+
+  #dashboard-view td::before {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  #dashboard-view td:nth-child(1)::before {
+    content: "Date";
+  }
+
+  #dashboard-view td:nth-child(2)::before {
+    content: "Item";
+  }
+
+  #dashboard-view td:nth-child(3)::before {
+    content: "Type";
+  }
+
+  #dashboard-view td:nth-child(4)::before {
+    content: "Qty";
+  }
+
+  #dashboard-view td:nth-child(5)::before {
+    content: "By";
   }
 
   .mobile-more-sheet {
@@ -2502,13 +2641,14 @@ select:focus {
 @media (max-width: 420px) {
   .nav-item,
   .mobile-more-toggle {
-    max-width: 68px;
+    max-width: 70px;
+    min-height: 64px;
     font-size: 9px;
   }
 
   .nav-item .icon svg,
   .mobile-more-toggle .icon svg {
-    width: 17px;
-    height: 17px;
+    width: 21px;
+    height: 21px;
   }
 }
