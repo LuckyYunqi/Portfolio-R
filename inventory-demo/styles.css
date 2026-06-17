@@ -1053,7 +1053,7 @@ tbody tr:hover {
 
 .receiving-card {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(260px, 0.9fr) auto;
+  grid-template-columns: minmax(260px, 1.2fr) minmax(340px, 1fr) auto;
   align-items: center;
   gap: 14px;
   padding: 14px;
@@ -1077,6 +1077,10 @@ tbody tr:hover {
   min-width: 0;
 }
 
+.receiving-card-main > div:last-child {
+  min-width: 0;
+}
+
 .receiving-card-main strong,
 .receiving-card-main span,
 .receiving-card-main em {
@@ -1085,8 +1089,9 @@ tbody tr:hover {
 
 .receiving-card-main strong {
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .receiving-card-main span {
@@ -1118,14 +1123,16 @@ tbody tr:hover {
 
 .receiving-meta {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(72px, 1fr)) auto;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .receiving-meta span {
   display: grid;
   gap: 2px;
+  min-width: 0;
   color: var(--ink);
   font-weight: 800;
 }
@@ -1494,6 +1501,25 @@ select:focus {
   .availability-card {
     grid-template-columns: 1fr;
     align-items: stretch;
+  }
+}
+
+@media (max-width: 900px) {
+  .receiving-card {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .receiving-card-main {
+    align-items: flex-start;
+  }
+
+  .receiving-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .receiving-card .table-button {
+    width: 100%;
   }
 }
 
