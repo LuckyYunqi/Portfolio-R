@@ -2266,7 +2266,7 @@ select:focus {
 /* Final mobile app-shell override. Keep this last so it wins over earlier responsive rules. */
 @media (max-width: 1080px) {
   body {
-    padding-bottom: calc(86px + env(safe-area-inset-bottom));
+    padding-bottom: calc(104px + env(safe-area-inset-bottom));
   }
 
   .sidebar {
@@ -2275,6 +2275,24 @@ select:focus {
 
   .brand {
     min-height: 44px;
+  }
+
+  .workspace {
+    padding-top: 16px;
+  }
+
+  .topbar {
+    position: relative;
+    gap: 14px;
+  }
+
+  .topbar > div:first-child {
+    min-height: 52px;
+    padding-right: 60px;
+  }
+
+  .topbar h1 {
+    line-height: 1.05;
   }
 
   .nav-list {
@@ -2382,18 +2400,83 @@ select:focus {
   }
 
   .topbar-actions {
-    grid-template-columns: 48px 48px minmax(0, 1fr);
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
   }
 
-  .quick-menu,
-  .profile-menu,
-  .quick-button,
-  .user-chip,
+  .search-field {
+    grid-column: 1 / -1;
+    min-height: 52px;
+    border-radius: 14px;
+  }
+
   #reset-demo {
+    grid-column: 1;
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
+    min-height: 52px;
+    border-radius: 14px;
+  }
+
+  .profile-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    grid-column: auto;
+    width: 48px;
+    height: 48px;
+  }
+
+  .user-chip {
+    justify-content: center;
     width: 48px;
     min-width: 48px;
     height: 48px;
     min-height: 48px;
+    padding: 0;
+    border-radius: 14px;
+  }
+
+  .user-chip > span {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .quick-menu {
+    position: fixed;
+    right: 18px;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+    z-index: 138;
+    grid-column: auto;
+    width: 58px;
+    height: 58px;
+  }
+
+  .quick-button {
+    justify-content: center;
+    width: 58px;
+    min-width: 58px;
+    height: 58px;
+    min-height: 58px;
+    padding: 0;
+    border-radius: 18px;
+    background: var(--teal);
+    color: #ffffff;
+    box-shadow: 0 16px 34px rgba(17, 124, 114, 0.32);
+    font-size: 0;
+  }
+
+  .quick-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .quick-button svg:last-child {
+    display: none;
   }
 
   .quick-dropdown,
@@ -2405,6 +2488,14 @@ select:focus {
     bottom: calc(90px + env(safe-area-inset-bottom));
     width: auto;
     max-width: none;
+  }
+
+  .profile-dropdown {
+    top: 58px;
+    left: auto;
+    right: 0;
+    bottom: auto;
+    width: min(310px, calc(100vw - 24px));
   }
 }
 
