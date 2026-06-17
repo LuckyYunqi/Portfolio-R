@@ -57,10 +57,14 @@ const dateFormat = new Intl.DateTimeFormat("en-PH", { month: "short", day: "nume
 const monthNames = Array.from({ length: 12 }, (_, index) =>
   new Intl.DateTimeFormat("en-PH", { month: "short" }).format(new Date(2026, index, 1))
 );
+const mobileMoreViews = ["availability", "movements", "suppliers", "purchase-orders", "reports"];
 
 const els = {
   title: document.querySelector("#view-title"),
   navItems: document.querySelectorAll(".nav-item"),
+  mobileMoreToggle: document.querySelector("#mobile-more-toggle"),
+  mobileMoreSheet: document.querySelector("#mobile-more-sheet"),
+  mobileMoreLinks: document.querySelectorAll("[data-mobile-view]"),
   views: document.querySelectorAll(".view"),
   search: document.querySelector("#global-search"),
   reset: document.querySelector("#reset-demo"),
@@ -272,6 +276,7 @@ bind(els.quickToggle, "click", (event) => {
   els.quickToggle.setAttribute("aria-expanded", String(open));
   els.profileDropdown?.classList.remove("open");
   els.profileToggle?.setAttribute("aria-expanded", "false");
+  toggleMobileMore(false);
 });
 
 function toggleProfileMenu(forceOpen = null, closeQuick = true) {
@@ -280,6 +285,7 @@ function toggleProfileMenu(forceOpen = null, closeQuick = true) {
   els.profileDropdown.classList.toggle("open", open);
   els.profileToggle.classList.toggle("active", open);
   els.profileToggle.setAttribute("aria-expanded", String(open));
+  if (open) toggleMobileMore(false);
   if (closeQuick) closeQuickActions();
 }
 
@@ -287,6 +293,22 @@ bind(els.profileToggle, "click", (event) => {
   event.preventDefault();
   event.stopPropagation();
   toggleProfileMenu();
+});
+
+bind(els.mobileMoreToggle, "click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  els.quickDropdown?.classList.remove("open");
+  els.quickToggle?.setAttribute("aria-expanded", "false");
+  toggleProfileMenu(false, false);
+  toggleMobileMore();
+});
+
+els.mobileMoreLinks.forEach((item) => {
+  item.addEventListener("click", () => {
+    setView(item.dataset.mobileView);
+    toggleMobileMore(false);
+  });
 });
 
 document.addEventListener("click", (event) => {
@@ -303,6 +325,10 @@ document.addEventListener("click", (event) => {
 
   if (!event.target.closest(".quick-menu")) {
     closeQuickActions();
+  }
+
+  if (!event.target.closest(".mobile-more-sheet") && !event.target.closest("#mobile-more-toggle")) {
+    toggleMobileMore(false);
   }
 });
 
@@ -342,13 +368,16 @@ document.addEventListener("keydown", (event) => {
     closeConfirmation();
     els.quickDropdown?.classList.remove("open");
     toggleProfileMenu(false);
+    toggleMobileMore(false);
   }
 });
 
 els.navItems.forEach((item) => {
   item.addEventListener("click", (event) => {
     event.preventDefault();
+    if (!item.dataset.view) return;
     setView(item.dataset.view);
+    toggleMobileMore(false);
   });
 });
 
@@ -692,6 +721,7 @@ function setView(view) {
   els.navItems.forEach((item) => item.classList.toggle("active", item.dataset.view === view));
   els.views.forEach((section) => section.classList.toggle("active", section.id === `${view}-view`));
   els.title.textContent = titleCase(view);
+  updateMobileMoreState(view);
 }
 
 function render() {
@@ -1503,6 +1533,21 @@ function can(...roles) {
 function closeSettings() {
   els.settingsModal.classList.remove("open");
   els.settingsModal.setAttribute("aria-hidden", "true");
+}
+
+function toggleMobileMore(forceOpen = null) {
+  if (!els.mobileMoreSheet || !els.mobileMoreToggle) return;
+  const open = forceOpen ?? !els.mobileMoreSheet.classList.contains("open");
+  els.mobileMoreSheet.classList.toggle("open", open);
+  els.mobileMoreSheet.setAttribute("aria-hidden", String(!open));
+  els.mobileMoreToggle.classList.toggle("open", open);
+  els.mobileMoreToggle.setAttribute("aria-expanded", String(open));
+}
+
+function updateMobileMoreState(view) {
+  if (!els.mobileMoreToggle) return;
+  const moreViewActive = mobileMoreViews.includes(view);
+  els.mobileMoreToggle.classList.toggle("active", moreViewActive || els.mobileMoreSheet?.classList.contains("open"));
 }
 
 function openPoProductModal() {
