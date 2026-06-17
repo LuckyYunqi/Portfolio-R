@@ -4,6 +4,53 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
+const navPreview = document.getElementById('navPreview');
+const navPreviewKicker = document.getElementById('navPreviewKicker');
+const navPreviewTitle = document.getElementById('navPreviewTitle');
+const navPreviewSummary = document.getElementById('navPreviewSummary');
+const navPreviewList = document.getElementById('navPreviewList');
+const navPreviewAction = document.getElementById('navPreviewAction');
+const navPreviewCloseTargets = document.querySelectorAll('[data-nav-preview-close]');
+let activePreviewTarget = '';
+
+const navPreviewContent = {
+    '#home': {
+        kicker: 'Profile',
+        title: 'Reyniel Polancos',
+        summary: 'Fresh IT graduate focused on frontend development, mobile app foundations, and practical React-based projects for entry-level opportunities.',
+        points: ['Available for junior developer roles', 'Based in Digos City, Davao del Sur', 'Frontend, mobile UI, and practical web setup']
+    },
+    '#about': {
+        kicker: 'About',
+        title: 'About Reyniel',
+        summary: 'I build clean, responsive interfaces and keep improving through hands-on web and mobile app projects.',
+        points: ['Fresh IT graduate', 'Practical experience with HTML, CSS, React JS, and React Native', 'Looking to contribute, learn real workflows, and grow with a development team']
+    },
+    '#education': {
+        kicker: 'Education',
+        title: 'Academic Background',
+        summary: 'My education built the discipline, foundation, and learning habits I bring into development work.',
+        points: ['College Graduate from University of Mindanao', 'Digos City, Davao del Sur', 'Focused on steady growth, problem solving, and practical skill building']
+    },
+    '#certifications': {
+        kicker: 'Credentials',
+        title: 'Certifications',
+        summary: 'Certifications show my effort to strengthen core IT, web, and technical foundations.',
+        points: ['TESDA computer systems and networking certificates', 'Introduction to CSS credential', 'IT Specialist: HTML and CSS certification']
+    },
+    '#projects': {
+        kicker: 'Work',
+        title: 'Projects',
+        summary: 'My projects show growth across frontend interfaces, inventory workflows, mobile app concepts, and portfolio presentation.',
+        points: ['TaskMate task management system in progress', 'Hospital and inventory management UI experience', 'MobileLex React Native consultation app project']
+    },
+    '#skills': {
+        kicker: 'Skills',
+        title: 'Technical Skills',
+        summary: 'I am actively improving practical frontend, mobile, design, and local development skills.',
+        points: ['Frontend: HTML, CSS, React JS', 'Mobile: React Native screens and navigation concepts', 'Tools: GitHub, VS Code, XAMPP, Photoshop, Premiere Pro, After Effects']
+    }
+};
 
 function setMobileMenuState(isOpen) {
     navMenu.classList.toggle('active', isOpen);
@@ -18,10 +65,60 @@ hamburger.addEventListener('click', () => {
 
 // Close menu when a link is clicked
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (event) => {
+        const target = link.getAttribute('href');
+        if (navPreviewContent[target]) {
+            event.preventDefault();
+            openNavPreview(target);
+        }
         setMobileMenuState(false);
     });
 });
+
+function openNavPreview(target) {
+    const content = navPreviewContent[target];
+    if (!navPreview || !content) return;
+
+    activePreviewTarget = target;
+    navPreviewKicker.textContent = content.kicker;
+    navPreviewTitle.textContent = content.title;
+    navPreviewSummary.textContent = content.summary;
+    navPreviewList.innerHTML = content.points.map(point => `<li>${point}</li>`).join('');
+    navPreviewAction.dataset.target = target;
+    navPreview.classList.add('active');
+    navPreview.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('nav-preview-open');
+    setTimeout(() => navPreviewAction?.focus(), 120);
+}
+
+function closeNavPreview() {
+    if (!navPreview) return;
+
+    navPreview.classList.remove('active');
+    navPreview.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('nav-preview-open');
+}
+
+function openPreviewTargetSection() {
+    const targetSelector = navPreviewAction?.dataset.target || activePreviewTarget;
+    const target = targetSelector ? document.querySelector(targetSelector) : null;
+    closeNavPreview();
+
+    if (target) {
+        window.requestAnimationFrame(() => {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+}
+
+navPreviewCloseTargets.forEach(target => {
+    target.addEventListener('click', closeNavPreview);
+});
+
+navPreviewAction?.addEventListener('click', openPreviewTargetSection);
 
 // ====================================
 // EMAIL COMPOSE MODAL
@@ -440,6 +537,8 @@ async function sendViaFormSubmit(formElement) {
 // ====================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+
         const href = this.getAttribute('href');
         if (href !== '#') {
             e.preventDefault();
@@ -572,6 +671,7 @@ window.addEventListener('load', adjustForMobile);
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         setMobileMenuState(false);
+        closeNavPreview();
         closeCertificate();
         return;
     }

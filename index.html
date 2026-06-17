@@ -33,6 +33,18 @@
         </div>
     </nav>
 
+    <div class="nav-preview" id="navPreview" aria-hidden="true">
+        <div class="nav-preview-backdrop" data-nav-preview-close></div>
+        <article class="nav-preview-card" role="dialog" aria-modal="true" aria-labelledby="navPreviewTitle">
+            <button class="nav-preview-close" type="button" aria-label="Close navigation preview" data-nav-preview-close>&times;</button>
+            <p class="nav-preview-kicker" id="navPreviewKicker">Portfolio</p>
+            <h2 id="navPreviewTitle">Section Preview</h2>
+            <p class="nav-preview-summary" id="navPreviewSummary"></p>
+            <ul class="nav-preview-list" id="navPreviewList"></ul>
+            <button class="nav-preview-action" type="button" id="navPreviewAction">Open Section</button>
+        </article>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container hero-grid">
