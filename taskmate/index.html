@@ -89,6 +89,45 @@
                 </div>
             </section>
 
+            <section class="mobile-focus-panel" aria-label="Today task focus">
+                <div class="mobile-focus-header">
+                    <div>
+                        <p class="eyebrow">Today</p>
+                        <h2>What needs attention</h2>
+                    </div>
+                    <button class="primary-button" type="button" data-open-modal>+ New</button>
+                </div>
+                <div class="mobile-quick-actions" aria-label="Quick task actions">
+                    <button type="button" data-open-modal>+ Add Task</button>
+                    <button type="button" data-open-filter>Filter</button>
+                    <button type="button" data-open-detail>Assign</button>
+                    <a href="calendar.html">Due Today</a>
+                </div>
+                <div class="mobile-priority-list">
+                    <article class="mobile-task urgent">
+                        <span>High</span>
+                        <strong>Update medicine stock count</strong>
+                        <p>Due 2:00 PM · Reyniel</p>
+                        <button type="button" data-open-detail>Submit</button>
+                        <button class="more-action-button" type="button" data-open-more aria-label="More actions">...</button>
+                    </article>
+                    <article class="mobile-task warning">
+                        <span>Today</span>
+                        <strong>Prepare inventory report</strong>
+                        <p>Operations · Maria</p>
+                        <button type="button" data-open-detail>Start</button>
+                        <button class="more-action-button" type="button" data-open-more aria-label="More actions">...</button>
+                    </article>
+                    <article class="mobile-task calm">
+                        <span>Reminder</span>
+                        <strong>Send reminder to department head</strong>
+                        <p>Approval follow-up · Admin</p>
+                        <button type="button" data-open-detail>View</button>
+                        <button class="more-action-button" type="button" data-open-more aria-label="More actions">...</button>
+                    </article>
+                </div>
+            </section>
+
             <section class="summary-grid" aria-label="Task summary">
                 <article class="summary-card purple">
                     <span>Total Tasks</span>
@@ -155,13 +194,15 @@
                                     <strong>Prepare inventory report</strong>
                                     <p>Assigned to Maria • Due today • High priority</p>
                                     <span>Operations</span>
-                                    <button class="task-card-action" type="button">Start Task</button>
+                                    <button class="task-card-action" type="button" data-open-detail>Start Task</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card" data-type="web">
                                     <strong>Review purchase request</strong>
                                     <p>Assigned to Ken • Due tomorrow • Medium priority</p>
                                     <span>Approval</span>
-                                    <button class="task-card-action" type="button">Assign</button>
+                                    <button class="task-card-action" type="button" data-open-detail>Assign</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card skeleton" data-type="web">
                                     <span></span>
@@ -181,19 +222,22 @@
                                     <strong>Update medicine stock count</strong>
                                     <p>Assigned to Reyniel • Due 2:00 PM • High priority</p>
                                     <span>Inventory</span>
-                                    <button class="task-card-action primary" type="button">Submit Task</button>
+                                    <button class="task-card-action primary" type="button" data-open-detail>Submit Task</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card" data-type="web">
                                     <strong>Send reminder to department head</strong>
                                     <p>Assigned to Admin • Due today • Reminder sent</p>
                                     <span>Reminder</span>
-                                    <button class="task-card-action" type="button">Add Comment</button>
+                                    <button class="task-card-action" type="button" data-open-detail>Add Comment</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card" data-type="web">
                                     <strong>Verify equipment delivery</strong>
                                     <p>Assigned to Liza • Due Friday • Waiting for update</p>
                                     <span>Procurement</span>
-                                    <button class="task-card-action" type="button">Update Status</button>
+                                    <button class="task-card-action" type="button" data-open-detail>Update Status</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                             </div>
                         </article>
@@ -209,13 +253,15 @@
                                     <strong>Archive completed requests</strong>
                                     <p>Assigned to Admin • Completed today</p>
                                     <span>Done</span>
-                                    <button class="task-card-action" type="button">Archive</button>
+                                    <button class="task-card-action" type="button" data-open-detail>Archive</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card complete" data-type="mobile">
                                     <strong>Submit daily task summary</strong>
                                     <p>Assigned to Reyniel • Completed yesterday</p>
                                     <span>Done</span>
-                                    <button class="task-card-action" type="button">View Summary</button>
+                                    <button class="task-card-action" type="button" data-open-detail>View Summary</button>
+                                    <button class="task-more-button" type="button" data-open-more aria-label="More actions">...</button>
                                 </div>
                                 <div class="task-card skeleton" data-type="mobile">
                                     <span></span>
@@ -381,6 +427,145 @@
             Back
         </a>
     </nav>
+
+    <dialog class="task-modal more-modal" id="moreModal">
+        <form method="dialog">
+            <header>
+                <div>
+                    <p class="eyebrow">More Actions</p>
+                    <h2>Manage this task</h2>
+                </div>
+                <button class="icon-button" value="cancel" aria-label="Close">&times;</button>
+            </header>
+            <div class="more-action-list" aria-label="More task actions">
+                <button type="button" data-open-detail>
+                    <span>View Details</span>
+                    <small>Open task information and comments</small>
+                </button>
+                <button type="button">
+                    <span>Edit Task</span>
+                    <small>Change title, owner, priority, or notes</small>
+                </button>
+                <button type="button">
+                    <span>Reschedule</span>
+                    <small>Move the due date or reminder</small>
+                </button>
+                <button type="button">
+                    <span>Duplicate</span>
+                    <small>Create a copy for repeated work</small>
+                </button>
+                <button class="danger-action" type="button">
+                    <span>Delete</span>
+                    <small>Remove this task from the board</small>
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="ghost-button" value="cancel">Close</button>
+                <button class="primary-button" value="default">Done</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="task-modal filter-modal" id="filterModal">
+        <form method="dialog">
+            <header>
+                <div>
+                    <p class="eyebrow">Task Filters</p>
+                    <h2>Find the right tasks</h2>
+                </div>
+                <button class="icon-button" value="cancel" aria-label="Close">&times;</button>
+            </header>
+            <div class="filter-group" aria-label="Status filter">
+                <span>Status</span>
+                <div class="segmented-control">
+                    <button class="active" type="button">All</button>
+                    <button type="button">To Do</button>
+                    <button type="button">Doing</button>
+                    <button type="button">Done</button>
+                </div>
+            </div>
+            <div class="filter-group" aria-label="Priority filter">
+                <span>Priority</span>
+                <div class="segmented-control">
+                    <button type="button">High</button>
+                    <button type="button">Medium</button>
+                    <button type="button">Low</button>
+                </div>
+            </div>
+            <label>
+                Assignee
+                <select>
+                    <option>Anyone</option>
+                    <option>Reyniel Polancos</option>
+                    <option>Maria Santos</option>
+                    <option>Ken Dela Cruz</option>
+                    <option>Admin User</option>
+                </select>
+            </label>
+            <label>
+                Due date
+                <select>
+                    <option>Due today</option>
+                    <option>Overdue</option>
+                    <option>This week</option>
+                    <option>No due date</option>
+                </select>
+            </label>
+            <label>
+                Sort by
+                <select>
+                    <option>Priority first</option>
+                    <option>Due date</option>
+                    <option>Newest</option>
+                    <option>Assignee</option>
+                </select>
+            </label>
+            <div class="modal-actions">
+                <button class="ghost-button" value="cancel">Reset</button>
+                <button class="primary-button" value="default">Apply Filters</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="task-modal detail-modal" id="detailModal">
+        <form method="dialog">
+            <header>
+                <div>
+                    <p class="eyebrow">Task Details</p>
+                    <h2>Update medicine stock count</h2>
+                </div>
+                <button class="icon-button" value="cancel" aria-label="Close">&times;</button>
+            </header>
+            <div class="detail-summary">
+                <span class="status-pill warning">In Progress</span>
+                <p>Assigned to Reyniel &middot; Due today at 2:00 PM &middot; High priority</p>
+            </div>
+            <div class="segmented-control status-control" aria-label="Update status">
+                <button type="button">To Do</button>
+                <button class="active" type="button">Doing</button>
+                <button type="button">Done</button>
+            </div>
+            <div class="detail-list">
+                <div><span>Linked item</span><strong>Inventory Report</strong></div>
+                <div><span>Followers</span><strong>Maria Santos, Admin User</strong></div>
+                <div><span>Attachments</span><strong>2 files ready</strong></div>
+            </div>
+            <div class="sheet-action-grid" aria-label="Task detail actions">
+                <button class="mini-button" type="button">Add Follower</button>
+                <button class="mini-button" type="button">Set Reminder</button>
+                <button class="mini-button" type="button">Attach File</button>
+                <button class="mini-button" type="button">Comment</button>
+            </div>
+            <label>
+                Quick note
+                <textarea rows="3">Stock count is almost ready for review.</textarea>
+            </label>
+            <div class="modal-actions">
+                <button class="ghost-button" value="cancel">Close</button>
+                <button class="primary-button" value="default">Save Update</button>
+            </div>
+        </form>
+    </dialog>
 
     <dialog class="task-modal" id="taskModal">
         <form method="dialog">

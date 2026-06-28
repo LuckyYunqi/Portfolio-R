@@ -37,15 +37,24 @@
                 <div class="responsive-actions"><button class="ghost-button" type="button">Import</button><button class="primary-button" type="button" data-open-modal>+ Add Task</button></div>
             </section>
 
+            <div class="page-quick-actions" aria-label="Task quick actions">
+                <button type="button" data-open-modal>+ Task</button>
+                <button type="button">Filter</button>
+                <button type="button">Sort</button>
+                <button type="button">Select</button>
+                <button type="button">Overdue</button>
+            </div>
+
             <section class="page-grid">
                 <div class="page-card">
                     <div class="section-heading"><div><h2>Active Task List</h2><p>Responsive rows with status and quick actions.</p></div><div class="filter-tabs"><button class="active" type="button">All</button><button type="button">High</button><button type="button">Mobile</button></div></div>
                     <div class="task-table">
-                        <div class="data-row"><div><strong>Validate medicine stock count</strong><p>Assigned to Maria • Due today at 2:00 PM</p></div><span class="status-pill warning">In Progress</span><span>High</span><button class="mini-button" type="button">Open</button></div>
-                        <div class="data-row"><div><strong>Approve purchase request</strong><p>Assigned to Ken • Waiting for manager approval</p></div><span class="status-pill warning">In Progress</span><span>Medium</span><button class="mini-button" type="button">Open</button></div>
-                        <div class="data-row"><div><strong>Send daily completion report</strong><p>Assigned to Reyniel • Sent to operations</p></div><span class="status-pill done">Done</span><span>Normal</span><button class="mini-button" type="button">View</button></div>
-                        <div class="data-row"><div><strong>Follow up overdue delivery</strong><p>Assigned to Admin • Reminder scheduled</p></div><span class="status-pill">Pending</span><span>High</span><button class="mini-button" type="button">Start</button></div>
+                        <div class="data-row"><div><strong>Validate medicine stock count</strong><p>Assigned to Maria • Due today at 2:00 PM</p></div><span class="status-pill warning">In Progress</span><span>High</span><div class="row-actions"><button class="mini-button" type="button">Open</button><button class="row-more-button" type="button" aria-label="More actions">...</button></div></div>
+                        <div class="data-row"><div><strong>Approve purchase request</strong><p>Assigned to Ken • Waiting for manager approval</p></div><span class="status-pill warning">In Progress</span><span>Medium</span><div class="row-actions"><button class="mini-button" type="button">Open</button><button class="row-more-button" type="button" aria-label="More actions">...</button></div></div>
+                        <div class="data-row"><div><strong>Send daily completion report</strong><p>Assigned to Reyniel • Sent to operations</p></div><span class="status-pill done">Done</span><span>Normal</span><div class="row-actions"><button class="mini-button" type="button">View</button><button class="row-more-button" type="button" aria-label="More actions">...</button></div></div>
+                        <div class="data-row"><div><strong>Follow up overdue delivery</strong><p>Assigned to Admin • Reminder scheduled</p></div><span class="status-pill">Pending</span><span>High</span><div class="row-actions"><button class="mini-button" type="button">Start</button><button class="row-more-button" type="button" aria-label="More actions">...</button></div></div>
                     </div>
+                    <div class="mobile-sticky-actions"><button class="ghost-button" type="button">Done</button><button class="primary-button" type="button">Assign Selected</button></div>
                 </div>
 
                 <aside class="page-card">

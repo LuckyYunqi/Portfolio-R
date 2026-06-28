@@ -2,6 +2,9 @@ const filterButtons = document.querySelectorAll('[data-filter]');
 const taskCards = document.querySelectorAll('.task-card[data-type]');
 const modal = document.getElementById('taskModal');
 const modalTriggers = document.querySelectorAll('[data-open-modal]');
+const filterModal = document.getElementById('filterModal');
+const detailModal = document.getElementById('detailModal');
+const moreModal = document.getElementById('moreModal');
 
 filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -20,6 +23,48 @@ modalTriggers.forEach((trigger) => {
         if (modal?.showModal) {
             modal.showModal();
         }
+    });
+});
+
+document.querySelectorAll('[data-open-filter]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+        if (filterModal?.showModal) {
+            filterModal.showModal();
+        }
+    });
+});
+
+document.querySelectorAll('[data-open-detail]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+        if (moreModal?.open) {
+            moreModal.close();
+        }
+
+        if (detailModal?.showModal) {
+            detailModal.showModal();
+        }
+    });
+});
+
+document.querySelectorAll('[data-open-more]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+        if (moreModal?.showModal) {
+            moreModal.showModal();
+        }
+    });
+});
+
+document.querySelectorAll('.segmented-control').forEach((group) => {
+    group.addEventListener('click', (event) => {
+        const selected = event.target.closest('button');
+
+        if (!selected) {
+            return;
+        }
+
+        group.querySelectorAll('button').forEach((button) => {
+            button.classList.toggle('active', button === selected);
+        });
     });
 });
 
