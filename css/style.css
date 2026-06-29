@@ -2768,8 +2768,11 @@ section {
     }
 
     .hero-highlight {
-        min-height: 74px;
-        padding: 0.62rem;
+        min-height: 54px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.5rem 0.62rem;
         border-radius: 12px;
         border-color: rgba(223, 109, 255, 0.18);
         background: rgba(255, 255, 255, 0.05);
@@ -2777,13 +2780,14 @@ section {
     }
 
     .hero-highlight span {
-        font-size: 0.62rem;
+        font-size: 0.56rem;
         letter-spacing: 0.07em;
+        margin-bottom: 0.12rem;
     }
 
     .hero-highlight strong {
-        font-size: 0.82rem;
-        line-height: 1.28;
+        font-size: 0.76rem;
+        line-height: 1.2;
     }
 
     .hero-panel {
@@ -2964,17 +2968,17 @@ section {
     }
 
     .hero-highlight {
-        min-height: 70px;
-        padding: 0.55rem;
+        min-height: 50px;
+        padding: 0.46rem 0.55rem;
     }
 
     .hero-highlight span {
-        font-size: 0.56rem;
+        font-size: 0.52rem;
     }
 
     .hero-highlight strong {
-        font-size: 0.76rem;
-        line-height: 1.25;
+        font-size: 0.7rem;
+        line-height: 1.18;
     }
 
     .project-image {
@@ -3028,7 +3032,7 @@ section {
     }
 
     .hero-highlight {
-        min-height: 78px;
+        min-height: 50px;
     }
 }
 
