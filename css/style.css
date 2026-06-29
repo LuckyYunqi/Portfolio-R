@@ -1029,6 +1029,28 @@ section {
     line-height: 1;
 }
 
+.tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+    margin: 1.3rem auto 1.75rem;
+}
+
+.tools-row span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0.36rem 0.65rem;
+    border: 1px solid rgba(93, 228, 255, 0.28);
+    border-radius: 999px;
+    color: #e9d8f5;
+    background: rgba(93, 228, 255, 0.08);
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
 .education-timeline {
     display: grid;
     gap: 1rem;
@@ -2328,6 +2350,33 @@ section {
     transform: scaleX(1);
 }
 
+.section-cta {
+    max-width: 620px;
+    margin: 1.4rem auto 0;
+    padding: 1rem;
+    border: 1px solid rgba(223, 109, 255, 0.24);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.035);
+    text-align: center;
+}
+
+.section-cta p {
+    color: #ffeaff;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+
+.section-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+}
+
+.section-cta-actions .cta-button {
+    min-width: 150px;
+}
+
 .footer {
     background: #1f0a2f;
     color: #e7d0f3;
@@ -2820,6 +2869,13 @@ section {
         border-radius: 11px;
     }
 
+    .service-card p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
     .skill-categories {
         grid-template-columns: 1fr;
     }
@@ -2885,6 +2941,21 @@ section {
 
     .project-link::after {
         display: none;
+    }
+
+    .section-cta {
+        margin-top: 1rem;
+        padding: 0.9rem;
+    }
+
+    .section-cta-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section-cta-actions .cta-button {
+        min-width: 0;
+        width: 100%;
     }
 
     .certifications-carousel,
@@ -3005,6 +3076,21 @@ section {
     .project-link {
         font-size: 0.72rem;
         letter-spacing: 0.04em;
+    }
+
+    .tools-row {
+        gap: 0.4rem;
+        margin: 1rem auto 1.25rem;
+    }
+
+    .tools-row span {
+        min-height: 28px;
+        padding: 0.32rem 0.52rem;
+        font-size: 0.68rem;
+    }
+
+    .section-cta-actions {
+        grid-template-columns: 1fr;
     }
 }
 
