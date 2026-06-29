@@ -562,6 +562,7 @@ const revealSelectors = [
     '.objective-content',
     '.about-text > p',
     '.info-item',
+    '.service-card',
     '.education-item',
     '.cert-card',
     '.project-card',
