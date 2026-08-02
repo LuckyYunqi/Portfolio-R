@@ -7,7 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="css/style.css?v=20260802-services-slider">
 </head>
 <body>
     <!-- Navigation -->
@@ -139,8 +140,10 @@
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>I'm Reyniel Polancos, a fresh IT graduate with a strong foundation in web design, frontend development, photo editing/design, video editing, and practical project work. I build clean, responsive interfaces and continue improving my skills through hands-on projects using HTML, CSS, React JS, and React Native.</p>
-                    <p>I have beginner-level practical experience in mobile app development, including React Native app structure, screens, navigation concepts, and connecting user-focused features into a usable interface. I also edit photos and visual assets in Photoshop and create video content in Premiere Pro. I'm looking for a company where I can contribute, learn from real development workflows, and grow in a role related to my expertise.</p>
+                    <p>I'm Reyniel Polancos, a fresh IT graduate with a strong foundation in web design, front-end development, mobile app development, graphic design, and video editing. I enjoy creating clean, responsive, and user-focused digital experiences while continuously improving my skills through hands-on projects.</p>
+                    <p>My technical experience includes HTML, CSS, JavaScript, React.js, and React Native, with a beginner-level background in mobile application development, including app structure, screen development, navigation, and integrating user-focused features into functional interfaces.</p>
+                    <p>Beyond development, I have experience creating and editing visual content using Adobe Photoshop and Adobe Premiere Pro, allowing me to combine technical and creative skills in my projects.</p>
+                    <p>I'm eager to contribute my skills to a professional team, gain experience with real-world development workflows, and continue growing as a web and software developer.</p>
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="label">Age:</span>
@@ -169,47 +172,72 @@
         <div class="container">
             <h2 class="section-title">What I Can Do</h2>
             <p class="section-subtitle">Practical skills I can contribute to web, mobile, and creative digital work</p>
-            <div class="services-grid" aria-label="Services and practical skills">
-                <div class="service-card">
-                    <div class="service-icon">UI</div>
-                    <h3>Frontend UI</h3>
-                    <p>Build responsive web pages and interface sections using HTML, CSS, JavaScript, and React JS foundations.</p>
-                    <div class="service-tags">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>React JS</span>
+            <div class="services-carousel carousel-controls" aria-label="Services carousel">
+                <button class="cert-scroll-btn cert-scroll-btn--left" type="button" aria-label="Scroll services left" aria-controls="servicesScroller">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="services-grid" id="servicesScroller" tabindex="0" role="region" aria-label="Services and practical skills">
+                    <div class="service-card">
+                        <div class="service-icon">UI</div>
+                        <h3>Frontend UI</h3>
+                        <p>Build responsive web pages and interface sections using HTML, CSS, JavaScript, and React JS foundations.</p>
+                        <div class="service-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>React JS</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">MO</div>
+                        <h3>Mobile UI</h3>
+                        <p>Create mobile app screens, navigation flows, and user-focused layouts using React Native concepts.</p>
+                        <div class="service-tags">
+                            <span>React Native</span>
+                            <span>Mobile UI</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">PS</div>
+                        <h3>Photo Design</h3>
+                        <p>Edit photos, visual assets, layouts, and simple graphics for school, portfolio, and digital content using Photoshop.</p>
+                        <div class="service-tags">
+                            <span>Photoshop</span>
+                            <span>Photo Editing</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">FG</div>
+                        <h3>Figma Designing</h3>
+                        <p>Create wireframes, UI layouts, design concepts, and clean interface previews for web and mobile projects.</p>
+                        <div class="service-tags">
+                            <span>Figma</span>
+                            <span>UI Design</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">PR</div>
+                        <h3>Video Editing</h3>
+                        <p>Edit videos for presentations, school projects, portfolio content, and short digital media pieces using Premiere Pro and CapCut.</p>
+                        <div class="service-tags">
+                            <span>Premiere Pro</span>
+                            <span>CapCut</span>
+                            <span>Video Editing</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="service-card">
-                    <div class="service-icon">MO</div>
-                    <h3>Mobile UI</h3>
-                    <p>Create mobile app screens, navigation flows, and user-focused layouts using React Native concepts.</p>
-                    <div class="service-tags">
-                        <span>React Native</span>
-                        <span>Mobile UI</span>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon">PS</div>
-                    <h3>Photo Design</h3>
-                    <p>Edit photos, visual assets, layouts, and simple graphics for school, portfolio, and digital content.</p>
-                    <div class="service-tags">
-                        <span>Photoshop</span>
-                        <span>Photo Editing</span>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon">PR</div>
-                    <h3>Video Editing</h3>
-                    <p>Edit videos for presentations, school projects, portfolio content, and short digital media pieces.</p>
-                    <div class="service-tags">
-                        <span>Premiere Pro</span>
-                        <span>Video Editing</span>
-                    </div>
-                </div>
+                <button class="cert-scroll-btn cert-scroll-btn--right" type="button" aria-label="Scroll services right" aria-controls="servicesScroller">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </section>
@@ -585,11 +613,13 @@
 
                 <div class="skill-card skill-category-card skill-category-card--design" tabindex="0">
                     <div class="skill-icon">DE</div>
-                    <h3>Creative Editing</h3>
-                    <p class="skill-description">Photo editing, simple design layouts, and video content editing for school, portfolio, and digital projects.</p>
+                    <h3>Creative Design & Editing</h3>
+                    <p class="skill-description">UI design, photo editing, simple design layouts, and video content editing for school, portfolio, and digital projects.</p>
                     <div class="skill-list skill-list--editing">
+                        <span>Figma</span>
                         <span>Photoshop</span>
                         <span>Premiere Pro</span>
+                        <span>CapCut</span>
                         <span>After Effects</span>
                     </div>
                     <p class="skill-note">Photo Editing / Design &bull; Video Editing</p>
@@ -610,8 +640,10 @@
                 <span>VS Code</span>
                 <span>GitHub</span>
                 <span>XAMPP</span>
+                <span>Figma</span>
                 <span>Photoshop</span>
                 <span>Premiere Pro</span>
+                <span>CapCut</span>
                 <span>After Effects</span>
             </div>
             <div class="skills-carousel carousel-controls" aria-label="Skills carousel">
@@ -651,10 +683,24 @@
                 </div>
 
                 <div class="skill-card">
+                    <div class="skill-icon">FG</div>
+                    <h3>Figma Designing</h3>
+                    <p class="skill-description">Designing clean interface layouts, wireframes, and visual concepts for web and mobile projects.</p>
+                    <div class="skill-badge">Figma &bull; 55%</div>
+                </div>
+
+                <div class="skill-card">
                     <div class="skill-icon">PR</div>
                     <h3>Video Editing</h3>
                     <p class="skill-description">Editing school, portfolio, and presentation videos using Adobe Premiere Pro.</p>
                     <div class="skill-badge">Premiere Pro &bull; 58%</div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">CC</div>
+                    <h3>CapCut Editing</h3>
+                    <p class="skill-description">Creating short-form video edits, simple transitions, captions, and social media-ready video content.</p>
+                    <div class="skill-badge">CapCut &bull; 58%</div>
                 </div>
 
                 <div class="skill-card">
@@ -809,7 +855,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=20260604-clean-email"></script>
+    <script src="js/script.js?v=20260802-services-slider"></script>
 </body>
 </html>
 

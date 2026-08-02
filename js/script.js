@@ -856,10 +856,10 @@ initializeCertificateNavigation();
 // SIDE SCROLL BUTTONS
 // ====================================
 (() => {
-    const carousels = document.querySelectorAll('.certifications-carousel, .projects-carousel, .skills-carousel');
+    const carousels = document.querySelectorAll('.certifications-carousel, .services-carousel, .projects-carousel, .skills-carousel');
 
     carousels.forEach((carousel) => {
-        const scroller = carousel.querySelector('.certifications-grid, .projects-grid, .skills-grid');
+        const scroller = carousel.querySelector('.certifications-grid, .services-grid, .projects-grid, .skills-grid');
         const prevBtn = carousel.querySelector('.cert-scroll-btn--left');
         const nextBtn = carousel.querySelector('.cert-scroll-btn--right');
 

@@ -942,20 +942,37 @@ section {
     border-bottom: 1px solid var(--line);
 }
 
+.services-carousel {
+    position: relative;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 4.25rem;
+}
+
 .services-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
     gap: 1rem;
+    overflow-x: auto;
+    padding: 0.2rem 0 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.services-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .service-card {
     position: relative;
     overflow: hidden;
+    flex: 0 0 calc((100% - 3rem) / 4);
     min-height: 100%;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     padding: 1.1rem;
     background: rgba(255, 255, 255, 0.035);
+    scroll-snap-align: start;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
@@ -1717,6 +1734,7 @@ section {
 }
 
 .certifications-carousel,
+.services-carousel,
 .projects-carousel,
 .skills-carousel {
     position: relative;
@@ -2548,17 +2566,15 @@ section {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .services-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .certifications-carousel,
+    .services-carousel,
     .projects-carousel,
     .skills-carousel {
         padding-inline: 3rem;
     }
 
     .cert-card,
+    .service-card,
     .project-card,
     .skill-card {
         flex-basis: calc((100% - 1rem) / 2);
@@ -2854,11 +2870,11 @@ section {
     }
 
     .services-grid {
-        grid-template-columns: 1fr;
         gap: 0.85rem;
     }
 
     .service-card {
+        flex-basis: min(88vw, 320px);
         padding: 0.95rem;
     }
 
@@ -2959,6 +2975,7 @@ section {
     }
 
     .certifications-carousel,
+    .services-carousel,
     .projects-carousel,
     .skills-carousel {
         width: 100%;
