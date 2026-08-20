@@ -17,20 +17,20 @@ const navPreviewContent = {
     '#home': {
         kicker: 'Profile',
         title: 'Reyniel Polancos',
-        summary: 'Fresh IT graduate focused on frontend development, mobile app foundations, and practical React-based projects for entry-level opportunities.',
-        points: ['Available for junior developer roles', 'Based in Digos City, Davao del Sur', 'Frontend, mobile UI, and practical web setup']
+        summary: 'Information Technology graduate focused on web development, mobile UI/UX, IT support, design, and creative digital work.',
+        points: ['Web, Mobile UI/UX Designer & IT Specialist', 'Based in Digos City, Davao del Sur', 'HTML, CSS, JavaScript, React.js, React Native, Laravel, Figma, Photoshop, and Premiere Pro']
     },
     '#about': {
         kicker: 'About',
         title: 'About Reyniel',
-        summary: 'I build clean, responsive interfaces and keep improving through hands-on web and mobile app projects.',
-        points: ['Fresh IT graduate', 'Practical experience with HTML, CSS, React JS, and React Native', 'Looking to contribute, learn real workflows, and grow with a development team']
+        summary: 'I build clean, responsive interfaces and combine development, design, multimedia editing, and support skills.',
+        points: ['Information Technology graduate', 'Practical experience with HTML, CSS, JavaScript, React.js, React Native, and Laravel', 'Creative, adaptable, and ready to contribute to a dynamic team']
     },
-    '#education': {
-        kicker: 'Education',
-        title: 'Academic Background',
-        summary: 'My education built the discipline, foundation, and learning habits I bring into development work.',
-        points: ['College Graduate from University of Mindanao', 'Digos City, Davao del Sur', 'Focused on steady growth, problem solving, and practical skill building']
+    '#experience': {
+        kicker: 'Experience',
+        title: 'Work Experience',
+        summary: 'At MediaOne Software Solutions, I worked on web and mobile UI/UX, development support, multimedia content, and IT troubleshooting.',
+        points: ['Web, Mobile UI/UX Designer & IT Specialist', 'March 3, 2026 - May 27, 2026', 'Designed interfaces, assisted development, edited media, and supported software troubleshooting']
     },
     '#certifications': {
         kicker: 'Credentials',
@@ -41,14 +41,14 @@ const navPreviewContent = {
     '#projects': {
         kicker: 'Work',
         title: 'Projects',
-        summary: 'My projects show growth across frontend interfaces, inventory workflows, mobile app concepts, and portfolio presentation.',
+        summary: 'My projects show growth across web interfaces, inventory workflows, full-stack systems, mobile app concepts, and creative presentation.',
         points: ['TaskMate task management system in progress', 'Hospital and inventory management UI experience', 'MobileLex React Native consultation app project']
     },
     '#skills': {
         kicker: 'Skills',
         title: 'Technical Skills',
-        summary: 'I am actively improving practical frontend, mobile, design, and local development skills.',
-        points: ['Frontend: HTML, CSS, React JS', 'Mobile: React Native screens and navigation concepts', 'Tools: GitHub, VS Code, XAMPP, Photoshop, Premiere Pro, After Effects']
+        summary: 'My skills cover web development, mobile UI/UX, creative design, multimedia editing, communication, and IT support.',
+        points: ['Development: HTML, CSS, JavaScript, React.js, React Native, Laravel', 'Design and editing: Figma, Photoshop, Premiere Pro, CapCut, After Effects, Luma, Kling', 'Professional: Effective communication, critical thinking, English fluency, and troubleshooting']
     }
 };
 
