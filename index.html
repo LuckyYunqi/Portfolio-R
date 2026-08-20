@@ -70,7 +70,8 @@
                 <p class="hero-learning">Currently improving React JS, React Native, responsive UI, and GitHub workflow.</p>
                 <div class="hero-actions">
                     <button type="button" class="cta-button cta-cinematic email-compose-trigger">Email Me</button>
-                    <a href="files/reyniel-polancos-resume.pdf" class="cta-button" download>Download CV</a>
+                    <a href="files/reyniel-polancos-cv.pdf" class="cta-button download-confirm-trigger" download="Reyniel-Polancos-CV.pdf" data-download-label="CV">Download CV</a>
+                    <a href="files/reyniel-polancos-resume.pdf" class="cta-button cta-secondary download-confirm-trigger" download="Reyniel-Polancos-Resume.pdf" data-download-label="resume">Download Resume</a>
                     <a href="#projects" class="cta-button cta-secondary">View Projects</a>
                     <a href="https://github.com/LuckyYunqi" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
@@ -579,7 +580,8 @@
                 <p>Interested in my work?</p>
                 <div class="section-cta-actions">
                     <button type="button" class="cta-button cta-secondary email-compose-trigger">Send Message</button>
-                    <a href="files/reyniel-polancos-resume.pdf" class="cta-button cta-secondary" download>Download CV</a>
+                    <a href="files/reyniel-polancos-cv.pdf" class="cta-button cta-secondary download-confirm-trigger" download="Reyniel-Polancos-CV.pdf" data-download-label="CV">Download CV</a>
+                    <a href="files/reyniel-polancos-resume.pdf" class="cta-button cta-secondary download-confirm-trigger" download="Reyniel-Polancos-Resume.pdf" data-download-label="resume">Download Resume</a>
                 </div>
             </div>
         </div>
@@ -750,6 +752,21 @@
             <p class="footer-note">Fresh Graduate &bull; University of Mindanao</p>
         </div>
     </footer>
+
+    <!-- Download Confirmation Modal -->
+    <div class="download-modal" id="downloadModal" aria-hidden="true">
+        <div class="download-backdrop" data-download-close></div>
+        <article class="download-dialog" role="dialog" aria-modal="true" aria-labelledby="downloadTitle" aria-describedby="downloadMessage">
+            <button type="button" class="download-close" aria-label="Close download confirmation" data-download-close>&times;</button>
+            <p class="download-kicker">Download file</p>
+            <h2 id="downloadTitle">Confirm download</h2>
+            <p id="downloadMessage">Do you want to download this file?</p>
+            <div class="download-actions">
+                <button type="button" class="cta-button cta-secondary" data-download-close>Cancel</button>
+                <button type="button" class="cta-button" id="downloadConfirmButton">Download</button>
+            </div>
+        </article>
+    </div>
 
     <!-- Email Compose Modal -->
     <div class="compose-modal" id="composeModal" aria-hidden="true">

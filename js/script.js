@@ -121,6 +121,69 @@ navPreviewCloseTargets.forEach(target => {
 navPreviewAction?.addEventListener('click', openPreviewTargetSection);
 
 // ====================================
+// DOWNLOAD CONFIRMATION
+// ====================================
+const downloadModal = document.getElementById('downloadModal');
+const downloadTriggers = document.querySelectorAll('.download-confirm-trigger');
+const downloadCloseTargets = document.querySelectorAll('[data-download-close]');
+const downloadConfirmButton = document.getElementById('downloadConfirmButton');
+const downloadTitle = document.getElementById('downloadTitle');
+const downloadMessage = document.getElementById('downloadMessage');
+let pendingDownload = null;
+
+function openDownloadModal(trigger) {
+    if (!downloadModal || !trigger) return;
+
+    const label = trigger.dataset.downloadLabel || 'file';
+    pendingDownload = {
+        href: trigger.getAttribute('href'),
+        filename: trigger.getAttribute('download') || ''
+    };
+
+    downloadTitle.textContent = `Download ${label}`;
+    downloadMessage.textContent = `Do you want to download Reyniel Polancos' ${label} now?`;
+    downloadModal.classList.add('active');
+    downloadModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('download-open');
+    setTimeout(() => downloadConfirmButton?.focus(), 120);
+}
+
+function closeDownloadModal() {
+    if (!downloadModal) return;
+
+    downloadModal.classList.remove('active');
+    downloadModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('download-open');
+    pendingDownload = null;
+}
+
+function startConfirmedDownload() {
+    if (!pendingDownload?.href) return;
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = pendingDownload.href;
+    downloadLink.download = pendingDownload.filename;
+    downloadLink.style.display = 'none';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    downloadLink.remove();
+    closeDownloadModal();
+}
+
+downloadTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        openDownloadModal(trigger);
+    });
+});
+
+downloadCloseTargets.forEach(target => {
+    target.addEventListener('click', closeDownloadModal);
+});
+
+downloadConfirmButton?.addEventListener('click', startConfirmedDownload);
+
+// ====================================
 // EMAIL COMPOSE MODAL
 // ====================================
 const composeModal = document.getElementById('composeModal');
@@ -168,6 +231,9 @@ composeCloseTargets.forEach(target => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && composeModal?.classList.contains('active')) {
         closeComposeModal();
+    }
+    if (event.key === 'Escape' && downloadModal?.classList.contains('active')) {
+        closeDownloadModal();
     }
 });
 

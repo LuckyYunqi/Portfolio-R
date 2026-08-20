@@ -43,6 +43,10 @@ body.compose-open {
     overflow: hidden;
 }
 
+body.download-open {
+    overflow: hidden;
+}
+
 body.nav-preview-open {
     overflow: hidden;
 }
@@ -1369,6 +1373,107 @@ section {
 .compose-modal.active {
     opacity: 1;
     pointer-events: auto;
+}
+
+.download-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1250;
+    display: grid;
+    place-items: center;
+    padding: 1.4rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.download-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.download-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 1, 14, 0.42);
+    backdrop-filter: blur(4px);
+}
+
+.download-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(420px, calc(100vw - 2rem));
+    padding: 1.35rem;
+    border: 1px solid rgba(223, 109, 255, 0.42);
+    border-radius: 12px;
+    background: rgba(20, 3, 31, 0.96);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.42), 0 0 36px rgba(223, 109, 255, 0.14);
+    color: #fff2ff;
+    transform: translateY(18px) scale(0.96);
+    opacity: 0;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.download-modal.active .download-dialog {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.download-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    color: #f3d8ff;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.download-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.download-kicker {
+    margin: 0 2.5rem 0.35rem 0;
+    color: #5de4ff;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.download-dialog h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.35rem;
+}
+
+.download-dialog p:not(.download-kicker) {
+    margin: 0.75rem 0 0;
+    color: #d7b6ea;
+    line-height: 1.55;
+}
+
+.download-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    margin-top: 1.15rem;
+}
+
+.download-actions .cta-button {
+    min-height: 44px;
 }
 
 .compose-backdrop {
