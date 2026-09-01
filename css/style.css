@@ -13,6 +13,8 @@
     --shadow-1: 0 6px 20px rgba(0, 0, 0, 0.28);
     --shadow-2: 0 14px 32px rgba(223, 109, 255, 0.18);
     --transition: all 0.25s ease;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 * {
@@ -762,8 +764,51 @@ section {
 .reveal-item {
     opacity: 0;
     transform: translateY(22px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transition: opacity 0.45s var(--ease-out), transform 0.55s var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-item[data-reveal="left"]:not(.revealed) {
+    transform: translateX(-40px);
+}
+
+.reveal-item[data-reveal="right"]:not(.revealed) {
+    transform: translateX(40px);
+}
+
+.reveal-item[data-reveal="up"]:not(.revealed) {
+    transform: translateY(38px);
+}
+
+.reveal-item[data-reveal="zoom"]:not(.revealed) {
+    transform: scale(0.92) translateY(20px);
+}
+
+.reveal-item[data-reveal="bounce"]:not(.revealed) {
+    transform: translateY(44px) scale(0.84) rotate(-4deg);
+}
+
+.reveal-item[data-reveal="bounce"].revealed {
+    animation: cardBounceIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes cardBounceIn {
+    0% {
+        opacity: 0;
+        transform: translateY(44px) scale(0.84) rotate(-4deg);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.03) rotate(1.5deg);
+    }
+    78% {
+        transform: translateY(2px) scale(0.99) rotate(-0.5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
 }
 
 .reveal-item.revealed {
@@ -2067,60 +2112,119 @@ section {
 
 .cert-close {
     position: absolute;
-    top: 20px;
-    right: 35px;
+    top: 22px;
+    right: 26px;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(15, 4, 26, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
     color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
+    font-family: inherit;
+    font-size: 26px;
+    line-height: 1;
     cursor: pointer;
-    z-index: 10001;
+    z-index: 10003;
+    transition: transform 0.2s var(--ease-out), background 0.2s ease, border-color 0.2s ease;
 }
 
 .cert-close:hover,
-.cert-close:focus {
-    color: var(--primary);
+.cert-close:focus-visible {
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    border-color: transparent;
+    color: #fff;
+    transform: scale(1.08);
+    outline: none;
 }
 
 .cert-modal-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 46px;
-    height: 46px;
+    width: 54px;
+    height: 54px;
     border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.06);
-    color: #f5deff;
+    border: 1px solid rgba(93, 228, 255, 0.45);
+    background: rgba(15, 4, 26, 0.86);
+    -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+    color: #fff;
     display: grid;
     place-items: center;
     cursor: pointer;
-    transition: var(--transition);
     z-index: 10002;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55);
+    transition:
+        transform 0.2s var(--ease-out),
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
 }
 
-.cert-modal-nav:hover {
-    border-color: #bb72e8;
-    box-shadow: var(--shadow-2);
+.cert-modal-nav:hover:not(:disabled),
+.cert-modal-nav:focus-visible:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    border-color: transparent;
+    transform: translateY(-50%) scale(1.09);
+    box-shadow: 0 12px 32px rgba(223, 109, 255, 0.45);
+    outline: none;
+}
+
+.cert-modal-nav:active:not(:disabled) {
+    transform: translateY(-50%) scale(0.95);
 }
 
 .cert-modal-nav:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
+    opacity: 0.3;
+    cursor: default;
     box-shadow: none;
 }
 
 .cert-modal-nav--left {
-    left: 14px;
+    left: 12px;
 }
 
 .cert-modal-nav--right {
-    right: 14px;
+    right: 12px;
 }
 
 .cert-modal-nav svg {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
+}
+
+/* On wide screens the arrows float just outside the certificate */
+@media (min-width: 1180px) {
+    .cert-modal-nav--left {
+        left: -72px;
+    }
+
+    .cert-modal-nav--right {
+        right: -72px;
+    }
+}
+
+.cert-modal-count {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 0.22rem 0.62rem;
+    border-radius: 999px;
+    border: 1px solid rgba(93, 228, 255, 0.32);
+    background: rgba(93, 228, 255, 0.1);
+    color: #bfefff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.cert-modal-count:empty {
+    display: none;
 }
 
 .cert-modal-content {
@@ -3244,12 +3348,478 @@ section {
     }
 }
 
+/* ====================================
+   MOTION & INTERACTION ENHANCEMENTS
+   ==================================== */
+
+.scroll-progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 3px;
+    z-index: 1600;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
+    box-shadow: 0 0 12px rgba(223, 109, 255, 0.45);
+    transition: transform 0.12s linear;
+    pointer-events: none;
+}
+
+/* Cursor-follow glow on interactive cards */
+.service-card,
+.project-card,
+.skills-grid .skill-card,
+.cert-card {
+    position: relative;
+}
+
+.service-card::after,
+.project-card::after,
+.skills-grid .skill-card::after,
+.cert-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(93, 228, 255, 0.14), transparent 65%);
+    z-index: 3;
+}
+
+.service-card:hover::after,
+.project-card:hover::after,
+.skills-grid .skill-card:hover::after,
+.cert-card:hover::after {
+    opacity: 1;
+}
+
+/* Image load fade-in */
+.project-image img,
+.cert-thumbnail {
+    opacity: 0;
+    transition: opacity 0.55s var(--ease-out);
+}
+
+.project-image img.img-loaded,
+.cert-thumbnail.img-loaded {
+    opacity: 1;
+}
+
+/* ====================================
+   CERTIFICATIONS — accordion gallery
+   ==================================== */
+.certifications-carousel {
+    padding-inline: 0;
+}
+
+.certifications-carousel .cert-scroll-btn {
+    display: none;
+}
+
+.certifications-grid {
+    display: flex;
+    gap: 0.55rem;
+    height: 430px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+}
+
+.certifications-grid .cert-card {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 52px;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: #0f0518;
+    cursor: pointer;
+    scroll-snap-align: none;
+    transition:
+        flex-grow 0.55s var(--ease-out),
+        border-color 0.35s ease,
+        opacity 0.45s var(--ease-out),
+        transform 0.55s var(--ease-out);
+}
+
+.certifications-grid .cert-card.is-expanded {
+    flex-grow: 7;
+    border-color: rgba(93, 228, 255, 0.45);
+}
+
+/* the flat-card hover lift doesn't belong in the accordion */
+.certifications-grid .cert-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(93, 228, 255, 0.45);
+}
+
+.certifications-grid .cert-card:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+}
+
+/* the cursor-glow pseudo-element is noise in this layout */
+.certifications-grid .cert-card::after {
+    display: none;
+}
+
+/* image fills the whole panel */
+.certifications-grid .cert-image-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: #0f0518;
+}
+
+.certifications-grid .cert-image-container .cert-thumbnail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    opacity: 1;
+    transition: transform 0.6s var(--ease-out);
+}
+
+.certifications-grid .cert-card.is-expanded .cert-thumbnail {
+    transform: scale(1.03);
+}
+
+.certifications-grid .cert-preview-text,
+.certifications-grid .cert-icon {
+    display: none;
+}
+
+/* legibility scrim — heavier when collapsed */
+.certifications-grid .cert-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(9, 2, 16, 0.12) 0%, rgba(9, 2, 16, 0.55) 45%, rgba(9, 2, 16, 0.92) 100%);
+    transition: background 0.4s ease;
+}
+
+.certifications-grid .cert-card.is-expanded::before {
+    background: linear-gradient(180deg, rgba(9, 2, 16, 0) 28%, rgba(9, 2, 16, 0.5) 66%, rgba(9, 2, 16, 0.9) 100%);
+}
+
+/* caption pinned to the bottom */
+.certifications-grid .cert-content {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 1.1rem 1.15rem 1.2rem;
+    width: max(100%, 264px);
+}
+
+.certifications-grid .cert-badge {
+    align-self: flex-start;
+}
+
+.certifications-grid .cert-card[data-cert-issuer="Certiport"] .cert-badge {
+    border-color: rgba(93, 228, 255, 0.5);
+    background: rgba(93, 228, 255, 0.14);
+    color: #d6f7ff;
+}
+
+/* title / date / issuer — only shown when the panel is open */
+.certifications-grid .cert-card h3,
+.certifications-grid .cert-content .cert-date,
+.certifications-grid .cert-content .cert-issuer {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+    color: #fff;
+}
+
+.certifications-grid .cert-card h3 {
+    font-size: 1.02rem;
+    line-height: 1.25;
+}
+
+.certifications-grid .cert-content .cert-date {
+    color: #9fe9ff;
+    font-weight: 600;
+}
+
+.certifications-grid .cert-content .cert-issuer {
+    color: #d8c7e6;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.certifications-grid .cert-card.is-expanded h3,
+.certifications-grid .cert-card.is-expanded .cert-date,
+.certifications-grid .cert-card.is-expanded .cert-issuer {
+    opacity: 1;
+    transform: none;
+}
+
+.certifications-grid .cert-card.is-expanded h3 { transition-delay: 0.08s; }
+.certifications-grid .cert-card.is-expanded .cert-date { transition-delay: 0.13s; }
+.certifications-grid .cert-card.is-expanded .cert-issuer { transition-delay: 0.18s; }
+
+/* Mobile — stack the panels, every caption visible */
+@media (max-width: 820px) {
+    .certifications-grid {
+        flex-direction: column;
+        height: auto;
+        gap: 0.7rem;
+    }
+
+    .certifications-grid .cert-card {
+        flex: 0 0 auto;
+        height: 170px;
+        min-width: 0;
+    }
+
+    .certifications-grid .cert-content {
+        width: 100%;
+    }
+
+    .certifications-grid .cert-card h3,
+    .certifications-grid .cert-content .cert-date,
+    .certifications-grid .cert-content .cert-issuer {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ====================================
+   CERTIFICATE MODAL — scale-up entrance
+   ==================================== */
+/* Animation-based (not transition-from-hidden) so the modal is always visible
+   at rest even if the animation doesn't run. */
+.cert-modal {
+    animation: certModalIn 0.22s ease;
+}
+
+.cert-modal .cert-modal-content {
+    animation: certModalContentIn 0.34s var(--ease-spring);
+}
+
+@keyframes certModalIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes certModalContentIn {
+    from { opacity: 0; transform: scale(0.92) translateY(12px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ====================================
+   PROJECTS carousel — uniform, deliberate card layout
+   ==================================== */
+.projects-grid {
+    padding-block: 0.5rem;
+    scroll-padding-inline: 1.25rem;
+}
+
+.projects-grid .project-card .project-image {
+    flex-shrink: 0;
+}
+
+.projects-grid .project-card .project-content {
+    flex: 1 1 auto;
+}
+
+/* Clamp the description and drop the inconsistent status note so every card
+   ends the same way — CTA pinned to the bottom. */
+.projects-grid .project-card .project-content > p:first-of-type {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.projects-grid .project-card .project-note {
+    display: none;
+}
+
+.projects-grid .project-card .project-link,
+.projects-grid .project-card .project-actions {
+    margin-top: auto;
+    padding-top: 0.35rem;
+}
+
+/* End-of-list nudge */
+@keyframes carouselNudgeEnd {
+    50% { transform: translateX(-7px); }
+}
+
+@keyframes carouselNudgeStart {
+    50% { transform: translateX(7px); }
+}
+
+.carousel-nudge-end {
+    animation: carouselNudgeEnd 0.24s var(--ease-out);
+}
+
+.carousel-nudge-start {
+    animation: carouselNudgeStart 0.24s var(--ease-out);
+}
+
+/* Target cursor */
+.has-target-cursor,
+.has-target-cursor * {
+    cursor: none !important;
+}
+
+.has-target-cursor input,
+.has-target-cursor textarea,
+.has-target-cursor select,
+.has-target-cursor [contenteditable="true"] {
+    cursor: text !important;
+}
+
+.target-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 99999;
+    pointer-events: none;
+    will-change: transform;
+    transition: opacity 0.2s ease;
+}
+
+.target-cursor.is-hidden {
+    opacity: 0;
+}
+
+.target-cursor-dot {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px rgba(93, 228, 255, 0.85);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.target-cursor.is-targeting .target-cursor-dot {
+    opacity: 0;
+}
+
+.target-cursor-corner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--accent-cyan);
+    box-shadow: 0 0 6px rgba(93, 228, 255, 0.4);
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), width 0.2s ease, height 0.2s ease;
+}
+
+.target-cursor.is-targeting .target-cursor-corner {
+    width: 16px;
+    height: 16px;
+}
+
+.target-cursor-corner--tl {
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.target-cursor-corner--tr {
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.target-cursor-corner--br {
+    border-left-color: transparent;
+    border-top-color: transparent;
+}
+
+.target-cursor-corner--bl {
+    border-right-color: transparent;
+    border-top-color: transparent;
+}
+
+/* Gradual blur at the bottom edge of the viewport */
+.gradual-blur {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100px;
+    z-index: 900;
+    pointer-events: none;
+}
+
+.gradual-blur > div {
+    position: absolute;
+    inset: 0;
+}
+
+body.compose-open .gradual-blur,
+body.download-open .gradual-blur,
+body.nav-preview-open .gradual-blur {
+    display: none;
+}
+
+/* Drag-to-scroll affordance */
+.projects-grid,
+.services-grid,
+.skills-grid {
+    cursor: grab;
+}
+
+.projects-grid.is-dragging,
+.services-grid.is-dragging,
+.skills-grid.is-dragging {
+    cursor: grabbing;
+}
+
+.is-dragging,
+.is-gliding {
+    scroll-snap-type: none !important;
+}
+
+.is-dragging > * {
+    pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    .reveal-item,
+    .reveal-item[data-reveal] {
+        transform: none !important;
+    }
+
+    .cert-modal .cert-modal-content {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .scroll-progress {
+        display: none;
     }
 }
 

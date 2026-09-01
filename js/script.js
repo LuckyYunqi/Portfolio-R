@@ -636,9 +636,24 @@ const revealSelectors = [
     '.contact-form'
 ].join(', ');
 
+const revealDirections = {
+    '.service-card': ['left', 'right'],
+    '.project-card': ['bounce'],
+    '.skill-category-card': ['left', 'right'],
+    '.cert-card': ['up'],
+    '.education-item': ['left']
+};
+
 document.querySelectorAll(revealSelectors).forEach((item, index) => {
     item.classList.add('reveal-item');
     item.style.setProperty('--reveal-delay', `${Math.min(index % 8, 7) * 70}ms`);
+
+    for (const [selector, directions] of Object.entries(revealDirections)) {
+        if (item.matches(selector)) {
+            item.setAttribute('data-reveal', directions[index % directions.length]);
+            break;
+        }
+    }
 });
 
 const observerOptions = {
@@ -646,13 +661,16 @@ const observerOptions = {
     rootMargin: '0px 0px -100px 0px'
 };
 
+let revealObserverFired = false;
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            revealObserverFired = true;
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
             entry.target.querySelectorAll('.reveal-item').forEach((item, index) => {
-                item.style.setProperty('--reveal-delay', `${index * 80}ms`);
+                item.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 45}ms`);
                 item.classList.add('revealed');
             });
             if (entry.target.classList.contains('reveal-item')) {
@@ -663,44 +681,124 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all sections
+// Observe all sections (the section is only the trigger — the per-card
+// .reveal-item animation carries the motion, so the section itself isn't faded).
 document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(20px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(section);
 });
+
+// Safety net: if the observer never fires (bfcache restore, a tab restored from
+// the background, an unsupported environment) content must not stay hidden.
+function revealSectionsInView() {
+    const viewportBottom = window.innerHeight || document.documentElement.clientHeight;
+    document.querySelectorAll('section').forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < viewportBottom * 0.95 && rect.bottom > 0) {
+            section.style.opacity = '1';
+            section.style.transform = 'none';
+            section.querySelectorAll('.reveal-item').forEach(item => item.classList.add('revealed'));
+            if (section.classList.contains('reveal-item')) {
+                section.classList.add('revealed');
+            }
+        }
+    });
+}
+
+window.addEventListener('load', () => {
+    window.setTimeout(() => {
+        // Harmless if the observer already revealed these; essential if it didn't.
+        revealSectionsInView();
+        if (!revealObserverFired) {
+            window.addEventListener('scroll', revealSectionsInView, { passive: true });
+        }
+    }, 1400);
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !revealObserverFired) revealSectionsInView();
+});
+
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) revealSectionsInView();
+});
+
+// ====================================
+// IMAGE LOAD FADE-IN
+// ====================================
+document.querySelectorAll('.project-image img, .cert-thumbnail').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+        img.classList.add('img-loaded');
+    } else {
+        img.addEventListener('load', () => img.classList.add('img-loaded'), { once: true });
+    }
+});
+
+// ====================================
+// CURSOR-FOLLOW GLOW ON CARDS
+// ====================================
+(() => {
+    const finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) return;
+
+    document.querySelectorAll('.service-card, .project-card, .skills-grid .skill-card, .cert-card').forEach(card => {
+        card.addEventListener('pointermove', (event) => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+        });
+    });
+})();
 
 // ====================================
 // ACTIVE NAVIGATION LINK HIGHLIGHT
 // ====================================
 const navbar = document.querySelector('.navbar');
 
-window.addEventListener('scroll', () => {
+const scrollProgress = document.createElement('div');
+scrollProgress.className = 'scroll-progress';
+scrollProgress.setAttribute('aria-hidden', 'true');
+document.body.appendChild(scrollProgress);
+
+const scrollspySections = Array.from(document.querySelectorAll('section'));
+let scrollTicking = false;
+
+function updateOnScroll() {
+    scrollTicking = false;
+
+    const doc = document.documentElement;
+    const scrollTop = window.scrollY || doc.scrollTop || 0;
+
     if (navbar) {
-        navbar.classList.toggle('navbar-scrolled', window.scrollY > 24);
+        navbar.classList.toggle('navbar-scrolled', scrollTop > 24);
     }
 
-    let current = '';
-    const sections = document.querySelectorAll('section');
+    const scrollRange = doc.scrollHeight - doc.clientHeight;
+    const progress = scrollRange > 0 ? Math.min(1, Math.max(0, scrollTop / scrollRange)) : 0;
+    scrollProgress.style.transform = `scaleX(${progress})`;
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 200) {
+    let current = '';
+    for (const section of scrollspySections) {
+        if (scrollTop >= section.offsetTop - 200) {
             current = section.getAttribute('id');
         }
-    });
+    }
 
     navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
+        link.classList.toggle('active', link.getAttribute('href').slice(1) === current);
     });
-});
+}
 
-window.dispatchEvent(new Event('scroll'));
+function requestScrollUpdate() {
+    if (!scrollTicking) {
+        scrollTicking = true;
+        window.requestAnimationFrame(updateOnScroll);
+    }
+}
+
+window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+window.addEventListener('resize', requestScrollUpdate);
+
+updateOnScroll();
 
 // ====================================
 // PAGE LOAD ANIMATIONS
@@ -744,7 +842,7 @@ document.addEventListener('keydown', (e) => {
     }
 
     const modal = document.getElementById('certificateModal');
-    const isModalOpen = modal && modal.style.display === 'block';
+    const isModalOpen = modal && modal.classList.contains('is-open');
     if (!isModalOpen) return;
 
     if (e.key === 'ArrowLeft') {
@@ -810,6 +908,13 @@ function setCertificateModalContent(cardElement) {
     document.getElementById('certModalTitle').textContent = title || 'Certificate';
     document.getElementById('certModalIssuer').textContent = issuer || '';
 
+    const countEl = document.getElementById('certModalCount');
+    if (countEl) {
+        countEl.textContent = (certCards.length > 1 && currentCertIndex >= 0)
+            ? `${currentCertIndex + 1} / ${certCards.length}`
+            : '';
+    }
+
     const modalImage = document.getElementById('certModalImage');
     const modalPlaceholder = document.getElementById('certModalPlaceholder');
 
@@ -861,8 +966,9 @@ function openCertificate(cardElement) {
     if (currentCertIndex < 0) currentCertIndex = 0;
 
     setCertificateModalContent(cardElement);
-    
+
     modal.style.display = 'block';
+    modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
 
     updateModalNavButtons();
@@ -872,6 +978,7 @@ function closeCertificate() {
     const modal = document.getElementById('certificateModal');
     if (modal) {
         modal.style.display = 'none';
+        modal.classList.remove('is-open');
         document.body.style.overflow = 'auto';
     }
 
@@ -919,13 +1026,49 @@ document.querySelectorAll('.cert-image-container').forEach((container) => {
 initializeCertificateNavigation();
 
 // ====================================
+// CERTIFICATIONS ACCORDION GALLERY
+// ====================================
+(() => {
+    const accordion = document.querySelector('.certifications-grid');
+    if (!accordion) return;
+
+    const panels = Array.from(accordion.querySelectorAll('.cert-card'));
+    if (panels.length < 2) return;
+
+    const DEFAULT_INDEX = 0;
+    const expand = (index) => {
+        panels.forEach((panel, i) => panel.classList.toggle('is-expanded', i === index));
+    };
+
+    expand(DEFAULT_INDEX);
+
+    panels.forEach((panel, i) => {
+        panel.setAttribute('tabindex', '0');
+        panel.setAttribute('role', 'button');
+        const title = panel.getAttribute('data-cert-title');
+        if (title) panel.setAttribute('aria-label', `${title} — open certificate`);
+
+        panel.addEventListener('mouseenter', () => expand(i));
+        panel.addEventListener('focus', () => expand(i));
+        panel.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openCertificate(panel);
+            }
+        });
+    });
+
+    accordion.addEventListener('mouseleave', () => expand(DEFAULT_INDEX));
+})();
+
+// ====================================
 // SIDE SCROLL BUTTONS
 // ====================================
 (() => {
-    const carousels = document.querySelectorAll('.certifications-carousel, .services-carousel, .projects-carousel, .skills-carousel');
+    const carousels = document.querySelectorAll('.services-carousel, .projects-carousel, .skills-carousel');
 
     carousels.forEach((carousel) => {
-        const scroller = carousel.querySelector('.certifications-grid, .services-grid, .projects-grid, .skills-grid');
+        const scroller = carousel.querySelector('.services-grid, .projects-grid, .skills-grid');
         const prevBtn = carousel.querySelector('.cert-scroll-btn--left');
         const nextBtn = carousel.querySelector('.cert-scroll-btn--right');
 
@@ -946,17 +1089,18 @@ initializeCertificateNavigation();
             }
 
             const styles = getComputedStyle(scroller);
-            const gapValue = getComputedStyle(scroller).gap || '0px';
-            const gap = Number.parseFloat(gapValue) || 0;
+            const gap = Number.parseFloat(styles.gap) || 0;
             const paddingLeft = Number.parseFloat(styles.paddingLeft) || 0;
             const paddingRight = Number.parseFloat(styles.paddingRight) || 0;
-            const cardWidth = firstCard.getBoundingClientRect().width;
+            const cardWidth = firstCard.offsetWidth;
             const visibleWidth = scroller.clientWidth - paddingLeft - paddingRight;
             const visibleCards = Math.max(1, Math.floor((visibleWidth + gap) / (cardWidth + gap)));
-            const maxIndex = Math.max(0, cards.length - visibleCards);
+            const lastIndex = Math.max(0, cards.length - visibleCards);
             const positions = cards
-                .slice(0, maxIndex + 1)
+                .slice(0, lastIndex + 1)
                 .map((card) => Math.max(0, Math.round(card.offsetLeft - paddingLeft)));
+
+            const maxIndex = positions.length - 1;
             const currentIndex = positions.reduce((closestIndex, position, index) => {
                 const closestDistance = Math.abs(positions[closestIndex] - scroller.scrollLeft);
                 const currentDistance = Math.abs(position - scroller.scrollLeft);
@@ -974,17 +1118,24 @@ initializeCertificateNavigation();
             if (!isOverflowing) return;
 
             const { currentIndex, maxIndex } = getCarouselMetrics();
-            const firstCard = scroller.firstElementChild;
-            const lastCard = scroller.lastElementChild;
-            const scrollerRect = scroller.getBoundingClientRect();
-            const firstRect = firstCard ? firstCard.getBoundingClientRect() : null;
-            const lastRect = lastCard ? lastCard.getBoundingClientRect() : null;
             const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
-            const atStart = currentIndex <= 0 || scroller.scrollLeft <= 4 || (firstRect && firstRect.left >= scrollerRect.left - 4);
-            const atEnd = currentIndex >= maxIndex || scroller.scrollLeft >= maxScrollLeft - 4 || (lastRect && lastRect.right <= scrollerRect.right + 4);
+            const atStart = scroller.scrollLeft <= 4 || currentIndex <= 0;
+            const atEnd = scroller.scrollLeft >= maxScrollLeft - 4 || currentIndex >= maxIndex;
 
             prevBtn.disabled = atStart;
             nextBtn.disabled = atEnd;
+        };
+
+        const nudgeEnd = (direction) => {
+            if (prefersReducedMotion) return;
+            const cls = direction > 0 ? 'carousel-nudge-end' : 'carousel-nudge-start';
+            scroller.classList.remove('carousel-nudge-end', 'carousel-nudge-start');
+            // reflow so the animation restarts even on rapid clicks
+            void scroller.offsetWidth;
+            scroller.classList.add(cls);
+            scroller.addEventListener('animationend', () => {
+                scroller.classList.remove(cls);
+            }, { once: true });
         };
 
         const scrollByStep = (direction) => {
@@ -992,6 +1143,7 @@ initializeCertificateNavigation();
             const nextIndex = Math.max(0, Math.min(maxIndex, currentIndex + direction));
             if (nextIndex === currentIndex) {
                 updateButtons();
+                nudgeEnd(direction);
                 return;
             }
 
@@ -1024,5 +1176,232 @@ initializeCertificateNavigation();
         });
 
         updateButtons();
+
+        // -------- Drag-to-scroll with momentum (mouse only) --------
+        let dragging = false;
+        let dragMoved = false;
+        let dragStartX = 0;
+        let dragStartScroll = 0;
+        let lastX = 0;
+        let lastT = 0;
+        let velocity = 0;
+        let momentumRaf = 0;
+
+        const stopMomentum = () => {
+            if (momentumRaf) {
+                window.cancelAnimationFrame(momentumRaf);
+                momentumRaf = 0;
+            }
+            scroller.classList.remove('is-gliding');
+        };
+
+        scroller.addEventListener('pointerdown', (e) => {
+            if (e.pointerType !== 'mouse' || e.button !== 0) return;
+            dragging = true;
+            dragMoved = false;
+            dragStartX = e.clientX;
+            dragStartScroll = scroller.scrollLeft;
+            lastX = e.clientX;
+            lastT = e.timeStamp;
+            velocity = 0;
+            stopMomentum();
+            try { scroller.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+        });
+
+        scroller.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+            const dx = e.clientX - dragStartX;
+            if (Math.abs(dx) > 4) {
+                dragMoved = true;
+                scroller.classList.add('is-dragging');
+            }
+            scroller.scrollLeft = dragStartScroll - dx;
+
+            const dt = e.timeStamp - lastT || 16;
+            velocity = (e.clientX - lastX) / dt;
+            lastX = e.clientX;
+            lastT = e.timeStamp;
+        });
+
+        const endDrag = (e) => {
+            if (!dragging) return;
+            dragging = false;
+            scroller.classList.remove('is-dragging');
+            try { scroller.releasePointerCapture(e.pointerId); } catch (err) { /* noop */ }
+
+            if (prefersReducedMotion || Math.abs(velocity) < 0.05) {
+                scroller.classList.remove('is-gliding');
+                return;
+            }
+
+            let v = Math.max(-45, Math.min(45, velocity * 16));
+            scroller.classList.add('is-gliding');
+            const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+            const glide = () => {
+                v *= 0.92;
+                scroller.scrollLeft -= v;
+                const atBound = scroller.scrollLeft <= 0 || scroller.scrollLeft >= maxScroll - 0.5;
+                if (Math.abs(v) > 0.5 && !atBound) {
+                    momentumRaf = window.requestAnimationFrame(glide);
+                } else {
+                    momentumRaf = 0;
+                    scroller.classList.remove('is-gliding');
+                }
+            };
+            glide();
+        };
+
+        scroller.addEventListener('pointerup', endDrag);
+        scroller.addEventListener('pointercancel', endDrag);
+
+        scroller.addEventListener('click', (e) => {
+            // Suppress the click that ends a drag.
+            if (dragMoved) {
+                e.preventDefault();
+                e.stopPropagation();
+                dragMoved = false;
+            }
+        }, true);
     });
+})();
+
+// ====================================
+// GRADUAL BLUR (bottom edge of the viewport)
+// ====================================
+(() => {
+    const supported = (window.CSS && (CSS.supports('backdrop-filter', 'blur(2px)') ||
+        CSS.supports('-webkit-backdrop-filter', 'blur(2px)')));
+    if (!supported) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'gradual-blur';
+    wrap.setAttribute('aria-hidden', 'true');
+
+    const LAYERS = 5;
+    for (let i = 0; i < LAYERS; i += 1) {
+        const layer = document.createElement('div');
+        const blur = (0.6 * Math.pow(2, i)).toFixed(2); // 0.6 → ~9.6px
+        const from = (i / LAYERS) * 100;
+        const to = ((i + 2) / LAYERS) * 100;
+        const maskGradient = `linear-gradient(to top, rgba(0,0,0,1) ${from}%, rgba(0,0,0,1) ${Math.min(to - 100 / LAYERS, 100)}%, rgba(0,0,0,0) ${Math.min(to, 100)}%)`;
+        layer.style.backdropFilter = `blur(${blur}px)`;
+        layer.style.webkitBackdropFilter = `blur(${blur}px)`;
+        layer.style.maskImage = maskGradient;
+        layer.style.webkitMaskImage = maskGradient;
+        wrap.appendChild(layer);
+    }
+
+    document.body.appendChild(wrap);
+})();
+
+// ====================================
+// TARGET CURSOR
+// ====================================
+(() => {
+    const finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) return;
+
+    let cursor;
+    try {
+        cursor = document.createElement('div');
+        cursor.className = 'target-cursor';
+        cursor.setAttribute('aria-hidden', 'true');
+        cursor.innerHTML =
+            '<span class="target-cursor-dot"></span>' +
+            '<span class="target-cursor-corner target-cursor-corner--tl"></span>' +
+            '<span class="target-cursor-corner target-cursor-corner--tr"></span>' +
+            '<span class="target-cursor-corner target-cursor-corner--br"></span>' +
+            '<span class="target-cursor-corner target-cursor-corner--bl"></span>';
+        document.body.appendChild(cursor);
+    } catch (err) {
+        return; // leave the native cursor alone if anything went wrong
+    }
+
+    document.documentElement.classList.add('has-target-cursor');
+
+    const corners = Array.from(cursor.querySelectorAll('.target-cursor-corner'));
+    const TARGET_SELECTOR = 'a[href], button, input, textarea, select, [role="button"], [tabindex="0"], .cta-button, .nav-link, .project-card, .service-card, .cert-card, .skill-card, .skill-category-card, .project-link';
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let activeTarget = null;
+    let raf = 0;
+    let looping = false;
+
+    const setCorner = (i, ex, ey, size) => {
+        let dx = ex;
+        let dy = ey;
+        if (i === 1) { dx = ex - size; }
+        if (i === 2) { dx = ex - size; dy = ey - size; }
+        if (i === 3) { dy = ey - size; }
+        corners[i].style.transform = `translate(${dx}px, ${dy}px)`;
+    };
+
+    const render = () => {
+        raf = 0;
+
+        if (activeTarget && document.contains(activeTarget)) {
+            const r = activeTarget.getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+
+            const size = 16;
+            const hw = r.width / 2 + 7;
+            const hh = r.height / 2 + 7;
+            setCorner(0, -hw, -hh, size);
+            setCorner(1, hw, -hh, size);
+            setCorner(2, hw, hh, size);
+            setCorner(3, -hw, hh, size);
+
+            looping = true;
+            raf = window.requestAnimationFrame(render);
+        } else {
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            const size = 12;
+            const d = 8;
+            setCorner(0, -d, -d, size);
+            setCorner(1, d, -d, size);
+            setCorner(2, d, d, size);
+            setCorner(3, -d, d, size);
+            looping = false;
+        }
+    };
+
+    const schedule = () => {
+        if (!raf) raf = window.requestAnimationFrame(render);
+    };
+
+    window.addEventListener('pointermove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.classList.remove('is-hidden');
+        if (!looping) schedule();
+    }, { passive: true });
+
+    document.addEventListener('pointerover', (e) => {
+        const target = e.target.closest && e.target.closest(TARGET_SELECTOR);
+        if (target && target !== activeTarget) {
+            activeTarget = target;
+            cursor.classList.add('is-targeting');
+            schedule();
+        }
+    });
+
+    document.addEventListener('pointerout', (e) => {
+        if (!activeTarget) return;
+        const next = e.relatedTarget;
+        if (next && activeTarget.contains(next)) return;
+        activeTarget = null;
+        cursor.classList.remove('is-targeting');
+        schedule();
+    });
+
+    document.addEventListener('pointerleave', () => {
+        cursor.classList.add('is-hidden');
+    });
+
+    window.addEventListener('blur', () => cursor.classList.add('is-hidden'));
+
+    render();
 })();
