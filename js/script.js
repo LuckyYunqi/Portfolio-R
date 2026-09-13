@@ -1,4 +1,14 @@
 // ====================================
+// TOUCH ACTIVE-STATE ENABLER
+// ====================================
+// iOS Safari only evaluates :active on elements with a touch listener (or an
+// onclick attribute) — this empty listener makes press feedback work
+// everywhere on touch devices without changing anything on desktop.
+if (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+    document.addEventListener('touchstart', () => {}, { passive: true });
+}
+
+// ====================================
 // MOBILE MENU TOGGLE
 // ====================================
 const hamburger = document.querySelector('.hamburger');
@@ -669,8 +679,12 @@ const observer = new IntersectionObserver((entries) => {
             revealObserverFired = true;
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            // Tighter stagger on small screens so the section finishes revealing sooner.
+            const isNarrowViewport = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+            const step = isNarrowViewport ? 28 : 45;
+            const cap = isNarrowViewport ? 4 : 6;
             entry.target.querySelectorAll('.reveal-item').forEach((item, index) => {
-                item.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 45}ms`);
+                item.style.setProperty('--reveal-delay', `${Math.min(index, cap) * step}ms`);
                 item.classList.add('revealed');
             });
             if (entry.target.classList.contains('reveal-item')) {
@@ -1263,35 +1277,6 @@ initializeCertificateNavigation();
             }
         }, true);
     });
-})();
-
-// ====================================
-// GRADUAL BLUR (bottom edge of the viewport)
-// ====================================
-(() => {
-    const supported = (window.CSS && (CSS.supports('backdrop-filter', 'blur(2px)') ||
-        CSS.supports('-webkit-backdrop-filter', 'blur(2px)')));
-    if (!supported) return;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'gradual-blur';
-    wrap.setAttribute('aria-hidden', 'true');
-
-    const LAYERS = 5;
-    for (let i = 0; i < LAYERS; i += 1) {
-        const layer = document.createElement('div');
-        const blur = (0.6 * Math.pow(2, i)).toFixed(2); // 0.6 → ~9.6px
-        const from = (i / LAYERS) * 100;
-        const to = ((i + 2) / LAYERS) * 100;
-        const maskGradient = `linear-gradient(to top, rgba(0,0,0,1) ${from}%, rgba(0,0,0,1) ${Math.min(to - 100 / LAYERS, 100)}%, rgba(0,0,0,0) ${Math.min(to, 100)}%)`;
-        layer.style.backdropFilter = `blur(${blur}px)`;
-        layer.style.webkitBackdropFilter = `blur(${blur}px)`;
-        layer.style.maskImage = maskGradient;
-        layer.style.webkitMaskImage = maskGradient;
-        wrap.appendChild(layer);
-    }
-
-    document.body.appendChild(wrap);
 })();
 
 // ====================================

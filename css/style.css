@@ -816,6 +816,54 @@ section {
     transform: translateY(0);
 }
 
+/* Shorter travel + a lighter bounce on small screens — the desktop distances
+   are a bigger fraction of a narrow viewport and read as sluggish there. */
+@media (max-width: 760px) {
+    .reveal-item {
+        transform: translateY(14px);
+        transition: opacity 0.38s var(--ease-out), transform 0.38s var(--ease-out);
+    }
+
+    .reveal-item[data-reveal="left"]:not(.revealed) {
+        transform: translateX(-18px);
+    }
+
+    .reveal-item[data-reveal="right"]:not(.revealed) {
+        transform: translateX(18px);
+    }
+
+    .reveal-item[data-reveal="up"]:not(.revealed) {
+        transform: translateY(20px);
+    }
+
+    .reveal-item[data-reveal="zoom"]:not(.revealed) {
+        transform: scale(0.95) translateY(12px);
+    }
+
+    .reveal-item[data-reveal="bounce"]:not(.revealed) {
+        transform: translateY(22px) scale(0.92) rotate(-2deg);
+    }
+
+    .reveal-item[data-reveal="bounce"].revealed {
+        animation-duration: 0.5s;
+    }
+
+    @keyframes cardBounceIn {
+        0% {
+            opacity: 0;
+            transform: translateY(22px) scale(0.92) rotate(-2deg);
+        }
+        55% {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.015) rotate(0.75deg);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotate(0);
+        }
+    }
+}
+
 .section-title {
     text-align: center;
     font-size: clamp(1.7rem, 3vw, 2.4rem);
@@ -2997,6 +3045,59 @@ section {
         line-height: 1;
     }
 
+    /* Entrance for the mobile-only profile strip + availability pills —
+       these previously just appeared with the hero's block-level fade. */
+    .mobile-profile-summary {
+        animation: mobileProfilePop 0.55s var(--ease-out) 0.15s both;
+    }
+
+    .mobile-profile-summary img {
+        animation: mobileProfileGlow 2.6s ease-in-out 0.75s infinite alternate;
+    }
+
+    .mobile-availability span {
+        opacity: 0;
+        transform: translateY(8px);
+        animation: mobilePillPop 0.4s var(--ease-out) both;
+    }
+
+    .mobile-availability span:nth-child(1) { animation-delay: 0.32s; }
+    .mobile-availability span:nth-child(2) { animation-delay: 0.37s; }
+    .mobile-availability span:nth-child(3) { animation-delay: 0.42s; }
+    .mobile-availability span:nth-child(4) { animation-delay: 0.47s; }
+    .mobile-availability span:nth-child(5) { animation-delay: 0.52s; }
+
+    @keyframes mobileProfilePop {
+        from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.94);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes mobilePillPop {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes mobileProfileGlow {
+        from {
+            box-shadow: 0 0 0 rgba(93, 228, 255, 0);
+        }
+        to {
+            box-shadow: 0 0 16px rgba(93, 228, 255, 0.55);
+        }
+    }
+
     .hero-lead {
         max-width: 32ch;
         margin-bottom: 0.55rem;
@@ -3756,26 +3857,37 @@ section {
     border-top-color: transparent;
 }
 
-/* Gradual blur at the bottom edge of the viewport */
-.gradual-blur {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100px;
-    z-index: 900;
-    pointer-events: none;
-}
+/* ====================================
+   TOUCH PRESS FEEDBACK
+   ==================================== */
+/* Hover-driven lift/glow never fires on a tap, so touch/coarse-pointer
+   devices get their own quick press-down instead. `scale` is an independent
+   property — it composes with whatever `transform` a card already uses. */
+@media (hover: none), (pointer: coarse) {
+    .cta-button,
+    .nav-link,
+    .hamburger,
+    .service-card,
+    .project-card,
+    .cert-card,
+    .skill-category-card,
+    .skills-grid .skill-card,
+    .education-item,
+    .cert-scroll-btn:not(:disabled) {
+        transition: scale 0.14s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
+    }
 
-.gradual-blur > div {
-    position: absolute;
-    inset: 0;
-}
-
-body.compose-open .gradual-blur,
-body.download-open .gradual-blur,
-body.nav-preview-open .gradual-blur {
-    display: none;
+    .cta-button:active,
+    .nav-link:active,
+    .hamburger:active,
+    .service-card:active,
+    .project-card:active,
+    .cert-card:active,
+    .skill-category-card:active,
+    .skills-grid .skill-card:active,
+    .education-item:active {
+        scale: 0.96;
+    }
 }
 
 /* Drag-to-scroll affordance */
@@ -3798,6 +3910,73 @@ body.nav-preview-open .gradual-blur {
 
 .is-dragging > * {
     pointer-events: none;
+}
+
+/* ====================================
+   SCROLL-DRIVEN BLUR REVEAL (native CSS, no JS)
+   Blurs in as a heading enters the viewport, sharpens while centred,
+   blurs back out as it leaves — driven by the element's own scroll
+   position via animation-timeline: view(), so it works identically on
+   desktop and mobile with no separate touch/scroll-listener logic.
+   Browsers without support (Firefox, older Safari) simply keep the
+   heading sharp — @supports means there is no broken/stuck state. */
+@supports (animation-timeline: view()) {
+    /* Not applied to hero text — it's visible on first paint with no
+       scroll-in, so a view() timeline would start it partway blurred. */
+    .section-title,
+    .section-subtitle,
+    .section-kicker,
+    .objective-content h2,
+    .objective-content p:last-child,
+    .about-text p {
+        animation: scrollBlurReveal linear both;
+        animation-timeline: view();
+    }
+
+    /* Slightly lighter touch on body copy so paragraphs stay easy to
+       skim-read while they're transiting, not just at dead-centre. */
+    .objective-content p:last-child,
+    .about-text p {
+        animation-name: scrollBlurRevealSoft;
+    }
+}
+
+@keyframes scrollBlurReveal {
+    0% {
+        filter: blur(11px);
+    }
+    45%,
+    55% {
+        filter: blur(0);
+    }
+    100% {
+        filter: blur(11px);
+    }
+}
+
+@keyframes scrollBlurRevealSoft {
+    0% {
+        filter: blur(6px);
+    }
+    40%,
+    60% {
+        filter: blur(0);
+    }
+    100% {
+        filter: blur(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .section-title,
+    .section-subtitle,
+    .section-kicker,
+    .objective-content h2,
+    .objective-content p:last-child,
+    .about-text p {
+        animation: none !important;
+        filter: none !important;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
