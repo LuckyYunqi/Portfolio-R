@@ -73,10 +73,23 @@ body::before {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(25, 5, 39, 0.82);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
-    transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    background: rgba(25, 5, 39, 0.5);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border-bottom: 1px solid rgba(223, 109, 255, 0.12);
+    transition:
+        background 0.4s ease,
+        box-shadow 0.4s ease,
+        border-color 0.4s ease,
+        backdrop-filter 0.4s ease,
+        -webkit-backdrop-filter 0.4s ease;
+}
+
+/* Readable fallback where backdrop-filter isn't supported at all. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .navbar {
+        background: rgba(20, 4, 32, 0.96);
+    }
 }
 
 .navbar .container {
@@ -88,7 +101,9 @@ body::before {
 }
 
 .navbar.navbar-scrolled {
-    background: rgba(15, 2, 24, 0.94);
+    background: rgba(15, 2, 24, 0.78);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
     border-bottom-color: rgba(223, 109, 255, 0.32);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
@@ -3910,73 +3925,6 @@ section {
 
 .is-dragging > * {
     pointer-events: none;
-}
-
-/* ====================================
-   SCROLL-DRIVEN BLUR REVEAL (native CSS, no JS)
-   Blurs in as a heading enters the viewport, sharpens while centred,
-   blurs back out as it leaves — driven by the element's own scroll
-   position via animation-timeline: view(), so it works identically on
-   desktop and mobile with no separate touch/scroll-listener logic.
-   Browsers without support (Firefox, older Safari) simply keep the
-   heading sharp — @supports means there is no broken/stuck state. */
-@supports (animation-timeline: view()) {
-    /* Not applied to hero text — it's visible on first paint with no
-       scroll-in, so a view() timeline would start it partway blurred. */
-    .section-title,
-    .section-subtitle,
-    .section-kicker,
-    .objective-content h2,
-    .objective-content p:last-child,
-    .about-text p {
-        animation: scrollBlurReveal linear both;
-        animation-timeline: view();
-    }
-
-    /* Slightly lighter touch on body copy so paragraphs stay easy to
-       skim-read while they're transiting, not just at dead-centre. */
-    .objective-content p:last-child,
-    .about-text p {
-        animation-name: scrollBlurRevealSoft;
-    }
-}
-
-@keyframes scrollBlurReveal {
-    0% {
-        filter: blur(11px);
-    }
-    45%,
-    55% {
-        filter: blur(0);
-    }
-    100% {
-        filter: blur(11px);
-    }
-}
-
-@keyframes scrollBlurRevealSoft {
-    0% {
-        filter: blur(6px);
-    }
-    40%,
-    60% {
-        filter: blur(0);
-    }
-    100% {
-        filter: blur(6px);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .section-title,
-    .section-subtitle,
-    .section-kicker,
-    .objective-content h2,
-    .objective-content p:last-child,
-    .about-text p {
-        animation: none !important;
-        filter: none !important;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
